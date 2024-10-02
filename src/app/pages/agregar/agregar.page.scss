@@ -1,0 +1,16 @@
+.add-product-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  ion-item {
+    margin-bottom: 15px;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+  }
+  
+  ion-button {
+    --border-radius: 8px;
+  }

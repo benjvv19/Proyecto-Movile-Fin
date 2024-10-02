@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar style="--background: black;">
+    <ion-buttons slot="start"></ion-buttons>
+    <div class="container-input-logo">
+      <div class="container-logo">
+        <img src="../assets/icon/logo2.jpeg" alt="KickSport Logo" class="logo-app">
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content scroll-y="false" class="no-scroll-content">
+  <div class="container">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <ion-list class="custom-list">
+        <p class="title">¡Bienvenido!</p>
+
+        <ion-item class="custom-item" lines="none">
+          <ion-input
+            formControlName="correo"
+            type="email"
+            placeholder="Correo electronico"
+            class="custom-input">
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-input
+            formControlName="contraseña"
+            [type]="hide ? 'password' : 'text'"
+            placeholder="Contraseña">
+          </ion-input>
+          <ion-button class="password-toggle-button" (click)="clickEvent($event)">
+            <ion-icon name="{{hide ? 'eye-off' : 'eye'}}"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <p class="page-link">
+          <span class="page-link-label" [routerLink]="['/recuperarcontrasena']">Recuperar Contraseña</span>
+        </p>
+
+        <ion-button expand="block" type="submit" class="aceptar">Aceptar</ion-button>
+        <p class="sign-up-label">
+          No tienes cuenta? <span [routerLink]="['/register']" class="sign-up-link">Registrate</span>
+        </p>
+      </ion-list>
+    </form>
+  </div>
+</ion-content>

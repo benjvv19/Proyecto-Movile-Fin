@@ -1,0 +1,207 @@
+
+.mat-form-field {
+    margin: 0;
+  }
+  
+  .mat-form-field .mat-form-field-appearance-outline .mat-form-field-outline {
+    border-color: rgba(0, 0, 0, 0.12); 
+  }
+  
+  
+  
+  .container {
+    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    
+    background: #121212; 
+    background: radial-gradient(
+      circle,
+      #121212 30%,
+      #1a1a1a 30%,
+      #1a1a1a 50%,
+      #121212 50%
+    );
+    background-size: 60px 60px; 
+  
+    
+    animation: move 4s linear infinite;
+  }
+  
+  @keyframes move {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 60px 60px; 
+    }
+  }
+  
+  
+  
+  .container-input-logo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  
+  .logo-app {
+  border-radius: 50%;
+  width: 60px; 
+  height: 60px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  
+  
+  
+  
+  form {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 16px;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+  }
+  
+  .sign-up-label {
+  
+      text-align: center; 
+  
+    margin: 0;
+    font-size: 11px;
+    color: #747474;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+          
+  }
+  .sign-up-link {
+    
+    margin-left: 1px;
+    font-size: 12px;
+    text-decoration: underline;
+    text-decoration-color: #212121;
+    color: #212121;
+    cursor: pointer;
+    font-weight: 800;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  }
+  .page-link {
+    text-decoration: underline;
+    margin: 2px;
+    text-align: end;
+    color: #747474;
+    text-decoration-color: #747474;
+  }
+  
+  .page-link-label {
+    cursor: pointer;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  
+  .page-link-label:hover {
+    color: #000;
+  }
+  
+  ion-item {
+    --background: transparent !important; 
+    --border-color: #114B5F; 
+    border-radius: 25px;
+    margin-bottom: 1rem;
+    border: 1px solid #c0c0c0;
+  }
+  
+  ion-item [color="dark"] {
+    --background: transparent !important; 
+  
+  }
+  
+  
+  ion-input {
+    
+    --background: white !important; 
+    color: #4b4b4b; 
+  
+    padding-left: 8px;
+  }
+  
+  .password-toggle-button {
+    --background: transparent; 
+    --color: #000; 
+    --border: none; 
+    --padding: 0; 
+    --box-shadow: none; 
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-toggle-button ion-icon {
+    font-size: 20px; 
+  }
+  ion-button {
+    
+    margin-bottom: 10px;
+    --background: #000000; 
+    border-radius: 25px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    padding: 7px 20px; 
+    font-weight: bold; 
+    
+  
+  }
+  
+  .aceptar {
+    background-color: #000000; 
+    color: white;
+    --box-shadow: none;
+  }
+  
+  
+  
+  ion-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1A936F; 
+    text-align: center;
+  }
+  
+  .titulo {
+    justify-content: center;
+  }
+  
+  .custom-list {
+    background-color: #ffffff; 
+    border-radius: 15px;
+    padding: 20px;
+  
+  }
+  
+  
+  
+  .title {
+    text-align: center;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    margin: 10px 0 30px 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: black;
+  }
+  

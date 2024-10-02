@@ -1,0 +1,139 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #121212;
+    background: radial-gradient(
+    circle,
+    #121212 30%,
+    #1a1a1a 30%,
+    #1a1a1a 50%,
+    #121212 50%
+    );
+    background-size: 60px 60px;
+    animation: move 4s linear infinite;
+    
+    position: absolute;
+    }
+    ion-card-title {
+    color: #000000;
+    font-size: 1.8rem;
+    font-weight: bold;
+    }
+    
+    @keyframes move {
+    0% {
+    background-position: 0 0;
+    }
+    100% {
+    background-position: 60px 60px;
+    }
+    }
+    
+    .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 85%;
+    border-radius: 20px;
+    position: fixed;
+    }
+    ion-content {
+    --background: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; 
+    }
+    
+    
+    ion-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 16px;
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    ion-button {
+    margin-bottom: 10px;
+    --background: #000000;
+    border-radius: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 7px 20px;
+    font-weight: bold;
+    }
+    
+    .aceptar {
+    background-color: #000000;
+    color: white;
+    --box-shadow: none;
+    }
+    
+    ion-card-title {
+    color: #000000;
+    font-size: 1.8rem;
+    font-weight: bold;
+    }
+    
+    ion-item {
+    --background: transparent !important;
+    --border-color: #114B5F;
+    border-radius: 25px;
+    margin-bottom: 1rem;
+    border: 1px solid #c0c0c0;
+    }
+    
+    
+    ion-textarea{
+    --background: white !important;
+    color: #4b4b4b;
+    padding-left: 8px;
+    }
+    
+    ion-input {
+    --background: white !important;
+    color: #4b4b4b;
+    padding-left: 8px;
+    }
+    
+    .links-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    }
+    
+    .links-container a {
+    margin: 10px 0;
+    color: #3880ff;
+    text-decoration: none;
+    }
+    
+    .links-container a:hover {
+    text-decoration: underline;
+    }
+    
+    
+    .container-input-logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    .logo-app {
+    border-radius: 50%;
+    width: 60px; 
+    height: 60px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    

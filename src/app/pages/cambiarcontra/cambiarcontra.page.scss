@@ -1,0 +1,151 @@
+
+.container-input-logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    .logo-app {
+    border-radius: 50%;
+    width: 60px; 
+    height: 60px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    
+    
+    
+    
+    
+    .logo-container {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 8px;
+        top: 0;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        height: 100vh;
+    }
+    
+    
+    ion-title {
+        margin-left: auto;
+    }
+    
+    
+    .container {
+    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
+    
+    background: #121212; 
+    background: radial-gradient(
+        circle,
+        #121212 30%,
+        #1a1a1a 30%,
+        #1a1a1a 50%,
+        #121212 50%
+    );
+    background-size: 60px 60px; 
+    
+    
+    animation: move 4s linear infinite;
+    
+    position: absolute;
+    }
+    
+    @keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 60px 60px; 
+    }
+    }
+    .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 16px;
+    
+    }
+    
+    ion-card {
+    width: 100%;
+    max-width: 500px ;
+    padding: 20px;
+    width: 90%;
+    background-color: #ffffff; 
+    color: #000000; 
+    border-radius: 15px;
+    }
+    
+    ion-card-title {
+    
+    text-align: center;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+            "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    margin: 10px 0 10px 0;
+    font-size: 28px;
+    font-weight: 800;
+    color: black;
+    
+    }
+    
+    ion-item {
+    --background: transparent !important; 
+    --border-color: #114B5F; 
+    border-radius: 25px;
+    margin-bottom: 1rem;
+    border: 1px solid #c0c0c0;
+    }
+    
+    ion-input {
+    
+    --background: white !important; 
+    color: #4b4b4b; 
+    padding-left: 8px;
+    }
+    
+    ion-button {
+    
+    margin-bottom: 10px;
+    --background: #000000; 
+    border-radius: 25px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    padding: 7px 20px; 
+    font-weight: bold; 
+    }
+    
+    .aceptar {
+    background-color: #000000; 
+    color: rgb(255, 255, 255);
+    --box-shadow: none;
+    }
+    
+    
+    .custom-list {
+    background-color: #ffffff; 
+    border-radius: 15px;
+    padding: 20px;
+    
+    }
+    
+    ion-card-content{
+    
+            background-color: #ffffff; 
+        border-radius: 15px;
+        padding: 20px;
+    
+    }
