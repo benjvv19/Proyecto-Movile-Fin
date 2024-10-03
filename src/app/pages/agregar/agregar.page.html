@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar Producto</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form class="add-product-form" (ngSubmit)="onSubmit()" #productForm="ngForm">
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <br>
+      <ion-textarea placeholder="Ingrese la descripción" [(ngModel)]="product.description" name="description" required></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Tipo</ion-label>
+      <br>
+      <ion-input placeholder="Ej:(niño-niña-hombre-mujer)" [(ngModel)]="product.type" name="type" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Imagen (URL)</ion-label>
+      <br>
+      <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="product.image" name="image" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Marca</ion-label>
+      <br>
+      <ion-input placeholder="Ingrese la marca (ej. ADIDAS)" [(ngModel)]="product.brand" name="brand" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <br>
+      <ion-input placeholder="Ingrese el nombre del producto" [(ngModel)]="product.name" name="name" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Precio</ion-label>
+      <br>
+      <ion-input type="number" placeholder="Ingrese el precio" [(ngModel)]="product.price" name="price" required></ion-input>
+    </ion-item>
+
+    <div class="button-container">
+      <ion-button expand="full" shape="round" color="dark" type="submit">Guardar</ion-button>
+      <ion-button expand="full" shape="round" color="dark" [routerLink]="'/adminproductos'">Volver</ion-button>
+    </div>
+    
+    <br>
+    <br>
+    <br>
+
+    <ion-toast *ngIf="showError" message="Todos los campos son obligatorios" color="danger" duration="2000"></ion-toast>
+  </form>
+</ion-content>

@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Modificar Zapatilla</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content scroll-y="false" class="no-scroll-content">
+  <div class="container">
+    <div class="login-container">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title class="ion-text-center">EDITAR</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <form (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">
+            <div class="form-group">
+              <ion-item lines="none">
+                <ion-input
+                  type="number"
+                  placeholder="ID de la zapatilla"
+                  [(ngModel)]="zapatilla.id"
+                  name="id"
+                  min="1"
+                  max="24"
+                  required
+                ></ion-input>
+              </ion-item>
+            </div>
+
+            <div class="form-group">
+              <ion-item lines="none">
+                <ion-input placeholder="Nombre de la zapatilla" [(ngModel)]="zapatilla.name" name="name" required></ion-input>
+              </ion-item>
+            </div>
+            
+            <div class="form-group">
+              <ion-item lines="none">
+                <ion-textarea placeholder="Descripción de la zapatilla" [(ngModel)]="zapatilla.description" name="description" required></ion-textarea>
+              </ion-item>
+            </div>
+
+            <div class="form-group">
+              <ion-item lines="none">
+                <ion-input placeholder="Marca de la zapatilla" [(ngModel)]="zapatilla.brand" name="brand" required></ion-input>
+              </ion-item>
+            </div>
+            
+            <div class="form-group">
+              <ion-item lines="none">
+                <ion-input type="number" placeholder="Precio de la zapatilla" [(ngModel)]="zapatilla.price" name="price" required></ion-input>
+              </ion-item>
+            </div>
+
+            <div class="form-group">
+              <ion-item lines="none">
+                <ion-input placeholder="Tipo de zapatilla" [(ngModel)]="zapatilla.type" name="type" required></ion-input>
+              </ion-item>
+            </div>
+
+            <ion-button expand="full" type="submit" class="aceptar">Guardar Cambios</ion-button>
+
+            <ion-toast *ngIf="showError" message="Todos los campos son obligatorios" color="danger" duration="2000"></ion-toast>
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

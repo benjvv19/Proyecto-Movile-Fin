@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pagar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <div class="container">
+    <div class="modal">
+      <form class="form" #paymentForm="ngForm" (ngSubmit)="onSubmit(paymentForm)">
+        <ion-item>
+          <ion-label>Tipo de Tarjeta</ion-label>
+          <ion-select name="cardType" ngModel required>
+            <ion-select-option value="credit">Crédito</ion-select-option>
+            <ion-select-option value="debit">Débito</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <br>
+        <div class="credit-card-info--form">
+          <div class="input_container">
+            <label for="cardHolder" class="input_label">Nombre Titular</label>
+            <input id="cardHolder" class="input_field" type="text" name="cardHolder" placeholder="Nombre Completo">
+          </div>
+          <div class="input_container">
+            <label for="cardNumber" class="input_label">Numero De Tarjeta</label>
+            <input  id="cardNumber" class="input_field" type="number" name="cardNumber" placeholder="0000 0000 0000 0000">
+          </div>
+          <div class="input_container">
+            <label for="expiryDate" class="input_label">Fecha Expiracion / CVV</label>
+            <div class="split">
+              <input id="expiryDate" class="input_field" type="text" name="expiryDate" placeholder="01/23">
+              <input id="cvv" class="input_field" type="number" name="cvv" placeholder="CVV">
+            </div>
+          </div>
+        </div>
+        <button class="purchase--btn">Pagar</button>
+
+        <p class="cancelar-pago">
+          <span class="cancelar-pago-link" [routerLink]="['/carrito']">Cancelar</span>
+        </p>
+
+      </form>
+
+    </div>
+  </div>
+</ion-content>

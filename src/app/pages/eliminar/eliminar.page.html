@@ -1,0 +1,44 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Eliminar</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-label position="floating">Nombre</ion-label>
+<br>
+  <ion-input [(ngModel)]="nombre" placeholder="Ingresa el nombre"></ion-input>
+<ion-label position="floating">ID</ion-label>
+<br>
+    <ion-input [(ngModel)]="id" placeholder="Ingresa el ID"></ion-input>
+
+
+    <ion-button id="present-alert" color="danger" shape="round" (click)="verificarZapatilla()">Eliminar</ion-button>
+    <ion-alert trigger="present-alert" class="custom-alert" header="Estas seguro?" [buttons]="alertButtons"></ion-alert>
+    <ion-button shape="round" color="dark" [routerLink]="'/adminproductos'">Volver</ion-button>
+
+
+<ion-content style="--background: white;">
+  <ion-card-content>
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="6" size-md="4" *ngFor="let zapatilla of arregloZapatillas" class="card-column">
+          <ion-card class="card">
+            <img [alt]="zapatilla.nombre" [src]="zapatilla.imagen" />
+            <ion-card-header>
+              <ion-card-title>{{ zapatilla.nombre }}</ion-card-title>
+              <ion-card-subtitle>{{ zapatilla.precio | currency: 'USD': true }}</ion-card-subtitle>
+              <ion-card-title>ID: {{ zapatilla.id }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="button-group">
+                <ion-button shape="round" color="dark" [routerLink]="['/admindetalles', zapatilla.id]">Detalles</ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-content>

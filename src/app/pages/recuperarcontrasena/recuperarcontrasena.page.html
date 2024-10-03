@@ -1,0 +1,37 @@
+<ion-header [translucent]="true"  >
+  <ion-toolbar style="--background: black;">
+    <ion-buttons slot="start">
+
+    </ion-buttons>
+    <div class="container-input-logo">
+      <div class="container-logo">
+        <img src="../assets/icon/logo2.jpeg" alt="KickSport Logo" class="logo-app"> 
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="container">
+
+  <div class="login-container"  class="container">
+    <ion-card >
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Recuperar contraseña</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item class="custom-item" lines="none">
+          <ion-input label="Correo electrónico" labelPlacement="floating" placeholder="Ingrese su correo electrónico"
+            [(ngModel)]="correo" type="email" class="custom-input">
+          </ion-input>
+        </ion-item>
+        <ion-button (click)="Ircontra()" expand="block" class="aceptar" >
+          Enviar Email
+        </ion-button>
+        <p >
+          <a [routerLink]="['/login']" class="yatengocuenta">¿Ya tienes cuenta?</a>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

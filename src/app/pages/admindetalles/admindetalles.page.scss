@@ -1,0 +1,76 @@
+ion-card {
+    max-width: 85%;
+    margin: 50px auto 140px auto; 
+   
+    border-radius: 15px;
+    padding: 1rem; 
+  }
+  ion-card img {
+    max-height: 300px; 
+    object-fit: cover; 
+    border-radius: 15px 15px 0 0;
+  }
+  
+  .container-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+  
+    
+  }
+  
+  ion-button {
+    --border-radius: 20px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --padding-start: 16px;  
+    --padding-end: 16px;    
+    height: 40px;
+    width: 100%; 
+    box-sizing: border-box;
+    margin: 10px 0; 
+  }
+  
+  ion-button[shape="round"] {
+    border-radius: 50px;   
+  }
+  
+  ion-content {
+    --background: white;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+  .container {
+    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    
+    background: #121212; 
+    background: radial-gradient(
+      circle,
+      #121212 30%,
+      #1a1a1a 30%,
+      #1a1a1a 50%,
+      #121212 50%
+    );
+    background-size: 60px 60px; 
+  
+    
+    animation: move 4s linear infinite;
+  }
+  
+  @keyframes move {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 60px 60px; 
+    }
+  }
+  
