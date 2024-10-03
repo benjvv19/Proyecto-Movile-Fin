@@ -60,7 +60,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/editarperfil/editarperfil.module').then( m => m.EditarperfilPageModule)
   },
   {
-    path: 'detalles',
+    path: 'detalles/:id',
     loadChildren: () => import('./pages/detalles/detalles.module').then( m => m.DetallesPageModule)
   },
   {
@@ -88,7 +88,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/admineditar/admineditar.module').then( m => m.AdmineditarPageModule)
   },
   {
-    path: 'admindetalles',
+    path: 'admindetalles/:id',
     loadChildren: () => import('./pages/admindetalles/admindetalles.module').then( m => m.AdmindetallesPageModule)
   },
   {
