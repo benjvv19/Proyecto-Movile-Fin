@@ -15,7 +15,12 @@
       <ion-input placeholder="Ej:(1='niño'/2='niña'/ 3='hombre'4='mujer')" [(ngModel)]="id_categoria" name="id_categoria" required></ion-input>
     </ion-item>
 
+
     <ion-item>
+      <input type="file" (change)="onFileSelected($event)" />
+    </ion-item>
+    
+    <ion-item *ngIf="imagen_url">
       <ion-label position="floating">Imagen (URL)</ion-label>
       <br>
       <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="imagen_url" name="imagen_url" required></ion-input>
