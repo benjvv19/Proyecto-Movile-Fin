@@ -1,5 +1,6 @@
 export class Zapatillas {
     id_zapatilla!: number;
+    nombre!:string;
     descripcion!: string;
     imagen_url!: string;
     precio!: number;

@@ -14,26 +14,32 @@ export class ServicebdService {
   //variables de creacion de tablas
   
   //
-  tablaZapatillas: string = "CREATE TABLE zapatillas (id_zapatilla INTEGER NOT NULL,nombre TEXT NOT NULL,descripcion TEXT NOT NULL,imagen_url TEXT NOT NULL,precio INTEGER NOT NULL,id_marca INTEGER NOT NULL,id_categoria INTEGER NOT NULL,PRIMARY KEY (id_zapatilla),FOREIGN KEY (id_marca) REFERENCES marca_zapatillas(id_marca),FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
-  tablaRoles: string = "CREATE TABLE roles (id_rol INTEGER NOT NULL,nombre_rol TEXT NOT NULL,PRIMARY KEY (id_rol);";
-  tablaUsuarios: string = "CREATE TABLE usuarios (id_usuario INTEGER NOT NULL,nombre TEXT NOT NULL,apellido TEXT NOT NULL,id_rol INTEGER NOT NULL,PRIMARY KEY (id_usuario),FOREIGN KEY (id_rol) REFERENCES roles(id_rol));";
-  tablaInventario: string = "CREATE TABLE inventario (id_inventario INTEGER NOT NULL,id_zapatilla INTEGER NOT NULL,cantidad_disponible INTEGER NOT NULL,ultima_actualizacion TEXT NOT NULL,PRIMARY KEY (id_inventario),FOREIGN KEY (id_zapatilla) REFERENCES zapatillas(id_zapatilla));";
-  tablaCategoriaZapatillas: string = "CREATE TABLE categoria_zapatillas (id_categoria INTEGER NOT NULL,nombre_categoria TEXT NOT NULL,PRIMARY KEY (id_categoria));";
-  tablaMarcaZapatillas: string = "CREATE TABLE marca_zapatillas (id_marca INTEGER NOT NULL,nombre_marca TEXT NOT NULL,PRIMARY KEY (id_marca));";
-  tablaInformacionUsuario: string = "CREATE TABLE informacion_usuario (id_informacion INTEGER NOT NULL,correo TEXT NOT NULL,telefono TEXT NOT NULL,contrasena TEXT NOT NULL,id_usuario INTEGER NOT NULL,PRIMARY KEY (id_informacion),FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario));";
-  tablaMetodosPago: string = "CREATE TABLE metodos_pago (id_metodo_pago INTEGER NOT NULL,nombre_metodo TEXT NOT NULL,descripcion TEXT,PRIMARY KEY (id_metodo_pago));";
-  tablaHistorialPedidos: string = "CREATE TABLE historial_pedidos (id_historial INTEGER NOT NULL,id_pedido INTEGER NOT NULL,estado_anterior TEXT NOT NULL,estado_nuevo TEXT NOT NULL,fecha_cambio TEXT NOT NULL,PRIMARY KEY (id_historial),FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido));";
+  tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement,nombre TEXT NOT NULL,descripcion TEXT NOT NULL,imagen_url TEXT NOT NULL,precio INTEGER NOT NULL,id_marca INTEGER NOT NULL,id_categoria INTEGER NOT NULL,FOREIGN KEY (id_marca) REFERENCES marca_zapatillas(id_marca),FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
+  tablaRoles: string = "CREATE TABLE IF NOT EXISTS roles (id_rol INTEGER PRIMARY KEY autoincrement,nombre_rol TEXT NOT NULL;";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios (id_usuario INTEGER PRIMARY KEY autoincrement,nombre TEXT NOT NULL,apellido TEXT NOT NULL,id_rol INTEGER NOT NULL,FOREIGN KEY (id_rol) REFERENCES roles(id_rol));";
+  
+  tablaInventario: string = "CREATE TABLE IF NOT EXISTS inventario (id_inventario INTEGER PRIMARY KEY autoincrement,id_zapatilla INTEGER NOT NULL,cantidad_disponible INTEGER NOT NULL,ultima_actualizacion TEXT NOT NULL,FOREIGN KEY (id_zapatilla) REFERENCES zapatillas(id_zapatilla));";
+  tablaCategoriaZapatillas: string = "CREATE TABLE IF NOT EXISTS categoria_zapatillas (id_categoria INTEGER PRIMARY KEY autoincrement,nombre_categoria TEXT NOT NULL);";
+  tablaMarcaZapatillas: string = "CREATE TABLE IF NOT EXISTS marca_zapatillas (id_marca INTEGER PRIMARY KEY autoincrement,nombre_marca TEXT NOT NULL);";
+  
+  tablaInformacionUsuario: string = "CREATE TABLE IF NOT EXISTS informacion_usuario (id_informacion INTEGER PRIMARY KEY autoincrement,correo TEXT NOT NULL,telefono TEXT NOT NULL,contrasena TEXT NOT NULL,id_usuario INTEGER NOT NULL,FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario));";
+  tablaMetodosPago: string = "CREATE TABLE IF NOT EXISTS metodos_pago (id_metodo_pago INTEGER PRIMARY KEY autoincrement,nombre_metodo TEXT NOT NULL,descripcion TEXT);";
+  tablaHistorialPedidos: string = "CREATE TABLE IF NOT EXISTS historial_pedidos (id_historial INTEGER PRIMARY KEY autoincrement,id_pedido INTEGER NOT NULL,estado_anterior TEXT NOT NULL,estado_nuevo TEXT NOT NULL,fecha_cambio TEXT NOT NULL,FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido));";
   //
 
 
   //varibles de insert por defecto de nuestras tablas
-  registroZapatillas: string= "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen, precio, id_marca, id_categoria)VALUES(1,'soy un nombre','soy una descripcion','', 100, 1, 1)";
-  registroRoles: string="INSERT or IGNORE INTO () VALUES ()";
-  registroUsuarios: string="INSERT or IGNORE INTO () VALUES ()";
-  registroInventario: string="INSERT or IGNORE INTO () VALUES ()";
-  registroInformacionUsuario: string="INSERT or IGNORE INTO () VALUES ()";
-  registroHistorialPedidos: string="INSERT or IGNORE INTO () VALUES ()";
+  registroZapatillas: string= "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, id_marca, id_categoria)VALUES(1,'soy un nombre','soy una descripcion','', 100, 1, 1)";
+  registroUsuarios: string="INSERT OR IGNORE INTO usuarios (id_usuario, nombre, apellido, id_rol) VALUES (1, 'Admin', 'Adminn', 1), (2, 'Usuario', 'Usuarioo', 2);";
+  registroRoles: string="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
+  registroInformacionUsuario: string="INSERT OR IGNORE INTO informacion_usuario (id_informacion, correo, telefono, contrasena, id_usuario) VALUES (1, 'admin@gmail.com', '111111111', 'admin', 1), (2, 'usuario@gmail.com', '222222222', 'usuario', 2);";
+  /////////
+  registroInventario: string="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
+  registroHistorialPedidos: string="INSERT or IGNORE INTO historial_pedidos (id_historial, id_pedido, estado_anterior, estado_nuevo, fecha_cambio) VALUES (1, 1, 'Pendiente', 'Recibido', '2023-10-01')";
   
+
+
+
 
   //variables para guardar los datos de las consultas en las tablas
   listadoZapatillas = new BehaviorSubject([]);
@@ -123,7 +129,7 @@ export class ServicebdService {
     }
   }
 
-  //////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////Zapatillas////////////////////////////////////////////////
   seleccionarZapatillas(){
     return this.database.executeSql('SELECT * FROM zapatillas', []).then(res=>{
        //variable para almacenar el resultado de la consulta
@@ -135,6 +141,7 @@ export class ServicebdService {
           //agrego los registros a mi lista
           items.push({
             id_zapatilla: res.rows.item(i).id_zapatilla,
+            nombre: res.rows.item(i).nombre,
             descripcion: res.rows.item(i).descripcion,
             imagen_url: res.rows.item(i). imagen_url,
             precio: res.rows.item(i).precio,
@@ -160,9 +167,9 @@ export class ServicebdService {
   }
 
 
-  modificarNoticia(id:string, descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){
+  modificarZapatillas(id:number, descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){
     this.presentAlert("service","ID: " + id);
-    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ? , id_marca = ?, id_categoria = ? WHERE idnoticia = ?',[descripcion, imagen_url, precio, id_marca, id_categoria]).then(res=>{
+    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ? , id_marca = ?, id_categoria = ? WHERE id_zapatilla = ?',[descripcion, imagen_url, precio, id_marca, id_categoria]).then(res=>{
       this.presentAlert("Modificar","Zapatilla Modificada");
       this.seleccionarZapatillas();
     }).catch(e=>{
@@ -170,8 +177,8 @@ export class ServicebdService {
     })
   }
 
-  insertarNoticia(descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){
-    return this.database.executeSql('INSERT INTO zapatillas(descripcion, imagen_url, precio, id_marca, id_categoria) VALUES (?,?)',[descripcion, imagen_url, precio, id_marca, id_categoria]).then(res=>{
+  insertarZapatillas(nombre:string, descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){
+    return this.database.executeSql('INSERT INTO zapatillas(nombre,descripcion, imagen_url, precio, id_marca, id_categoria) VALUES (?,?,?,?,?,?)',[nombre,descripcion, imagen_url, precio, id_marca, id_categoria]).then(res=>{
       this.presentAlert("Insertar","Zapatilla Registrada");
       this.seleccionarZapatillas();
     }).catch(e=>{
@@ -179,6 +186,6 @@ export class ServicebdService {
     })
   }
 
- //////////////////////////////////////////////////////////////////////////////////7777777777777777777777
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
