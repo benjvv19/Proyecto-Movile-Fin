@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
+import { ServicebdService } from 'src/app/services/servicebd.service';
 
 @Component({
   selector: 'app-agregar',
@@ -9,23 +9,24 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./agregar.page.scss'],
 })
 export class AgregarPage {
-  product = {
-    description: '',
-    type: '',
-    image: '',
-    brand: '',
-    name: '',
-    price: null
-  };
+
+  nombre: string = "";
+  descripcion: string = "";
+  imagen_url: string = "";
+  precio: any = "";
+  id_marca: any = "";
+  id_categoria: any = "";
+
   showError = false;
 
-  constructor(private router: Router, private toastController: ToastController) { }
+  constructor(private bd: ServicebdService, private router: Router, private toastController: ToastController) { }
 
-  async onSubmit() {
-    const form = document.querySelector('form') as HTMLFormElement;
-
-    if (form.checkValidity()) {
-      
+  async onSubmit(productForm: any) {
+    const form = productForm;
+  
+    if (form.valid) {
+      this.insertar();
+      form.reset();
       this.router.navigate(['/adminproductos']);
     } else {
       this.showError = true;
@@ -37,4 +38,10 @@ export class AgregarPage {
       toast.present();
     }
   }
+
+  insertar(){
+    this.bd.insertarZapatillas(this.nombre, this.descripcion,this.imagen_url,this.precio,this.id_marca,this.id_categoria);
+  }
 }
+
+

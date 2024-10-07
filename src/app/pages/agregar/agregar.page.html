@@ -1,48 +1,42 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Agregar Producto</ion-title>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
-  <form class="add-product-form" (ngSubmit)="onSubmit()" #productForm="ngForm">
+  <form class="add-product-form" (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">
     <ion-item>
+      <br>
+      <br>
+      <br>
       <ion-label position="floating">Descripción</ion-label>
       <br>
-      <ion-textarea placeholder="Ingrese la descripción" [(ngModel)]="product.description" name="description" required></ion-textarea>
+      <ion-textarea placeholder="Ingrese la descripción" [(ngModel)]="descripcion" name="descripcion" required></ion-textarea>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Tipo</ion-label>
       <br>
-      <ion-input placeholder="Ej:(niño-niña-hombre-mujer)" [(ngModel)]="product.type" name="type" required></ion-input>
+      <ion-input placeholder="Ej:(1='niño'/2='niña'/ 3='hombre'4='mujer')" [(ngModel)]="id_categoria" name="id_categoria" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Imagen (URL)</ion-label>
       <br>
-      <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="product.image" name="image" required></ion-input>
+      <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="imagen_url" name="imagen_url" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Marca</ion-label>
       <br>
-      <ion-input placeholder="Ingrese la marca (ej. ADIDAS)" [(ngModel)]="product.brand" name="brand" required></ion-input>
+      <ion-input placeholder="Ingrese la marca (ej. 1 / 2 / 3 / 4 / 5)" [(ngModel)]="id_marca" name="id_marca" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
       <br>
-      <ion-input placeholder="Ingrese el nombre del producto" [(ngModel)]="product.name" name="name" required></ion-input>
+      <ion-input placeholder="Ingrese el nombre del producto" [(ngModel)]="nombre" name="nombre" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Precio</ion-label>
       <br>
-      <ion-input type="number" placeholder="Ingrese el precio" [(ngModel)]="product.price" name="price" required></ion-input>
+      <ion-input type="number" placeholder="Ingrese el precio" [(ngModel)]="precio" name="precio" required></ion-input>
     </ion-item>
 
     <div class="button-container">

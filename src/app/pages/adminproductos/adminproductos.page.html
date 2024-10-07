@@ -18,22 +18,21 @@
   </ion-toolbar>
 </ion-header>
 
-
-
-<ion-content style="--background: white;">
+<ion-content style="--background: white;" [fullscreen]="true">
   <ion-card-content>
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col size="6" size-md="4" *ngFor="let zapatilla of arregloZapatillas" class="card-column">
           <ion-card class="card">
-            <img [alt]="zapatilla.nombre" [src]="zapatilla.imagen" />
+            <!-- Mostrar imagen desde la URL proporcionada en la base de datos -->
+            <img [alt]="zapatilla.nombre" [src]="getImageUrl(zapatilla.imagen_url)" (error)="setDefaultImage($event)"/>
             <ion-card-header>
               <ion-card-title>{{ zapatilla.nombre }}</ion-card-title>
               <ion-card-subtitle>{{ zapatilla.precio | currency: 'USD': true }}</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
               <div class="button-group">
-                <ion-button shape="round" color="dark" (click)="verDetalles(zapatilla.id)">Detalles</ion-button>
+                <ion-button shape="round" color="dark" (click)="verDetalles(zapatilla.id_zapatilla)">Detalles</ion-button>
               </div>
             </ion-card-content>
           </ion-card>

@@ -41,7 +41,7 @@ export class InicioPage implements OnInit {
 
   // Método para obtener la URL de la imagen
   getImageUrl(url: string): string {
-    return url ? url : 'assets/icon/12.jpg'; // Si no hay URL, devuelve la imagen por defecto
+    return url ? url : 'assets/icon/default-image.jpg'; // Si no hay URL, devuelve la imagen por defecto
   }
 
   // Método para manejar el error de la imagen

@@ -29,14 +29,14 @@ export class ServicebdService {
 
 
   //varibles de insert por defecto de nuestras tablas
-  registroZapatillas: string= "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, id_marca, id_categoria)VALUES(1,'soy un nombre','soy una descripcion','https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 100, 1, 1)";
+  registroZapatillas: string= "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, id_marca, id_categoria)VALUES(1,'soy un nombre','soy una descripcion','https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 100, 1, 1),(2,'soy un nombre','soy una descripcion','https://i.postimg.cc/Wpy0d8Hd/adidas-hoops-nino.webp',200, 2, 2)";
   registroUsuarios: string="INSERT OR IGNORE INTO usuarios (id_usuario, nombre, apellido, id_rol) VALUES (1, 'Admin', 'Adminn', 1), (2, 'Usuario', 'Usuarioo', 2);";
   registroRoles: string="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
   registroInformacionUsuario: string="INSERT OR IGNORE INTO informacion_usuario (id_informacion, correo, telefono, contrasena, id_usuario) VALUES (1, 'admin@gmail.com', '111111111', 'admin', 1), (2, 'usuario@gmail.com', '222222222', 'usuario', 2);";
-  /////////
   registroInventario: string="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
   registroHistorialPedidos: string="INSERT or IGNORE INTO historial_pedidos (id_historial, id_pedido, estado_anterior, estado_nuevo, fecha_cambio) VALUES (1, 1, 'Pendiente', 'Recibido', '2023-10-01')";
-  
+  registroMarcaZapatillas: string="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'adidas'),(2,'nike'),(3,'jordan'),(4,'fila'),(5,'kappa')";
+  registroHistorialCategoriaZapatillas: string="INSERT or IGNORE INTO categoria_zapatillas (id_categoria, nombre_categoria) VALUES (1,'niño'),(2,'niña'),(3,'hombre'),(4,'mujer')";
 
 
 
@@ -188,4 +188,5 @@ export class ServicebdService {
 
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+ 
 }
