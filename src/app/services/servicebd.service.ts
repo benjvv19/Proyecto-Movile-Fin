@@ -15,7 +15,7 @@ export class ServicebdService {
   
   //
   tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement,nombre TEXT NOT NULL,descripcion TEXT NOT NULL,imagen_url TEXT NOT NULL,precio INTEGER NOT NULL,id_marca INTEGER NOT NULL,id_categoria INTEGER NOT NULL,FOREIGN KEY (id_marca) REFERENCES marca_zapatillas(id_marca),FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
-  tablaRoles: string = "CREATE TABLE IF NOT EXISTS roles (id_rol INTEGER PRIMARY KEY autoincrement,nombre_rol TEXT NOT NULL;";
+  tablaRoles: string = "CREATE TABLE IF NOT EXISTS roles (id_rol INTEGER PRIMARY KEY autoincrement,nombre_rol TEXT NOT NULL);";
   tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios (id_usuario INTEGER PRIMARY KEY autoincrement,nombre TEXT NOT NULL,apellido TEXT NOT NULL,id_rol INTEGER NOT NULL,FOREIGN KEY (id_rol) REFERENCES roles(id_rol));";
   
   tablaInventario: string = "CREATE TABLE IF NOT EXISTS inventario (id_inventario INTEGER PRIMARY KEY autoincrement,id_zapatilla INTEGER NOT NULL,cantidad_disponible INTEGER NOT NULL,ultima_actualizacion TEXT NOT NULL,FOREIGN KEY (id_zapatilla) REFERENCES zapatillas(id_zapatilla));";
@@ -29,7 +29,7 @@ export class ServicebdService {
 
 
   //varibles de insert por defecto de nuestras tablas
-  registroZapatillas: string= "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, id_marca, id_categoria)VALUES(1,'soy un nombre','soy una descripcion','', 100, 1, 1)";
+  registroZapatillas: string= "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, id_marca, id_categoria)VALUES(1,'soy un nombre','soy una descripcion','https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 100, 1, 1)";
   registroUsuarios: string="INSERT OR IGNORE INTO usuarios (id_usuario, nombre, apellido, id_rol) VALUES (1, 'Admin', 'Adminn', 1), (2, 'Usuario', 'Usuarioo', 2);";
   registroRoles: string="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
   registroInformacionUsuario: string="INSERT OR IGNORE INTO informacion_usuario (id_informacion, correo, telefono, contrasena, id_usuario) VALUES (1, 'admin@gmail.com', '111111111', 'admin', 1), (2, 'usuario@gmail.com', '222222222', 'usuario', 2);";
