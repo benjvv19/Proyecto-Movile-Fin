@@ -167,14 +167,13 @@ export class ServicebdService {
   }
 
 
-  modificarZapatillas(id:number, descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){
-    this.presentAlert("service","ID: " + id);
-    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ? , id_marca = ?, id_categoria = ? WHERE id_zapatilla = ?',[descripcion, imagen_url, precio, id_marca, id_categoria]).then(res=>{
-      this.presentAlert("Modificar","Zapatilla Modificada");
+  modificarZapatillas(id:number, descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){  
+    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, id_marca = ?, id_categoria = ? WHERE id_zapatilla = ?',[descripcion, imagen_url, precio, id_marca, id_categoria, id]).then(res=>{
+      this.presentAlert("Modificar", "Zapatilla Modificada");
       this.seleccionarZapatillas();
     }).catch(e=>{
       this.presentAlert('Modificar', 'Error: ' + JSON.stringify(e));
-    })
+    });
   }
 
   insertarZapatillas(nombre:string, descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){

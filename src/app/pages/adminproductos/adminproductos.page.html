@@ -33,6 +33,10 @@
             <ion-card-content>
               <div class="button-group">
                 <ion-button shape="round" color="dark" (click)="verDetalles(zapatilla.id_zapatilla)">Detalles</ion-button>
+
+                <ion-item-option shape="round" color="dark" (click)="modificar(zapatilla)">
+                  <ion-icon slot="icon-only" name="pencil"></ion-icon>
+                </ion-item-option>
               </div>
             </ion-card-content>
           </ion-card>
