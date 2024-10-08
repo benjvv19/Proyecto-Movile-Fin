@@ -32,8 +32,9 @@ export class ServicebdService {
   //varibles de insert por defecto de nuestras tablas
   registroZapatillas: string= "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, id_marca, id_categoria)VALUES(1,'soy un nombre','soy una descripcion','https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 100, 1, 1),(2,'soy un nombre','soy una descripcion','https://i.postimg.cc/Wpy0d8Hd/adidas-hoops-nino.webp',200, 2, 2)";
   registroUsuarios: string="INSERT OR IGNORE INTO usuarios (id_usuario, nombre, apellido, id_rol) VALUES (1, 'Admin', 'Adminn', 1), (2, 'Usuario', 'Usuarioo', 2);";
+  registroInformacionUsuario: string="INSERT OR IGNORE INTO informacion_usuario (id_informacion, correo, telefono, contrasena, id_usuario) VALUES (3, 'admin@gmail.com', '966129681', 'admin', 3), (2, 'usuario@gmail.com', '966129681', 'usuario', 2);";
+
   registroRoles: string="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
-  registroInformacionUsuario: string="INSERT OR IGNORE INTO informacion_usuario (id_informacion, correo, telefono, contrasena, id_usuario) VALUES (1, 'admin@gmail.com', '111111111', 'admin', 1), (2, 'usuario@gmail.com', '222222222', 'usuario', 2);";
   registroInventario: string="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
   registroHistorialPedidos: string="INSERT or IGNORE INTO historial_pedidos (id_historial, id_pedido, estado_anterior, estado_nuevo, fecha_cambio) VALUES (1, 1, 'Pendiente', 'Recibido', '2023-10-01')";
   registroMarcaZapatillas: string="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'adidas'),(2,'nike'),(3,'jordan'),(4,'fila'),(5,'kappa')";
@@ -78,6 +79,11 @@ export class ServicebdService {
     return this.listadoZapatillas.asObservable();
   }
 
+  fetchUsuarios(): Observable<Usuarios[]>{
+    return this.listadoUsuarios.asObservable();
+  }
+  
+
   dbState(){
     return this.isDBReady.asObservable();
   }
@@ -120,6 +126,7 @@ export class ServicebdService {
       //ejecuto los insert por defecto en el caso que existan
       await this.database.executeSql(this.registroZapatillas, []);
       await this.database.executeSql(this.registroUsuarios, []);
+      await this.database.executeSql(this.registroInformacionUsuario, []);
 
       this.seleccionarZapatillas();
 
@@ -159,6 +166,7 @@ export class ServicebdService {
     })
   }
 
+
   eliminarZapatillas(id:string){
     return this.database.executeSql('DELETE FROM zapatillas WHERE id_zapatilla = ?',[id]).then(res=>{
       this.presentAlert("Eliminar","Zapatilla Eliminada");
@@ -191,47 +199,50 @@ export class ServicebdService {
 
 
 
- seleccionarUsuarios(){
-  return this.database.executeSql('SELECT * FROM usuarios', []).then(res=>{
-     //variable para almacenar el resultado de la consulta
-     let items: Usuarios[] = [];
-     //valido si trae al menos un registro
-     if(res.rows.length > 0){
-      //recorro mi resultado
-      for(var i=0; i < res.rows.length; i++){
-        //agrego los registros a mi lista
-        items.push({
-          id_usuario: res.rows.item(i).id_usuario,
-          nombre: res.rows.item(i).nombre,
-          apellido: res.rows.item(i).apellido,
-          id_rol: res.rows.item(i).id_rol
-        })
+  seleccionarUsuarios(){
+    return this.database.executeSql('SELECT * FROM usuarios', []).then(res=>{
+      //variable para almacenar el resultado de la consulta
+      let items: Usuarios[] = [];
+      //valido si trae al menos un registro
+      if(res.rows.length > 0){
+        //recorro mi resultado
+        for(var i=0; i < res.rows.length; i++){
+          //agrego los registros a mi lista
+          items.push({
+            id_usuario: res.rows.item(i).id_usuario,
+            nombre: res.rows.item(i).nombre,
+            apellido: res.rows.item(i).apellido,
+            id_rol: res.rows.item(i).id_rol
+          })
+        } 
       }
-      
-     }
-     //actualizar el observable
-     this.listadoUsuarios.next(items as any);
-
-  })
-}
+      this.listadoUsuarios.next(items as any);
+    })
+  }
 
 
-insertarUsuarios(nombre: string, apellido: string, id_rol: number) {
-  return this.database.executeSql('INSERT INTO usuarios(nombre, apellido, id_rol) VALUES (?, ?, ?)', [nombre, apellido, id_rol]).then(res => {
-    this.presentAlert("Insertar", "Usuario Registrado");
-    this.seleccionarUsuarios();
-  }).catch(e => {
-    this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
-  });
-}
-  //  registroUsuarios: string="INSERT OR IGNORE INTO usuarios (id_usuario, nombre, apellido, id_rol) VALUES (1, 'Admin', 'Adminn', 1), (2, 'Usuario', 'Usuarioo', 2);";
+
+
+  insertarUsuarios(nombre: string, apellido: string, id_rol: number) {
+    return this.database.executeSql('INSERT INTO usuarios(nombre, apellido, id_rol) VALUES (?, ?, ?)', [nombre, apellido, id_rol]).then(res => {
+      this.presentAlert("Insertar", "Usuario Registrado");
+      this.seleccionarUsuarios();
+    }).catch(e => {
+      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+    });
+  }
 
   insertarInformacionUsuarios(correo: string, telefono: string, contrasena: string) {
     return this.database.executeSql('INSERT INTO informacion_usuario(correo, telefono, contrasena, id_usuario) VALUES (?, ?, ?, (SELECT MAX(id_usuario) FROM usuarios))', [correo, telefono, contrasena]).then(res => {
       this.presentAlert("Registro", "Usuario registrado con éxito");
     }).catch(e => {
+      console.error('Error en el registro de información del usuario:', e);
       this.presentAlert('Error', 'Error en el registro: ' + JSON.stringify(e));
     });
   }
 
+
+
 }
+
+
