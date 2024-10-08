@@ -3,6 +3,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Zapatillas } from './zapatillas';
+import { Usuarios } from './usuarios';
 
 @Injectable({
   providedIn: 'root'
@@ -118,6 +119,7 @@ export class ServicebdService {
 
       //ejecuto los insert por defecto en el caso que existan
       await this.database.executeSql(this.registroZapatillas, []);
+      await this.database.executeSql(this.registroUsuarios, []);
 
       this.seleccionarZapatillas();
 
@@ -185,7 +187,44 @@ export class ServicebdService {
     })
   }
 
- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////Usuarios////////////////////////////////////////////////////////////////////
 
- 
+
+
+ seleccionarUsuarios(){
+  return this.database.executeSql('SELECT * FROM usuarios', []).then(res=>{
+     //variable para almacenar el resultado de la consulta
+     let items: Usuarios[] = [];
+     //valido si trae al menos un registro
+     if(res.rows.length > 0){
+      //recorro mi resultado
+      for(var i=0; i < res.rows.length; i++){
+        //agrego los registros a mi lista
+        items.push({
+          id_usuario: res.rows.item(i).id_usuario,
+          nombre: res.rows.item(i).nombre,
+          apellido: res.rows.item(i).apellido,
+          id_rol: res.rows.item(i).id_rol
+        })
+      }
+      
+     }
+     //actualizar el observable
+     this.listadoUsuarios.next(items as any);
+
+  })
+}
+
+
+ insertarUsuarios(id_usuario:number, nombre:string, apellido: string, id_rol:string){
+    return this.database.executeSql('INSERT INTO usuarios(id_usuario, nombre, apellido, id_rol) VALUES (?,?,?,2)',[id_usuario, nombre, apellido, id_rol]).then(res=>{
+      this.presentAlert("Insertar","Usuario Registrado");
+      this.seleccionarUsuarios();
+    }).catch(e=>{
+      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+    })
+  }
+  //  registroUsuarios: string="INSERT OR IGNORE INTO usuarios (id_usuario, nombre, apellido, id_rol) VALUES (1, 'Admin', 'Adminn', 1), (2, 'Usuario', 'Usuarioo', 2);";
+
+
 }
