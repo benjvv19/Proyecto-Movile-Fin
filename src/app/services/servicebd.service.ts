@@ -216,15 +216,22 @@ export class ServicebdService {
 }
 
 
- insertarUsuarios(id_usuario:number, nombre:string, apellido: string, id_rol:string){
-    return this.database.executeSql('INSERT INTO usuarios(id_usuario, nombre, apellido, id_rol) VALUES (?,?,?,2)',[id_usuario, nombre, apellido, id_rol]).then(res=>{
-      this.presentAlert("Insertar","Usuario Registrado");
-      this.seleccionarUsuarios();
-    }).catch(e=>{
-      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
-    })
-  }
+insertarUsuarios(nombre: string, apellido: string, id_rol: number) {
+  return this.database.executeSql('INSERT INTO usuarios(nombre, apellido, id_rol) VALUES (?, ?, ?)', [nombre, apellido, id_rol]).then(res => {
+    this.presentAlert("Insertar", "Usuario Registrado");
+    this.seleccionarUsuarios();
+  }).catch(e => {
+    this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+  });
+}
   //  registroUsuarios: string="INSERT OR IGNORE INTO usuarios (id_usuario, nombre, apellido, id_rol) VALUES (1, 'Admin', 'Adminn', 1), (2, 'Usuario', 'Usuarioo', 2);";
 
+  insertarInformacionUsuarios(correo: string, telefono: string, contrasena: string) {
+    return this.database.executeSql('INSERT INTO informacion_usuario(correo, telefono, contrasena, id_usuario) VALUES (?, ?, ?, (SELECT MAX(id_usuario) FROM usuarios))', [correo, telefono, contrasena]).then(res => {
+      this.presentAlert("Registro", "Usuario registrado con éxito");
+    }).catch(e => {
+      this.presentAlert('Error', 'Error en el registro: ' + JSON.stringify(e));
+    });
+  }
 
 }

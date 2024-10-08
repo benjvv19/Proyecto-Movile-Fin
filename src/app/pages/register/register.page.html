@@ -1,19 +1,4 @@
-<ion-header [translucent]="true"  >
-  <ion-toolbar style="--background: black;">
-    <ion-buttons slot="start">
-
-    </ion-buttons>
-    <div class="container-input-logo">
-      <div class="container-logo">
-        <img src="../assets/icon/logo2.jpeg" alt="KickSport Logo" class="logo-app"> 
-      </div>
-    </div>
-  </ion-toolbar>
-</ion-header>
-
-
-
-<ion-content scroll-y="false" class="no-scroll-content" >
+<ion-content scroll-y="false" class="no-scroll-content">
   <div class="container">
     <div class="login-container">
       <ion-card>
@@ -22,33 +7,42 @@
         </ion-card-header>
 
         <ion-card-content>
+          <!-- Campo Nombre -->
           <ion-item lines="none">
-            <ion-input label="Nombre" labelPlacement="floating" placeholder="Ingrese su nombre"
-              [(ngModel)]="nombre"></ion-input>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input placeholder="Ingrese su nombre" [(ngModel)]="nombre"></ion-input>
           </ion-item>
 
+          <!-- Campo Apellido -->
           <ion-item lines="none">
-            <ion-input label="Apellido" labelPlacement="floating" placeholder="Ingrese su apellido"
-              [(ngModel)]="apellido"></ion-input>
+            <ion-label position="floating">Apellido</ion-label>
+            <ion-input placeholder="Ingrese su apellido" [(ngModel)]="apellido"></ion-input>
           </ion-item>
 
+          <!-- Campo Teléfono -->
           <ion-item lines="none">
-            <ion-input label="Número" labelPlacement="floating" placeholder="Ingrese su teléfono"
-              [(ngModel)]="numero"></ion-input>
+            <ion-label position="floating">Número</ion-label>
+            <ion-input placeholder="Ingrese su teléfono" [(ngModel)]="telefono" type="tel"></ion-input>
           </ion-item>
 
+          <!-- Campo Correo Electrónico -->
           <ion-item lines="none">
-            <ion-input label="Correo electrónico" labelPlacement="floating" placeholder="Ingrese correo electrónico"
-              type="email" [(ngModel)]="email"></ion-input>
+            <ion-label position="floating">Correo electrónico</ion-label>
+            <ion-input placeholder="Ingrese correo electrónico" [(ngModel)]="correo" type="email"></ion-input>
           </ion-item>
 
+          <!-- Campo Contraseña -->
           <ion-item lines="none">
-            <ion-input label="Contraseña" labelPlacement="floating" placeholder="Ingrese su contraseña" type="password"
-              [(ngModel)]="contra"></ion-input>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input placeholder="Ingrese su contraseña" [(ngModel)]="contrasena" type="password"></ion-input>
           </ion-item>
 
-          <ion-button expand="block" type="submit" (click)="irLogin()" class="submit-button" class="aceptar">Aceptar</ion-button>
+          <!-- Botón de registro -->
+          <ion-button expand="block" (click)="irLogin()" class="submit-button">Aceptar</ion-button>
+          
           <br>
+
+          <!-- Enlace para ir al login -->
           <div class="links-container">
             <a [routerLink]="['/login']">¿Ya tienes una cuenta?</a>
           </div>

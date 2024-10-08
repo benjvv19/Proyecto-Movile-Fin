@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { ServicebdService } from 'src/app/services/servicebd.service';
 
 @Component({
   selector: 'app-register',
@@ -8,29 +9,35 @@ import { AlertController, ToastController } from '@ionic/angular';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  nombre: string = "usuario";
-  apellido: string = "usuario";
-  numero: number = 922031334;
-  email: string = "usuario@gmail.com";
-  contra: string = "Usuario@1234";
 
+  nombre: string = "";
+  apellido: string = "";
+  id_rol: number = 2; // Rol por defecto (usuario)
+  correo: string = "";
+  telefono: string = "";
+  contrasena: string = "";
 
-  constructor(private router: Router,
+  showError = false;
+
+  constructor(
+    private bd: ServicebdService,
+    private router: Router,
     private toastController: ToastController,
     private alertController: AlertController
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
+
+  // Validar correo electrónico
   validarEmail(email: string): boolean {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return re.test(String(email).toLowerCase());
   }
 
-
-  irLogin() {
+  // Validar formulario y mostrar alertas si es necesario
+  async irLogin() {
     // Verificar que todos los campos estén completos
-    if (!this.nombre || !this.apellido || !this.numero || !this.email || !this.contra) {
+    if (!this.nombre || !this.apellido || !this.telefono || !this.correo || !this.contrasena) {
       this.presentAlert('Campos incompletos', 'Por favor, complete todos los campos.');
       return;
     }
@@ -48,60 +55,80 @@ export class RegisterPage implements OnInit {
     }
 
     // Validar número de teléfono
-    const numeroStr = this.numero.toString();
-    if (isNaN(Number(this.numero)) || numeroStr.length > 12 || numeroStr.length < 8) {
-      this.presentAlert('Número inválido', 'El número de teléfono debe ser válido y tener 8 y 12 dígitos.');
+    const numeroStr = this.telefono.toString();
+    if (isNaN(Number(this.telefono)) || numeroStr.length > 12 || numeroStr.length < 8) {
+      this.presentAlert('Número inválido', 'El número de teléfono debe ser válido y tener entre 8 y 12 dígitos.');
       return;
     }
 
     // Validar correo electrónico
-    if (!this.validarEmail(this.email)) {
+    if (!this.validarEmail(this.correo)) {
       this.presentAlert('Correo inválido', 'Por favor, ingrese un correo electrónico válido.');
       return;
     }
 
     // Validar contraseña
-    if (this.contra.length < 8) {
+    if (this.contrasena.length < 8) {
       this.presentAlert('Contraseña corta', 'La contraseña debe tener al menos 8 caracteres.');
       return;
     }
 
     // Validar que la contraseña contenga al menos un número, una letra mayúscula, una letra minúscula y un carácter especial
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(this.contra)) {
+    if (!passwordRegex.test(this.contrasena)) {
       this.presentAlert('Contraseña débil', 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.');
       return;
     }
 
-    let navigationextras: NavigationExtras = {
-      state: {
-        nom: this.nombre,
-        ape: this.apellido,
-        num: this.numero,
-        corre: this.email,
-        con: this.contra
-
-      }
-
-    };
-
-    this.presentToast('top');
-    this.router.navigate(['/login'], navigationextras);
-
+    // Si pasa todas las validaciones, proceder con el registro
+    await this.onSubmit();
   }
 
+  // Método para registrar al usuario
+  async onSubmit() {
+    // Insertar usuario y datos del usuario en la base de datos
+    try {
+      await this.insertarUsuario();
+      await this.insertarInfoUsuario();
 
-  //PresentAlert
+      // Mostrar un toast de éxito
+      const toast = await this.toastController.create({
+        message: 'Usuario registrado con éxito',
+        color: 'success',
+        duration: 2000
+      });
+      toast.present();
+
+      // Navegar al login
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Error al registrar el usuario:', error);
+      this.presentAlert('Error', 'Hubo un problema al registrar el usuario. Inténtalo nuevamente.');
+    }
+  }
+
+  // Método para insertar el usuario
+  insertarUsuario() {
+    return this.bd.insertarUsuarios(this.nombre, this.apellido, this.id_rol);
+  }
+
+  // Método para insertar la información del usuario
+  insertarInfoUsuario() {
+    return this.bd.insertarInformacionUsuarios(this.correo, this.telefono, this.contrasena);
+  }
+
+  // Método para mostrar alertas
   async presentAlert(titulo: string, msj: string) {
     const alert = await this.alertController.create({
       header: titulo,
       message: msj,
       buttons: ['OK'],
     });
-
     await alert.present();
   }
-  //Alerta Toast
+}
+
+/*
   async presentToast(position: 'top' | 'middle' | 'bottom') {
     const toast = await this.toastController.create({
       message: 'Usuario registrado con exito',
@@ -114,3 +141,4 @@ export class RegisterPage implements OnInit {
     await toast.present();
   }
 }
+  */
