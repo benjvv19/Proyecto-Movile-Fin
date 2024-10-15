@@ -11,7 +11,10 @@ export class AppComponent {
 
   shouldShowToolbar(): boolean {
     const rolId = localStorage.getItem('rolId');
-    return rolId !== null && rolId !== '0';
+    const currentRoute = this.router.url; // Obtener la ruta actual
+
+    // Verificar si el rol es válido y que no esté en las rutas de login, registro o recuperar contraseña
+    return rolId !== null && rolId !== '0' && !['/login', '/register', '/recuperarcontrasena'].includes(currentRoute);
   }
 
   shouldShowAdminMenu(): boolean {

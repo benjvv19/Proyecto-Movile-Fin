@@ -68,16 +68,16 @@
   <ion-footer *ngIf="shouldShowToolbar()">
     <div class="conjunto-botones">
       <div class="button-container">
-        <button class="button" [routerDirection]="'root'" [routerLink]="'/inicio'">
+        <button class="button" [routerDirection]="'root'" [routerLink]="shouldShowAdminMenu() ? '/adminproductos' : '/inicio'">
           <ion-icon class="icon" name="home-outline"></ion-icon>
         </button>
         <button class="button">
           <ion-icon class="icon" name="search-outline"></ion-icon>
         </button>
-        <button class="button" [routerDirection]="'root'" [routerLink]="'/perfil'">
+        <button class="button" [routerDirection]="'root'" [routerLink]="'/perfil'" *ngIf="shouldShowUserMenu() || shouldShowAdminMenu()">
           <ion-icon class="icon" name="person-circle-outline"></ion-icon>
         </button>
-        <button class="button" [routerDirection]="'root'" [routerLink]="'/carrito'">
+        <button class="button" [routerDirection]="'root'" [routerLink]="'/carrito'" *ngIf="shouldShowUserMenu() || shouldShowAdminMenu()">
           <ion-icon class="icon" name="cart-outline"></ion-icon>
         </button>
       </div>
