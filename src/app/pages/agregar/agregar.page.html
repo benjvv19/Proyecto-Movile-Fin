@@ -1,9 +1,10 @@
 <ion-content class="ion-padding">
   <form class="add-product-form" (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">
+    <br>
+    <br>
+    <br>
+    <br>
     <ion-item>
-      <br>
-      <br>
-      <br>
       <ion-label position="floating">Descripción</ion-label>
       <br>
       <ion-textarea placeholder="Ingrese la descripción" [(ngModel)]="descripcion" name="descripcion" required></ion-textarea>
@@ -12,7 +13,7 @@
     <ion-item>
       <ion-label position="floating">Tipo</ion-label>
       <br>
-      <ion-input placeholder="Ej:(1='niño'/2='niña'/ 3='hombre'4='mujer')" [(ngModel)]="id_categoria" name="id_categoria" required></ion-input>
+      <ion-input placeholder="Ej: (1='niño'/2='niña'/3='hombre'/4='mujer')" [(ngModel)]="id_categoria" name="id_categoria" required></ion-input>
     </ion-item>
 
     <ion-item>
@@ -32,28 +33,20 @@
       <br>
       <ion-input type="number" placeholder="Ingrese el precio" [(ngModel)]="precio" name="precio" required></ion-input>
     </ion-item>
-
-    <div class="button-container">
-      <ion-button expand="full" shape="round" color="dark" type="submit">Guardar</ion-button>
-      <ion-button expand="full" shape="round" color="dark" [routerLink]="'/adminproductos'">Volver</ion-button>
-    </div>
-
+    
+    <ion-item *ngIf="imagen_url"> 
+      <ion-label position="floating">Imagen (URL)</ion-label>
+      <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="imagen_url" name="imagen_url" required></ion-input>
+    </ion-item>
 
     <ion-item>
       <input type="file" (change)="onFileSelected($event)" />
     </ion-item>
     
-    <ion-item *ngIf="imagen_url">
-      <ion-label position="floating">Imagen (URL)</ion-label>
-      <br>
-      <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="imagen_url" name="imagen_url" required></ion-input>
-    </ion-item>
-    
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <div class="button-container">
+      <ion-button expand="full" shape="round" color="dark" type="submit">Guardar</ion-button>
+      <ion-button expand="full" shape="round" color="dark" [routerLink]="'/adminproductos'">Volver</ion-button>
+    </div>
 
     <ion-toast *ngIf="showError" message="Todos los campos son obligatorios" color="danger" duration="2000"></ion-toast>
   </form>
