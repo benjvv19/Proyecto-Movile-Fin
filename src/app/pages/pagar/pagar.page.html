@@ -4,43 +4,103 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
   <div class="container">
     <div class="modal">
       <form class="form" #paymentForm="ngForm" (ngSubmit)="onSubmit(paymentForm)">
         <ion-item>
           <ion-label>Tipo de Tarjeta</ion-label>
-          <ion-select name="cardType" ngModel required>
+          <ion-select name="cardType" ngModel #cardType="ngModel" required>
             <ion-select-option value="credit">Crédito</ion-select-option>
             <ion-select-option value="debit">Débito</ion-select-option>
           </ion-select>
         </ion-item>
+        <div *ngIf="cardType.invalid && cardType.touched">
+          <small class="error-message">Debe seleccionar un tipo de tarjeta.</small>
+        </div>
+
         <br>
         <div class="credit-card-info--form">
           <div class="input_container">
             <label for="cardHolder" class="input_label">Nombre Titular</label>
-            <input id="cardHolder" class="input_field" type="text" name="cardHolder" placeholder="Nombre Completo">
+            <input
+              id="cardHolder"
+              class="input_field"
+              type="text"
+              name="cardHolder"
+              placeholder="Nombre Completo"
+              ngModel
+              #cardHolder="ngModel"
+              [(ngModel)]="nombreTitular" 
+              required
+            >
+            <div *ngIf="cardHolder.invalid && cardHolder.touched">
+              <small class="error-message">Debe ingresar el nombre del titular.</small>
+            </div>
           </div>
+
           <div class="input_container">
-            <label for="cardNumber" class="input_label">Numero De Tarjeta</label>
-            <input  id="cardNumber" class="input_field" type="number" name="cardNumber" placeholder="0000 0000 0000 0000">
+            <label for="cardNumber" class="input_label">Número De Tarjeta</label>
+            <input
+              id="cardNumber"
+              class="input_field"
+              type="text"
+              name="cardNumber"
+              placeholder="0000 0000 0000 0000"
+              ngModel
+              #cardNumber="ngModel"
+              required
+              pattern="\d{4} \d{4} \d{4} \d{4}"
+              maxlength="19"
+            >
+            <div *ngIf="cardNumber.invalid && cardNumber.touched">
+              <small class="error-message">Debe ingresar un número de tarjeta válido: 0000 0000 0000 0000.</small>
+            </div>
           </div>
+
           <div class="input_container">
-            <label for="expiryDate" class="input_label">Fecha Expiracion / CVV</label>
+            <label for="expiryDate" class="input_label">Fecha Expiración / CVV</label>
             <div class="split">
-              <input id="expiryDate" class="input_field" type="text" name="expiryDate" placeholder="01/23">
-              <input id="cvv" class="input_field" type="number" name="cvv" placeholder="CVV">
+              <input
+                id="expiryDate"
+                class="input_field"
+                type="text"
+                name="expiryDate"
+                placeholder="MM/AA"
+                ngModel
+                #expiryDate="ngModel"
+                required
+                pattern="(0[1-9]|1[0-2])\/\d{2}"
+                maxlength="5"
+              >
+              <input
+                id="cvv"
+                class="input_field"
+                type="number"
+                name="cvv"
+                placeholder="CVV"
+                ngModel
+                #cvv="ngModel"
+                required
+                maxlength="3"
+              >
+            </div>
+            <div *ngIf="expiryDate.invalid && expiryDate.touched">
+              <small class="error-message">Debe ingresar una fecha válida en el formato MM/AA.</small>
+            </div>
+            <div *ngIf="cvv.invalid && cvv.touched">
+              <small class="error-message">Debe ingresar un CVV válido.</small>
             </div>
           </div>
         </div>
-        <button class="purchase--btn">Pagar</button>
+
+        <button class="purchase--btn" [disabled]="paymentForm.invalid">Pagar</button>
 
         <p class="cancelar-pago">
           <span class="cancelar-pago-link" [routerLink]="['/carrito']">Cancelar</span>
         </p>
 
       </form>
-
     </div>
   </div>
 </ion-content>
