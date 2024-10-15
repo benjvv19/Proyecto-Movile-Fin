@@ -12,6 +12,7 @@ import { ServicebdService } from 'src/app/services/servicebd.service';
 export class AdmineditarPage {
 
   zapatilla: any; 
+  nombre_marca: string = ""; 
 
   showError = false;
 
@@ -19,8 +20,9 @@ export class AdmineditarPage {
     this.activedrouter.queryParams.subscribe(res => {
       if (this.router.getCurrentNavigation()?.extras.state) {
         this.zapatilla = this.router.getCurrentNavigation()?.extras?.state?.['zapatilla']; 
+        this.nombre_marca = this.zapatilla.nombre_marca; 
       }
-    })
+    });
   }
 
   ngOnInit() {
@@ -42,6 +44,6 @@ export class AdmineditarPage {
   }
 
   modificar(){
-    this.bd.modificarZapatillas(this.zapatilla.id_zapatilla,this.zapatilla.descripcion,this.zapatilla.imagen_url,this.zapatilla.precio,this.zapatilla.id_marca,this.zapatilla.id_categoria);  
+    this.bd.modificarZapatillas(this.zapatilla.id_zapatilla, this.zapatilla.descripcion, this.zapatilla.imagen_url, this.zapatilla.precio, this.nombre_marca, this.zapatilla.id_categoria);  
   }
 }

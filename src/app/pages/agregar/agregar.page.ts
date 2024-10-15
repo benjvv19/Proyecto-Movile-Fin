@@ -15,7 +15,7 @@ export class AgregarPage {
   foto_zapatilla: string = "";
   imagen_url: string = "";
   precio: any = "";
-  id_marca: any = "";
+  nombre_marca: string = "";  // Cambiado de id_marca a nombre_marca
   id_categoria: any = "";
 
   showError = false;
@@ -53,8 +53,6 @@ export class AgregarPage {
   }
 
   insertar(){
-    this.bd.insertarZapatillas(this.nombre, this.descripcion,this.imagen_url,this.precio,this.id_marca,this.id_categoria);
+    this.bd.insertarZapatillas(this.nombre, this.descripcion, this.imagen_url, this.precio, this.nombre_marca, this.id_categoria);  // Cambiado de id_marca a nombre_marca
   }
 }
-
-

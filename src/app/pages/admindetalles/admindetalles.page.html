@@ -7,21 +7,19 @@
   </ion-toolbar>
 </ion-header>
 
-
-
 <ion-content scroll-y="false" class="no-scroll-content">
-  <div class="container" >
+  <div class="container">
     <ion-card *ngIf="zapatilla">
-      <img [alt]="zapatilla.nombre" [src]="zapatilla.imagen" />
+      <img [alt]="zapatilla.nombre" [src]="getImageUrl(zapatilla.imagen_url)" />
       <ion-card-header>
         <ion-card-title>{{ zapatilla.nombre }}</ion-card-title>
         <ion-card-subtitle>{{ zapatilla.precio | currency: 'USD': true }}</ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
-        <p><strong>ID:</strong> {{ zapatilla.id }}</p>
-        <p><strong>Marca:</strong> {{ zapatilla.marca }}</p>
-        <p><strong>Tipo:</strong> {{ zapatilla.tipo }}</p>
+        <p><strong>ID:</strong> {{ zapatilla.id_zapatilla }}</p>
+        <p><strong>Marca:</strong> {{ zapatilla.nombre_marca }}</p>
+        <p><strong>Tipo:</strong> {{ zapatilla.id_categoria }}</p>
 
         <div class="container-buttons">
           <ion-button shape="round" color="dark" id="present-alert">Descripción</ion-button>
@@ -30,11 +28,7 @@
             message="{{ zapatilla.descripcion }}"
             [buttons]="alertButtons"
           ></ion-alert>
-
-          <ion-button shape="round" color="dark" [routerLink]="['/admineditar']">Editar</ion-button>
-
           <ion-button shape="round" color="dark" [routerLink]="['/adminproductos']">Volver</ion-button>
-
         </div>
       </ion-card-content>
     </ion-card>
