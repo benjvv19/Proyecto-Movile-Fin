@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private alertController: AlertController,
-    private serviceBD: ServicebdService // Inyecta tu servicio
+    private serviceBD: ServicebdService 
   ) {
     this.loginForm = this.fb.group({
       correo: ['', [Validators.required, Validators.email]],
@@ -47,11 +47,11 @@ export class LoginPage implements OnInit {
     if (this.loginForm.valid) {
       const { correo, contraseña } = this.loginForm.value;
   
-      // Validar el usuario
       const usuario: Usuarios | null = await this.serviceBD.validarUsuario(correo, contraseña);
   
       if (usuario) {
         localStorage.setItem('userId', usuario.id_usuario.toString()); 
+        localStorage.setItem('rolId', usuario.id_rol.toString()); 
   
         if (usuario.id_rol === 1) {
           this.router.navigate(['/adminproductos']);

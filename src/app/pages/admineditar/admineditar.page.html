@@ -17,7 +17,7 @@
 
         <ion-card-content>
           <form (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">      
-            
+
             <h1>Descripción</h1>
             <div class="form-group">
               <ion-item lines="none">
@@ -36,6 +36,13 @@
             <div class="form-group">
               <ion-item lines="none">
                 <ion-input placeholder="Tipo de zapatilla" [(ngModel)]="zapatilla.id_categoria" name="id_categoria" required></ion-input>
+              </ion-item>
+            </div>
+
+            <h1>Marca</h1>
+            <div class="form-group">
+              <ion-item lines="none">
+                <ion-input placeholder="Nombre de la marca" [(ngModel)]="zapatilla.nombre_marca" name="nombre_marca" required></ion-input>
               </ion-item>
             </div>
 

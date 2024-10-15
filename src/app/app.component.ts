@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -11,21 +10,17 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   shouldShowToolbar(): boolean {
-    
-    const excludedRoutes = ['/login', '/register', '/recover-password','/notfound','/notfound','/cambiarcontra']; 
-    return !excludedRoutes.includes(this.router.url);
+    const rolId = localStorage.getItem('rolId');
+    return rolId !== null && rolId !== '0';
   }
 
-  shouldShowToolbar2(): boolean {
-    
-    const excludedRoutes = ['/inicio','/login', '/recover-password', '/register','/notfound' ,'/adminproductos','/cambiarcontra']; 
-    return !excludedRoutes.includes(this.router.url);
+  shouldShowAdminMenu(): boolean {
+    const rolId = localStorage.getItem('rolId');
+    return rolId === '1';
   }
 
-  shouldShowToolbar3(): boolean {
-    const includedRoutes = ['/admindetalles', '/admineditar', '/adminproductos', '/agregar', '/eliminar','/cambiarcontra']; 
-    return includedRoutes.includes(this.router.url);
+  shouldShowUserMenu(): boolean {
+    const rolId = localStorage.getItem('rolId');
+    return rolId === '2';
   }
-
-  
 }
