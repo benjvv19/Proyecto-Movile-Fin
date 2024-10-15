@@ -9,15 +9,12 @@ import { ServicebdService } from 'src/app/services/servicebd.service';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-
   nombre: string = "";
   apellido: string = "";
-  id_rol: number = 2; // Rol por defecto (usuario)
+  id_rol: number = 2;
   correo: string = "";
   telefono: string = "";
   contrasena: string = "";
-
-  showError = false;
 
   constructor(
     private bd: ServicebdService,
@@ -80,18 +77,29 @@ export class RegisterPage implements OnInit {
       return;
     }
 
-    // Si pasa todas las validaciones, proceder con el registro
+    // Verificar si el usuario ya existe
+    const existeUsuario = await this.verificarUsuarioExistente();
+    if (existeUsuario) {
+      this.presentAlert('Usuario existente', 'El usuario ya está registrado con ese correo o teléfono.');
+      return;
+    }
+
+    // Si pasa todas las validaciones y no existe, proceder con el registro
     await this.onSubmit();
   }
 
-  // Método para registrar al usuario
+ 
+  async verificarUsuarioExistente(): Promise<boolean> {
+    const usuarioExistente = await this.bd.verificarUsuario(this.correo, this.telefono);
+    return usuarioExistente; 
+  }
+
+ 
   async onSubmit() {
-    // Insertar usuario y datos del usuario en la base de datos
     try {
       await this.insertarUsuario();
-      await this.insertarInfoUsuario();
 
-      // Mostrar un toast de éxito
+    
       const toast = await this.toastController.create({
         message: 'Usuario registrado con éxito',
         color: 'success',
@@ -99,7 +107,7 @@ export class RegisterPage implements OnInit {
       });
       toast.present();
 
-      // Navegar al login
+  
       this.router.navigate(['/login']);
     } catch (error) {
       console.error('Error al registrar el usuario:', error);
@@ -107,17 +115,12 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  // Método para insertar el usuario
+ 
   insertarUsuario() {
-    return this.bd.insertarUsuarios(this.nombre, this.apellido, this.id_rol);
+    return this.bd.insertarUsuarios(this.nombre, this.apellido,this.correo, this.telefono,this.id_rol, this.contrasena);
   }
 
-  // Método para insertar la información del usuario
-  insertarInfoUsuario() {
-    return this.bd.insertarInformacionUsuarios(this.correo, this.telefono, this.contrasena);
-  }
-
-  // Método para mostrar alertas
+  
   async presentAlert(titulo: string, msj: string) {
     const alert = await this.alertController.create({
       header: titulo,
@@ -127,18 +130,3 @@ export class RegisterPage implements OnInit {
     await alert.present();
   }
 }
-
-/*
-  async presentToast(position: 'top' | 'middle' | 'bottom') {
-    const toast = await this.toastController.create({
-      message: 'Usuario registrado con exito',
-      duration: 2500,
-      position: position,
-      color: 'success'
-
-    });
-
-    await toast.present();
-  }
-}
-  */

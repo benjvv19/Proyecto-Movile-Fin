@@ -1,118 +1,116 @@
 .container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #121212;
-    background: radial-gradient(
-      circle,
-      #121212 30%,
-      #1a1a1a 30%,
-      #1a1a1a 50%,
-      #121212 50%
-    );
-    background-size: 60px 60px;
-    animation: move 4s linear infinite;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #121212;
+  background: radial-gradient(
+    circle,
+    #121212 30%,
+    #1a1a1a 30%,
+    #1a1a1a 50%,
+    #121212 50%
+  );
+  background-size: 60px 60px;
+  animation: move 4s linear infinite;
+}
+
+@keyframes move {
+  0% {
+    background-position: 0 0;
   }
-  
-  @keyframes move {
-    0% {
-      background-position: 0 0;
-    }
-    100% {
-      background-position: 60px 60px;
-    }
+  100% {
+    background-position: 60px 60px;
   }
-  
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 85%;
-    border-radius: 20px;
-  }
-  
-  ion-card {
-    width: 100%;
-    max-width: 400px;
-    padding: 16px;
-    background-color: #ffffff;
-    color: #000000;
-    border-radius: 20px;
-  }
-  
-  ion-button {
-    margin-bottom: 10px;
-    --background: #000000;
-    border-radius: 25px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 7px 20px;
-    font-weight: bold;
-  }
-  
-  .aceptar {
-    background-color: #000000;
-    color: white;
-    --box-shadow: none;
-  }
-  
-  ion-card-title {
-    color: #000000;
-    font-size: 1.8rem;
-    font-weight: bold;
-  }
-  
-  ion-item {
-    --background: transparent !important;
-    --border-color: #114B5F;
-    border-radius: 25px;
-    margin-bottom: 1rem;
-    border: 1px solid #c0c0c0;
-  }
-  
-  ion-input {
-    --background: white !important;
-    color: #4b4b4b;
-    padding-left: 8px;
-  }
-  
-  .links-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  .links-container a {
-    margin: 10px 0;
-    color: #3880ff;
-    text-decoration: none;
-  }
-  
-  .links-container a:hover {
-    text-decoration: underline;
-  }
-  
-  
-  .container-input-logo {
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Asegúrate de que esta altura sea adecuada para tu diseño */
+  width: 85%;
+  border-radius: 20px;
+}
+
+ion-card {
+  width: 100%;
+  max-width: 400px; /* Limita el ancho del card para mantener la legibilidad */
+  padding: 24px; /* Aumentar el padding */
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para mayor profundidad */
+}
+
+ion-button {
+  margin-bottom: 10px;
+  --background: #000000;
+  border-radius: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 7px 20px;
+  font-weight: bold;
+}
+
+.aceptar {
+  background-color: #000000;
+  color: white;
+  --box-shadow: none;
+}
+
+ion-card-title {
+  color: #000000;
+  font-size: 1.6rem; /* Ajustar tamaño si es necesario */
+  font-weight: bold;
+  text-align: center; /* Centra el título */
+  margin-bottom: 16px; /* Espacio inferior para separar del contenido */
+}
+
+ion-item {
+  --background: transparent !important;
+  --border-color: #114B5F;
+  border-radius: 25px;
+  margin-bottom: 1rem;
+  border: 1px solid #c0c0c0; /* Asegúrate de que el borde sea sutil */
+  min-height: 60px; /* Aumentar altura mínima */
+}
+
+ion-input {
+  --background: white !important;
+  color: #4b4b4b;
+  padding-left: 8px;
+}
+
+.links-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.links-container a {
+  margin: 10px 0;
+  color: #3880ff;
+  text-decoration: none;
+}
+
+.links-container a:hover {
+  text-decoration: underline; /* Resalta al pasar el mouse */
+}
+
+.container-input-logo {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  }
-  
-  .logo-app {
+}
+
+.logo-app {
   border-radius: 50%;
   width: 60px; 
   height: 60px; 
   display: flex;
   justify-content: center;
   align-items: center;
-  }
-  
-  
-    
-    
-  
+}

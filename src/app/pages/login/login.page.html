@@ -11,7 +11,7 @@
 
 <ion-content scroll-y="false" class="no-scroll-content">
   <div class="container">
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <ion-list class="custom-list">
         <p class="title">¡Bienvenido!</p>
 
@@ -19,7 +19,7 @@
           <ion-input
             formControlName="correo"
             type="email"
-            placeholder="Correo electronico"
+            placeholder="Correo electrónico"
             class="custom-input">
           </ion-input>
         </ion-item>
@@ -41,7 +41,7 @@
 
         <ion-button expand="block" type="submit" class="aceptar">Aceptar</ion-button>
         <p class="sign-up-label">
-          No tienes cuenta? <span [routerLink]="['/register']" class="sign-up-link">Registrate</span>
+          No tienes cuenta? <span [routerLink]="['/register']" class="sign-up-link">Regístrate</span>
         </p>
       </ion-list>
     </form>

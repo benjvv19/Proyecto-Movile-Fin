@@ -6,4 +6,6 @@ export class Zapatillas {
     precio!: number;
     id_marca!: number;
     id_categoria!:number;
+    nombre_marca!: string;
+    nombre_categoria!:string;
 }

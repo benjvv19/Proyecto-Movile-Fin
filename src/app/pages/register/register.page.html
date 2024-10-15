@@ -7,43 +7,54 @@
         </ion-card-header>
 
         <ion-card-content>
-          <!-- Campo Nombre -->
           <ion-item lines="none">
-            <ion-label position="floating">Nombre</ion-label>
-            <ion-input placeholder="Ingrese su nombre" [(ngModel)]="nombre"></ion-input>
+            <ion-input 
+              placeholder="Ingrese su nombre" 
+              [(ngModel)]="nombre" 
+              required>
+            </ion-input>
           </ion-item>
 
-          <!-- Campo Apellido -->
           <ion-item lines="none">
-            <ion-label position="floating">Apellido</ion-label>
-            <ion-input placeholder="Ingrese su apellido" [(ngModel)]="apellido"></ion-input>
+            <ion-input 
+              placeholder="Ingrese su apellido" 
+              [(ngModel)]="apellido" 
+              required>
+            </ion-input>
           </ion-item>
 
-          <!-- Campo Teléfono -->
           <ion-item lines="none">
-            <ion-label position="floating">Número</ion-label>
-            <ion-input placeholder="Ingrese su teléfono" [(ngModel)]="telefono" type="tel"></ion-input>
+            <ion-input 
+              placeholder="Ingrese correo electrónico" 
+              [(ngModel)]="correo" 
+              type="email" 
+              required>
+            </ion-input>
           </ion-item>
 
-          <!-- Campo Correo Electrónico -->
           <ion-item lines="none">
-            <ion-label position="floating">Correo electrónico</ion-label>
-            <ion-input placeholder="Ingrese correo electrónico" [(ngModel)]="correo" type="email"></ion-input>
+            <ion-input 
+              placeholder="Ingrese su teléfono" 
+              [(ngModel)]="telefono" 
+              type="tel" 
+              required>
+            </ion-input>
           </ion-item>
 
-          <!-- Campo Contraseña -->
           <ion-item lines="none">
-            <ion-label position="floating">Contraseña</ion-label>
-            <ion-input placeholder="Ingrese su contraseña" [(ngModel)]="contrasena" type="password"></ion-input>
+            <ion-input 
+              placeholder="Ingrese su contraseña" 
+              [(ngModel)]="contrasena" 
+              type="password" 
+              required>
+            </ion-input>
           </ion-item>
 
-          <!-- Botón de registro -->
           <ion-button expand="block" (click)="irLogin()" class="submit-button">Aceptar</ion-button>
-          
+
           <br>
 
-          <!-- Enlace para ir al login -->
-          <div class="links-container">
+          <div class="links-container ion-text-center">
             <a [routerLink]="['/login']">¿Ya tienes una cuenta?</a>
           </div>
         </ion-card-content>

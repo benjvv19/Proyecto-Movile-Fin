@@ -9,27 +9,57 @@
 
 <ion-content>
   <ion-card *ngIf="zapatilla">
-    <img [alt]="zapatilla?.nombre" [src]="zapatilla?.imagen" />
+    <!-- Imagen de la zapatilla -->
+    <img [alt]="zapatilla?.nombre" [src]="getImageUrl(zapatilla?.imagen_url)" (error)="setDefaultImage($event)" />
+
     <ion-card-header>
+      <!-- Nombre de la zapatilla -->
       <ion-card-title>{{ zapatilla?.nombre }}</ion-card-title>
+      
+      <!-- Precio de la zapatilla -->
       <ion-card-subtitle>{{ zapatilla?.precio | currency: 'USD': true }}</ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      <p><strong>Marca:</strong> {{ zapatilla?.marca }}</p>
-      <p><strong>Tipo:</strong> {{ zapatilla?.tipo }}</p>
-      <br>
-      <br>
+      <!-- Marca de la zapatilla -->
+      <p><strong>Marca:</strong> {{ zapatilla?.nombre_marca }}</p>
+      
+      <!-- Tipo o categoría de la zapatilla -->
+      <p><strong>Tipo:</strong> {{ zapatilla?.nombre_categoria }}</p>
+      
+      <!-- Espaciado entre secciones -->
+      <div class="spacer"></div>
+
+      <!-- Botones de acción -->
       <div class="container-buttons">
-        <ion-button shape="round" color="dark" id="present-alert">Descripción</ion-button>
+        <!-- Botón para mostrar descripción -->
+        <ion-button shape="round" color="dark" id="present-alert" aria-label="Mostrar descripción">Descripción</ion-button>
+        
+        <!-- Alerta con la descripción de la zapatilla -->
         <ion-alert
           trigger="present-alert"
           message="{{ zapatilla?.descripcion }}"
           [buttons]="alertButtons"
         ></ion-alert>
-        <ion-button shape="round" color="dark" (click)="anadirCarrito(zapatilla)">Añadir al carrito</ion-button>
-        <ion-button shape="round" color="dark" [routerLink]="['/inicio']">Volver</ion-button>
+
+        <!-- Botón para añadir la zapatilla al carrito -->
+        <ion-button shape="round" color="dark" (click)="anadirCarrito(zapatilla)" aria-label="Añadir al carrito">Añadir al carrito</ion-button>
+
+        <!-- Botón para volver a la página de inicio -->
+        <ion-button shape="round" color="dark" [routerLink]="['/inicio']" aria-label="Volver a inicio">Volver</ion-button>
       </div>
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+<style>
+  .spacer {
+    margin: 20px 0; /* Ajusta según lo necesites */
+  }
+
+  .container-buttons {
+    display: flex;
+    flex-direction: column; /* O 'row' si prefieres en línea */
+    gap: 10px; /* Espacio entre botones */
+  }
+</style>

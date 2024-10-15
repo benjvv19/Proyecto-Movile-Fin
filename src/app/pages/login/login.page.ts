@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+import { ServicebdService } from 'src/app/services/servicebd.service';
+import { Usuarios } from 'src/app/services/usuarios';
 
 @Component({
   selector: 'app-login',
@@ -10,58 +12,21 @@ import { AlertController, ToastController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
-  hide = true;  
-
-  arregloPersona: any[] = [
-    {
-      correo: 'usuario@gmail.com',
-      contraseña: 'usuario',
-      numero: 922031334
-    }
-  ];
-
-  arregloAdministradores: any[] = [
-    {
-      correo: 'admin@gmail.com',
-      contraseña: 'admin',
-      numero: 922031334
-    }
-  ];
+  hide = true;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private alertController: AlertController,
-    private toastController: ToastController
+    private serviceBD: ServicebdService // Inyecta tu servicio
   ) {
     this.loginForm = this.fb.group({
-      correo: ['', [Validators.required, Validators.email]], 
+      correo: ['', [Validators.required, Validators.email]],
       contraseña: ['', Validators.required],
     });
   }
 
   ngOnInit() {}
-
-  login() {
-    if (this.loginForm.valid) {
-      const { correo, contraseña } = this.loginForm.value;
-
-      const usuario = this.arregloPersona.find(u => u.correo === correo && u.contraseña === contraseña);
-      const administrador = this.arregloAdministradores.find(u => u.correo === correo && u.contraseña === contraseña);
-
-      if (usuario) {
-        this.presentAlert('Login exitoso', 'Bienvenido, usuario');
-        this.router.navigate(['/inicio']);
-      } else if (administrador) {
-        this.presentAlert('Login exitoso', 'Bienvenido, administrador');
-        this.router.navigate(['/adminproductos']);
-      } else {
-        this.presentAlert('Error', 'Credenciales incorrectas');
-      }
-    } else {
-      this.presentAlert('Error', 'Por favor, complete todos los campos correctamente.');
-    }
-  }
 
   async presentAlert(titulo: string, msj: string) {
     const alert = await this.alertController.create({
@@ -73,9 +38,33 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
-  // Method to toggle password visibility
   clickEvent(event: MouseEvent) {
     this.hide = !this.hide;
     event.stopPropagation();
+  }
+
+  async onLogin() {
+    if (this.loginForm.valid) {
+      const { correo, contraseña } = this.loginForm.value;
+  
+      // Validar el usuario
+      const usuario: Usuarios | null = await this.serviceBD.validarUsuario(correo, contraseña);
+  
+      if (usuario) {
+        localStorage.setItem('userId', usuario.id_usuario.toString()); 
+  
+        if (usuario.id_rol === 1) {
+          this.router.navigate(['/adminproductos']);
+        } else if (usuario.id_rol === 2) {
+          this.router.navigate(['/inicio']);
+        }
+  
+        this.loginForm.reset(); 
+      } else {
+        this.presentAlert('Login Fallido', 'Correo o contraseña incorrectos.');
+      }
+    } else {
+      this.presentAlert('Formulario Incompleto', 'Por favor, completa todos los campos correctamente.');
+    }
   }
 }

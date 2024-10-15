@@ -1,25 +1,25 @@
-<ion-content  >
+<ion-content>
   <div class="container">
-    <div  class="profile-container" >
+    <div class="profile-container">
       <div class="profile-picture">
         <img src="../assets/icon/perfil.jpg" alt="Perfil" />
       </div>
       <div class="profile-info">
         <div class="info-item">
           <strong>Nombre:</strong>
-          <p>{{ usuario.nombre }} {{ usuario.apellido }}</p>
+          <p>{{ usuario?.nombre }} {{ usuario?.apellido }}</p>
         </div>
         <div class="info-item">
           <strong>Correo:</strong>
-          <p>{{ usuario.email }}</p>
+          <p>{{ usuario?.correo }}</p> 
         </div>
         <div class="info-item">
           <strong>Teléfono:</strong>
-          <p>{{ usuario.telefono }}</p>
+          <p>{{ usuario?.telefono }}</p> 
         </div>
       </div>
       <div class="button-container">
-        <button type="button" class="button" [routerLink]="'/inicio'" >
+        <button type="button" class="button" (click)="volver()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
