@@ -17,7 +17,7 @@ export class ServicebdService {
   //variables de creacion de tablas
   
   //
-  tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement,nombre TEXT NOT NULL,descripcion TEXT NOT NULL,imagen_url TEXT NOT NULL,precio INTEGER NOT NULL,id_marca INTEGER NOT NULL,id_categoria INTEGER NOT NULL,FOREIGN KEY (id_marca) REFERENCES marca_zapatillas(id_marca),FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
+  tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, imagen_url TEXT NOT NULL, precio INTEGER NOT NULL, nombre_marca TEXT NOT NULL, id_categoria INTEGER NOT NULL, FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
   tablaRoles: string = "CREATE TABLE IF NOT EXISTS roles (id_rol INTEGER PRIMARY KEY autoincrement,nombre_rol TEXT NOT NULL);";
   tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, apellido TEXT NOT NULL, id_rol INTEGER NOT NULL, correo TEXT NOT NULL, telefono TEXT NOT NULL, contrasena TEXT NOT NULL, FOREIGN KEY (id_rol) REFERENCES roles(id_rol));`; registroUsuarios: string = `INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Adminn', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario');";
 
@@ -188,22 +188,46 @@ export class ServicebdService {
   }
 
 
-  modificarZapatillas(id:number, descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){  
-    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, id_marca = ?, id_categoria = ? WHERE id_zapatilla = ?',[descripcion, imagen_url, precio, id_marca, id_categoria, id]).then(res=>{
-      this.presentAlert("Modificar", "Zapatilla Modificada");
-      this.seleccionarZapatillas();
-    }).catch(e=>{
-      this.presentAlert('Modificar', 'Error: ' + JSON.stringify(e));
-    });
-  }
+  modificarZapatillas(id: number, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, id_categoria: number) {  
+    return this.database.executeSql('SELECT id_marca FROM marca_zapatillas WHERE nombre_marca = ?', [nombre_marca]).then(res => {
+        if (res.rows.length > 0) {
+            const id_marca = res.rows.item(0).id_marca;
 
-  insertarZapatillas(nombre:string, descripcion:string, imagen_url: string, precio: number, id_marca: number, id_categoria: number){
-    return this.database.executeSql('INSERT INTO zapatillas(nombre,descripcion, imagen_url, precio, id_marca, id_categoria) VALUES (?,?,?,?,?,?)',[nombre,descripcion, imagen_url, precio, id_marca, id_categoria]).then(res=>{
-      this.presentAlert("Insertar","Zapatilla Registrada");
-      this.seleccionarZapatillas();
-    }).catch(e=>{
-      this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
-    })
+            return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, id_marca = ?, id_categoria = ? WHERE id_zapatilla = ?', 
+            [descripcion, imagen_url, precio, id_marca, id_categoria, id]).then(() => {
+                this.presentAlert("Modificar", "Zapatilla Modificada");
+                this.seleccionarZapatillas();
+            });
+        } else {
+            return this.database.executeSql('INSERT INTO marca_zapatillas (nombre_marca) VALUES (?)', [nombre_marca]).then(() => {
+                return this.database.executeSql('SELECT id_marca FROM marca_zapatillas WHERE nombre_marca = ?', [nombre_marca]).then(res => {
+                    const id_marca_nueva = res.rows.item(0).id_marca;
+                    
+                    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, id_marca = ?, id_categoria = ? WHERE id_zapatilla = ?', 
+                    [descripcion, imagen_url, precio, id_marca_nueva, id_categoria, id]).then(() => {
+                        this.presentAlert("Modificar", "Zapatilla Modificada");
+                        this.seleccionarZapatillas();
+                    });
+                });
+            });
+        }
+    }).catch(e => {
+        this.presentAlert('Modificar', 'Error: ' + JSON.stringify(e));
+    });
+}
+
+  insertarZapatillas(nombre: string, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, id_categoria: number) {
+    this.database.executeSql('INSERT OR IGNORE INTO marca_zapatillas (nombre_marca) VALUES (?)', [nombre_marca])
+      .then(() => {
+        return this.database.executeSql('INSERT INTO zapatillas (nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria) VALUES (?, ?, ?, ?, ?, ?)', [nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria]);
+      })
+      .then(res => {
+        this.presentAlert("Insertar", "Zapatilla Registrada");
+        this.seleccionarZapatillas();
+      })
+      .catch(e => {
+        this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
+      });
   }
 
 
