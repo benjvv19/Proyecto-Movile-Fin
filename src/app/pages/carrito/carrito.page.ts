@@ -11,8 +11,7 @@ export class CarritoPage {
   productosCarrito: any[] = [];
   precioTotal: number = 0;
 
-  constructor(private storage: NativeStorage,
-              private alertController: AlertController) { }
+  constructor(private storage: NativeStorage,private alertController: AlertController) { }
 
   ngOnInit() {
     this.storage.getItem('productos_carrito')
@@ -74,12 +73,6 @@ export class CarritoPage {
     }
   }
 
-  updateCarrito() {
-    this.storage.setItem('productos_carrito', this.productosCarrito)
-      .then(() => console.log('Carrito actualizado correctamente'))
-      .catch(error => console.error('Error al actualizar el carrito', error));
-  }
-
   calcularTotal() {
     this.precioTotal = this.productosCarrito.reduce((total, producto) => {
       return total + (producto.precio * producto.cantidad);
@@ -96,7 +89,4 @@ export class CarritoPage {
     await alert.present();
   }
   
-  pago() {
-    // Implementa la lógica para procesar el pago
-  }
 }

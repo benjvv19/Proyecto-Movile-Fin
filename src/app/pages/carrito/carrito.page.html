@@ -32,7 +32,7 @@
         <button class="vaciar-carrito-btn" (click)="vaciarCarrito()">
           Vaciar carrito
         </button>
-        <button class="finalizar-compra-btn" [routerLink]="'/pagar'">
+        <button class="finalizar-compra-btn" [routerLink]="'/pagar'" [disabled]="productosCarrito.length === 0">
           Finalizar compra
         </button>
       </div>

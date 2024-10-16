@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AlertController } from '@ionic/angular';
 
-
 @Component({
   selector: 'app-detalles',
   templateUrl: './detalles.page.html',
@@ -23,13 +22,13 @@ export class DetallesPage implements OnInit, OnDestroy {
     id_categoria: '',
     nombre_marca: '',
     nombre_categoria: '',
-    stock:''
+    stock: ''
   };
 
   private dbStateSubscription: Subscription = new Subscription();
 
-  constructor(private router: Router,private bd: ServicebdService, private route: ActivatedRoute,private alertController: AlertController,
-    private storage: NativeStorage) {}
+  constructor(private router: Router, private bd: ServicebdService, private route: ActivatedRoute,
+              private alertController: AlertController, private storage: NativeStorage) {}
 
   async ngOnInit() {
     this.dbStateSubscription = this.bd.dbState().subscribe(async data => {
@@ -39,7 +38,7 @@ export class DetallesPage implements OnInit, OnDestroy {
 
         if (id !== null) {
           // Llamar al método BuscarZapatillas y actualizar la zapatilla
-          await this.bd.BuscarZapatillas(id); // Usar await aquí
+          await this.bd.BuscarZapatillas(id);
           this.bd.fetchZapatilla().subscribe(res => {
             if (res.length > 0) {
               this.zapatilla = res[0]; // Suponiendo que solo habrá una zapatilla con ese ID
@@ -50,11 +49,9 @@ export class DetallesPage implements OnInit, OnDestroy {
     });
   }
 
-
   ngOnDestroy() {
     this.dbStateSubscription.unsubscribe(); // Cancelar la suscripción
   }
-
 
   getImageUrl(url: string): string {
     return url ? url : 'assets/icon/default-image.jpg'; // Si no hay URL, devuelve la imagen por defecto
@@ -65,46 +62,50 @@ export class DetallesPage implements OnInit, OnDestroy {
     imgElement.src = 'assets/icon/default-image.jpg'; // Cambia la imagen a la por defecto
   }
 
-
-
   cargarProducto() {
     // Definir los datos del producto para el carrito
     const productoParaCarrito = {
-     id_zapatilla: this.zapatilla.id_zapatilla,
-     nombre: this.zapatilla.nombre,
-     descipcion: this.zapatilla.descipcion,
-     imagen_url: this.zapatilla.imagen_url,
-     precio: this.zapatilla.precio,
-     id_categoria: this.zapatilla.id_categoria,
-     nombre_marca: this.zapatilla.nombre_marca,
-     nombre_categoria: this.zapatilla.nombre_categoria,
-     stock: this.zapatilla.stock,
-     cantidad: 1 // Inicia con 1 unidad del producto
-   };
-  
-   this.storage.getItem('productos_carrito').then((productos: any[]) => {
-    if (productos) {
-      const productoExistente = productos.find(p => p.id === productoParaCarrito.id_zapatilla);
+      id_zapatilla: this.zapatilla.id_zapatilla,
+      nombre: this.zapatilla.nombre,
+      descripcion: this.zapatilla.descripcion,
+      imagen_url: this.zapatilla.imagen_url,
+      precio: this.zapatilla.precio,
+      id_categoria: this.zapatilla.id_categoria,
+      nombre_marca: this.zapatilla.nombre_marca,
+      nombre_categoria: this.zapatilla.nombre_categoria,
+      stock: this.zapatilla.stock,
+      cantidad: 1 // Inicia con 1 unidad del producto
+    };
 
-      if (productoExistente) {
-        if (productoExistente.cantidad < productoExistente.stock) {
-          productoExistente.cantidad++;
-          productoExistente.precio += productoParaCarrito.precio; 
-        } else {
-          console.log('No se puede agregar más, se ha alcanzado el límite de stock');
+    this.storage.getItem('productos_carrito').then((productos: any[]) => {
+      if (productos) {
+        // Verificar si el producto ya existe en el carrito
+        const productoExistente = productos.find(p => p.id_zapatilla === productoParaCarrito.id_zapatilla);
+
+        if (productoExistente) {
+          this.presentAlert('Producto ya en el carrito', 'La zapatilla ya está en tu carrito.'); // Mostrar alerta
+          return; // Salir si el producto ya existe
         }
-      } else {
-        productos.push(productoParaCarrito);
-      }
 
-      this.storage.setItem('productos_carrito', productos)
-        .then(() => {
-          console.log('Producto añadido al carrito correctamente');
-          this.presentAlert('Éxito', 'Producto añadido al carrito'); // Mostrar alerta
-          this.router.navigate(['/inicio']); // Redirigir a inicio
-        })
-        .catch(error => console.error('Error al actualizar el carrito', error));
-    } else {
+        // Si el producto no existe, se agrega
+        productos.push(productoParaCarrito);
+        this.storage.setItem('productos_carrito', productos)
+          .then(() => {
+            console.log('Producto añadido al carrito correctamente');
+            this.presentAlert('Éxito', 'Producto añadido al carrito'); // Mostrar alerta
+            this.router.navigate(['/inicio']); // Redirigir a inicio
+          })
+          .catch(error => console.error('Error al actualizar el carrito', error));
+      } else {
+        this.storage.setItem('productos_carrito', [productoParaCarrito])
+          .then(() => {
+            console.log('Carrito creado y producto añadido correctamente');
+            this.presentAlert('Éxito', 'Producto añadido al carrito'); // Mostrar alerta
+            this.router.navigate(['/inicio']); // Redirigir a inicio
+          })
+          .catch(error => console.error('Error al crear el carrito', error));
+      }
+    }).catch(() => {
       this.storage.setItem('productos_carrito', [productoParaCarrito])
         .then(() => {
           console.log('Carrito creado y producto añadido correctamente');
@@ -112,19 +113,8 @@ export class DetallesPage implements OnInit, OnDestroy {
           this.router.navigate(['/inicio']); // Redirigir a inicio
         })
         .catch(error => console.error('Error al crear el carrito', error));
-    }
-  }).catch(() => {
-    this.storage.setItem('productos_carrito', [productoParaCarrito])
-      .then(() => {
-        console.log('Carrito creado y producto añadido correctamente');
-        this.presentAlert('Éxito', 'Producto añadido al carrito'); // Mostrar alerta
-        this.router.navigate(['/inicio']); // Redirigir a inicio
-      })
-      .catch(error => console.error('Error al crear el carrito', error));
-  });
-}
-
-
+    });
+  }
 
   async presentAlert(titulo: string, msj: string) {
     const alert = await this.alertController.create({
@@ -135,6 +125,4 @@ export class DetallesPage implements OnInit, OnDestroy {
 
     await alert.present();
   }
-
-
 }
