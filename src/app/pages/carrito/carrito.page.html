@@ -1,12 +1,35 @@
 <ion-content>
   <div class="container">
     <div class="cart-container">
-      <div class="empty-cart-message">
+      <br>
+      <div *ngIf="productosCarrito.length === 0" class="empty-cart-message">
         <ion-icon name="cart-outline" size="large"></ion-icon>
         <p>No tiene nada actualmente en su carrito.</p>
       </div>
-      <div class="button-container" >
-        <button class="vaciar-carrito-btn" >
+
+      <div *ngIf="productosCarrito.length > 0" class="productos-list">
+        <div *ngFor="let producto of productosCarrito; let i = index" class="producto-item">
+          <img [src]="producto.imagen_url" alt="{{ producto.nombre }}" class="producto-imagen" />
+          <div class="producto-info">
+            <h2>{{ producto.nombre }}</h2>
+            <p>Precio: {{ producto.precio | currency }}</p>
+            <p>Stock disponible: {{ producto.stock }}</p>
+          </div>
+          <div class="cantidad-container">
+            <button (click)="decreaseQuantity(i)">-</button>
+            <span>{{ producto.cantidad }}</span>
+            <button (click)="increaseQuantity(i)">+</button>
+            <button (click)="eliminarProducto(i)">Eliminar</button>
+          </div>
+        </div>
+
+        <div class="total-price">
+          <h3>Precio Total: {{ precioTotal | currency }}</h3>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button class="vaciar-carrito-btn" (click)="vaciarCarrito()">
           Vaciar carrito
         </button>
         <button class="finalizar-compra-btn" [routerLink]="'/pagar'">
