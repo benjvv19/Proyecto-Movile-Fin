@@ -25,25 +25,51 @@ export class AdmineditarPage {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async onSubmit(form: NgForm) {
+    // Validaciones
+    if (!this.zapatilla.descripcion || !this.zapatilla.precio || !this.zapatilla.id_categoria || !this.nombre_marca || !this.zapatilla.stock) {
+      await this.presentToast('Debe completar todos los datos del producto a modificar', 'danger');
+      this.showError = true;
+      return;
+    }
+
+    if (this.zapatilla.precio < 0) {
+      await this.presentToast('El precio no puede ser menor a 0', 'danger');
+      return;
+    }
+
+    if (this.zapatilla.stock < 1) {
+      await this.presentToast('El stock no puede ser menor a 1', 'danger');
+      return;
+    }
+
+    if (this.zapatilla.id_categoria < 1 || this.zapatilla.id_categoria > 4) {
+      await this.presentToast('La categoría debe estar entre 1 y 4', 'danger');
+      return;
+    }
+
     if (form.valid) {
       this.modificar();
       this.router.navigate(['/adminproductos']);
     } else {
       this.showError = true;
-      const toast = await this.toastController.create({
-        message: 'Debe completar todos los datos del producto a modificar',
-        color: 'danger',
-        duration: 2000
-      });
-      toast.present();
+      await this.presentToast('Debe completar todos los datos del producto a modificar', 'danger');
     }
   }
 
-  modificar(){
-    this.bd.modificarZapatillas(this.zapatilla.id_zapatilla, this.zapatilla.descripcion, this.zapatilla.imagen_url, this.zapatilla.precio, this.nombre_marca, this.zapatilla.id_categoria);  
+  modificar() {
+    this.bd.modificarZapatillas(this.zapatilla.id_zapatilla, this.zapatilla.descripcion, this.zapatilla.imagen_url, this.zapatilla.precio, this.nombre_marca, this.zapatilla.id_categoria, this.zapatilla.stock);  
+  }
+
+  // Método reutilizable para mostrar mensajes tipo "toast"
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      color: color,
+      duration: 2000
+    });
+    toast.present();
   }
 }

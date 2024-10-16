@@ -17,7 +17,7 @@ export class ServicebdService {
   //variables de creacion de tablas
   
   //
-  tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, imagen_url TEXT NOT NULL, precio INTEGER NOT NULL, nombre_marca TEXT NOT NULL, id_categoria INTEGER NOT NULL, FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
+  tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, imagen_url TEXT NOT NULL, precio INTEGER NOT NULL, nombre_marca TEXT NOT NULL, id_categoria INTEGER NOT NULL,stock INTEGER NOT NULL, FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
   tablaRoles: string = "CREATE TABLE IF NOT EXISTS roles (id_rol INTEGER PRIMARY KEY autoincrement,nombre_rol TEXT NOT NULL);";
   tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, apellido TEXT NOT NULL, id_rol INTEGER NOT NULL, correo TEXT NOT NULL, telefono TEXT NOT NULL, contrasena TEXT NOT NULL, FOREIGN KEY (id_rol) REFERENCES roles(id_rol));`; registroUsuarios: string = `INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Adminn', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario');";
 
@@ -32,12 +32,12 @@ export class ServicebdService {
 
 
   //varibles de insert por defecto de nuestras tablas
-  registroZapatillas: string = "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, id_marca, id_categoria)VALUES(1,'soy un nombre','soy una descripcion','https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 100, 1, 1),(2,'soy un nombre','soy una descripcion','https://i.postimg.cc/Wpy0d8Hd/adidas-hoops-nino.webp',200, 2, 2)";
+  registroZapatillas: string = "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria,stock)VALUES(1,'soy un nombre','soy una descripcion','https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 100, 'jordan', 1,100),(2,'soy un nombre','soy una descripcion','https://i.postimg.cc/Wpy0d8Hd/adidas-hoops-nino.webp',200, 'asdasdad', 2,200)";
   registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario')";
   registroRoles: string ="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
   registroInventario: string ="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
   registroHistorialPedidos: string ="INSERT or IGNORE INTO historial_pedidos (id_historial, id_pedido, estado_anterior, estado_nuevo, fecha_cambio) VALUES (1, 1, 'Pendiente', 'Recibido', '2023-10-01')";
-  registroMarcaZapatillas: string ="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'adidas'),(2,'nike'),(3,'jordan'),(4,'fila'),(5,'kappa')";
+  registroMarcaZapatillas: string ="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'adidas'),(2,'nike')";
   registroCategoriaZapatillas: string ="INSERT or IGNORE INTO categoria_zapatillas (id_categoria, nombre_categoria) VALUES (1,'niño'),(2,'niña'),(3,'hombre'),(4,'mujer')";
 
 
@@ -110,7 +110,7 @@ export class ServicebdService {
     this.platform.ready().then(()=>{
       //crear la Base de Datos
       this.sqlite.create({
-        name: 'KikSport.db',
+        name: 'zapatillas.db',
         location: 'default'
       }).then((db: SQLiteObject)=>{
         //capturar la conexion a la BD
@@ -126,6 +126,7 @@ export class ServicebdService {
   
   async crearTablas() {
     try {
+      await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
       await this.database.executeSql(this.tablaRoles, []);
       await this.database.executeSql(this.tablaCategoriaZapatillas, []);
       await this.database.executeSql(this.tablaMarcaZapatillas, []);
@@ -167,7 +168,8 @@ export class ServicebdService {
             id_marca: res.rows.item(i).id_marca,
             id_categoria:res.rows.item(i).id_categoria,
             nombre_marca: res.rows.item(i).nombre_marca, 
-            nombre_categoria: res.rows.item(i).nombre_categoria 
+            nombre_categoria: res.rows.item(i).nombre_categoria,
+            stock: res.rows.item(i).stock 
           })
         }
         
@@ -188,23 +190,23 @@ export class ServicebdService {
   }
 
 
-  modificarZapatillas(id: number, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, id_categoria: number) {  
-    return this.database.executeSql('SELECT id_marca FROM marca_zapatillas WHERE nombre_marca = ?', [nombre_marca]).then(res => {
+  modificarZapatillas(id: number, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, id_categoria: number,stock:number) {  
+    return this.database.executeSql('SELECT nombre_marca FROM marca_zapatillas WHERE nombre_marca = ?', [nombre_marca]).then(res => {
         if (res.rows.length > 0) {
-            const id_marca = res.rows.item(0).id_marca;
+            const nombre_marca = res.rows.item(0).nombre_marca;
 
-            return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, id_marca = ?, id_categoria = ? WHERE id_zapatilla = ?', 
-            [descripcion, imagen_url, precio, id_marca, id_categoria, id]).then(() => {
+            return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, nombre_marca = ?, id_categoria = ? , stock = ? WHERE id_zapatilla = ?', 
+            [descripcion, imagen_url, precio, nombre_marca, id_categoria,stock, id]).then(() => {
                 this.presentAlert("Modificar", "Zapatilla Modificada");
                 this.seleccionarZapatillas();
             });
         } else {
             return this.database.executeSql('INSERT INTO marca_zapatillas (nombre_marca) VALUES (?)', [nombre_marca]).then(() => {
-                return this.database.executeSql('SELECT id_marca FROM marca_zapatillas WHERE nombre_marca = ?', [nombre_marca]).then(res => {
-                    const id_marca_nueva = res.rows.item(0).id_marca;
+                return this.database.executeSql('SELECT nombre_marca FROM marca_zapatillas WHERE nombre_marca = ?', [nombre_marca]).then(res => {
+                    const nombre_marca_nueva = res.rows.item(0).nombre_marca;
                     
-                    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, id_marca = ?, id_categoria = ? WHERE id_zapatilla = ?', 
-                    [descripcion, imagen_url, precio, id_marca_nueva, id_categoria, id]).then(() => {
+                    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, nombre_marca = ?, id_categoria = ? , stock = ? WHERE id_zapatilla = ?', 
+                    [descripcion, imagen_url, precio,nombre_marca_nueva, id_categoria,stock, id]).then(() => {
                         this.presentAlert("Modificar", "Zapatilla Modificada");
                         this.seleccionarZapatillas();
                     });
@@ -216,10 +218,10 @@ export class ServicebdService {
     });
 }
 
-  insertarZapatillas(nombre: string, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, id_categoria: number) {
+  insertarZapatillas(nombre: string, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, id_categoria: number,stock:number) {
     this.database.executeSql('INSERT OR IGNORE INTO marca_zapatillas (nombre_marca) VALUES (?)', [nombre_marca])
       .then(() => {
-        return this.database.executeSql('INSERT INTO zapatillas (nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria) VALUES (?, ?, ?, ?, ?, ?)', [nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria]);
+        return this.database.executeSql('INSERT INTO zapatillas (nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria,stock) VALUES (?, ?, ?, ?, ?, ?,?)', [nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria,stock]);
       })
       .then(res => {
         this.presentAlert("Insertar", "Zapatilla Registrada");
@@ -240,7 +242,7 @@ export class ServicebdService {
       FROM 
         zapatillas z
       JOIN 
-        marca_zapatillas m ON z.id_marca = m.id_marca 
+        marca_zapatillas m ON z.nombre_marca = m.nombre_marca 
       JOIN 
         categoria_zapatillas c ON z.id_categoria = c.id_categoria 
       WHERE 
@@ -262,8 +264,9 @@ export class ServicebdService {
             precio: res.rows.item(i).precio,
             id_marca: res.rows.item(i).id_marca,
             id_categoria: res.rows.item(i).id_categoria,
-            nombre_marca: res.rows.item(i).nombre_marca, // Nombre de la marca
-            nombre_categoria: res.rows.item(i).nombre_categoria // Nombre de la categoría
+            nombre_marca: res.rows.item(i).nombre_marca,
+            nombre_categoria: res.rows.item(i).nombre_categoria,
+            stock: res.rows.item(i).stock 
           });
         }
       }

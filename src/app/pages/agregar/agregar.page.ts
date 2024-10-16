@@ -17,6 +17,7 @@ export class AgregarPage {
   precio: any = "";
   nombre_marca: string = "";  // Cambiado de id_marca a nombre_marca
   id_categoria: any = "";
+  stock: any = "";
 
   showError = false;
 
@@ -24,7 +25,28 @@ export class AgregarPage {
 
   async onSubmit(productForm: any) {
     const form = productForm;
-  
+
+    // Validaciones adicionales
+    if (this.precio < 0) {
+      await this.presentToast('El precio no puede ser menor a 0', 'danger');
+      return;
+    }
+
+    if (this.stock < 1) {
+      await this.presentToast('El stock no puede ser menor a 1', 'danger');
+      return;
+    }
+
+    if (this.id_categoria < 1 || this.id_categoria > 4) {
+      await this.presentToast('La categoría debe estar entre 1 y 4', 'danger');
+      return;
+    }
+
+    if (!this.imagen_url) {
+      await this.presentToast('Debe ingresar una imagen', 'danger');
+      return;
+    }
+
     if (form.valid) {
       this.insertar();
       form.reset();
@@ -40,6 +62,7 @@ export class AgregarPage {
     }
   }
 
+  // Método para manejar la selección de archivo
   onFileSelected(event: any) {
     const file = event.target.files[0];  // Obtén el archivo seleccionado
     if (file) {
@@ -52,7 +75,26 @@ export class AgregarPage {
     }
   }
 
-  insertar(){
-    this.bd.insertarZapatillas(this.nombre, this.descripcion, this.imagen_url, this.precio, this.nombre_marca, this.id_categoria);  // Cambiado de id_marca a nombre_marca
+  // Método de inserción de datos en la base de datos
+  insertar() {
+    this.bd.insertarZapatillas(
+      this.nombre, 
+      this.descripcion, 
+      this.imagen_url, 
+      this.precio, 
+      this.nombre_marca, 
+      this.id_categoria,
+      this.stock
+    );
+  }
+
+  // Método reutilizable para mostrar mensajes tipo "toast"
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      color: color,
+      duration: 2000
+    });
+    toast.present();
   }
 }

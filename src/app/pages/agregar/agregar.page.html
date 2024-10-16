@@ -1,53 +1,76 @@
 <ion-content class="ion-padding">
-  <form class="add-product-form" (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">
-    <br>
-    <br>
-    <br>
-    <br>
-    <ion-item>
-      <ion-label position="floating">Descripción</ion-label>
-      <br>
-      <ion-textarea placeholder="Ingrese la descripción" [(ngModel)]="descripcion" name="descripcion" required></ion-textarea>
-    </ion-item>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">Modificar Producto</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="scrollable-content">
+      <form class="add-product-form" (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">
 
-    <ion-item>
-      <ion-label position="floating">Tipo</ion-label>
-      <br>
-      <ion-input placeholder="Ej: (1='niño'/2='niña'/3='hombre'/4='mujer')" [(ngModel)]="id_categoria" name="id_categoria" required></ion-input>
-    </ion-item>
+        <!-- Descripción -->
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <br>
+          <ion-textarea placeholder="Ingrese la descripción" [(ngModel)]="descripcion" name="descripcion" required></ion-textarea>
+        </ion-item>
+        <ion-note *ngIf="productForm.submitted && !descripcion" color="danger">La descripción es obligatoria.</ion-note>
 
-    <ion-item>
-      <ion-label position="floating">Marca</ion-label>
-      <br>
-      <ion-input placeholder="Ingrese la marca" [(ngModel)]="nombre_marca" name="nombre_marca" required></ion-input>
-    </ion-item>
+        <!-- Tipo -->
+        <ion-item>
+          <ion-label position="floating">Tipo</ion-label>
+          <br>
+          <ion-input placeholder="Ej: (1='niño'/2='niña'/3='hombre'/4='mujer')" [(ngModel)]="id_categoria" name="id_categoria" required></ion-input>
+        </ion-item>
+        <ion-note *ngIf="productForm.submitted && !id_categoria" color="danger">El tipo es obligatorio.</ion-note>
 
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <br>
-      <ion-input placeholder="Ingrese el nombre del producto" [(ngModel)]="nombre" name="nombre" required></ion-input>
-    </ion-item>
+        <!-- Marca -->
+        <ion-item>
+          <ion-label position="floating">Marca</ion-label>
+          <br>
+          <ion-input placeholder="Ingrese la marca" [(ngModel)]="nombre_marca" name="nombre_marca" required></ion-input>
+        </ion-item>
+        <ion-note *ngIf="productForm.submitted && !nombre_marca" color="danger">La marca es obligatoria.</ion-note>
 
-    <ion-item>
-      <ion-label position="floating">Precio</ion-label>
-      <br>
-      <ion-input type="number" placeholder="Ingrese el precio" [(ngModel)]="precio" name="precio" required></ion-input>
-    </ion-item>
-    
-    <ion-item *ngIf="imagen_url"> 
-      <ion-label position="floating">Imagen (URL)</ion-label>
-      <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="imagen_url" name="imagen_url" required></ion-input>
-    </ion-item>
+        <!-- Nombre -->
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <br>
+          <ion-input placeholder="Ingrese el nombre del producto" [(ngModel)]="nombre" name="nombre" required></ion-input>
+        </ion-item>
+        <ion-note *ngIf="productForm.submitted && !nombre" color="danger">El nombre es obligatorio.</ion-note>
 
-    <ion-item>
-      <input type="file" (change)="onFileSelected($event)" />
-    </ion-item>
-    
-    <div class="button-container">
-      <ion-button expand="full" shape="round" color="dark" type="submit">Guardar</ion-button>
-      <ion-button expand="full" shape="round" color="dark" [routerLink]="'/adminproductos'">Volver</ion-button>
-    </div>
+        <!-- Precio -->
+        <ion-item>
+          <ion-label position="floating">Precio</ion-label>
+          <br>
+          <ion-input type="number" placeholder="Ingrese el precio" [(ngModel)]="precio" name="precio" required min="0"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="productForm.submitted && (precio < 0 || !precio)" color="danger">El precio debe ser mayor o igual a 0.</ion-note>
 
-    <ion-toast *ngIf="showError" message="Todos los campos son obligatorios" color="danger" duration="2000"></ion-toast>
-  </form>
+        <!-- Stock -->
+        <ion-item>
+          <ion-label position="floating">Stock</ion-label>
+          <br>
+          <ion-input type="number" placeholder="Ingrese el stock" [(ngModel)]="stock" name="stock" required min="1"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="productForm.submitted && (stock < 1 || !stock)" color="danger">El stock debe ser mayor o igual a 1.</ion-note>
+
+        <!-- Imagen -->
+        <ion-item *ngIf="imagen_url">
+          <ion-label position="floating">Imagen (URL)</ion-label>
+          <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="imagen_url" name="imagen_url" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <input type="file" (change)="onFileSelected($event)" />
+        </ion-item>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botones -->
+  <div class="button-container">
+    <ion-button expand="full" shape="round" color="dark" type="submit" (click)="onSubmit(productForm)">Guardar</ion-button>
+    <ion-button expand="full" shape="round" color="dark" [routerLink]="'/adminproductos'">Volver</ion-button>
+  </div>
+
+  <ion-toast *ngIf="showError" message="Todos los campos son obligatorios" color="danger" duration="2000"></ion-toast>
 </ion-content>

@@ -18,37 +18,44 @@
         <ion-card-content>
           <form (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">      
 
-            <h1>Descripción</h1>
+            <h2>Descripción</h2>
             <div class="form-group">
               <ion-item lines="none">
                 <ion-textarea placeholder="Descripción de la zapatilla" [(ngModel)]="zapatilla.descripcion" name="descripcion" required></ion-textarea>
               </ion-item>
             </div>
             
-            <h1>Precio</h1>
+            <h2>Precio</h2>
             <div class="form-group">
               <ion-item lines="none">
                 <ion-input type="number" placeholder="Precio de la zapatilla" [(ngModel)]="zapatilla.precio" name="precio" required></ion-input>
               </ion-item>
             </div>
 
-            <h1>Categoria</h1>
+            <h2>Categoría</h2>
             <div class="form-group">
               <ion-item lines="none">
-                <ion-input placeholder="Tipo de zapatilla" [(ngModel)]="zapatilla.id_categoria" name="id_categoria" required></ion-input>
+                <ion-input placeholder="ID de la categoría" [(ngModel)]="zapatilla.id_categoria" name="id_categoria" required></ion-input>
               </ion-item>
             </div>
 
-            <h1>Marca</h1>
+            <h2>Marca</h2>
             <div class="form-group">
               <ion-item lines="none">
-                <ion-input placeholder="Nombre de la marca" [(ngModel)]="zapatilla.nombre_marca" name="nombre_marca" required></ion-input>
+                <ion-input placeholder="Nombre de la marca" [(ngModel)]="nombre_marca" name="nombre_marca" required></ion-input>
+              </ion-item>
+            </div>
+
+            <h2>Stock</h2>
+            <div class="form-group">
+              <ion-item lines="none">
+                <ion-input placeholder="Stock disponible" [(ngModel)]="zapatilla.stock" name="stock" required></ion-input>
               </ion-item>
             </div>
 
             <ion-button expand="full" type="submit" class="aceptar">Guardar Cambios</ion-button>
 
-            <ion-toast *ngIf="showError" message="Todos los campos son obligatorios" color="danger" duration="2000"></ion-toast>
+            <ion-toast *ngIf="showError" message="Debe completar todos los datos del producto a modificar" color="danger" duration="2000"></ion-toast>
           </form>
         </ion-card-content>
       </ion-card>

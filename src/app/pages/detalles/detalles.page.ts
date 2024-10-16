@@ -17,10 +17,10 @@ export class DetallesPage implements OnInit, OnDestroy {
     descripcion: '',
     imagen_url: '',
     precio: '',
-    id_marca: '',
     id_categoria: '',
     nombre_marca: '',
-    nombre_categoria: ''
+    nombre_categoria: '',
+    stock:''
   };
 
   private dbStateSubscription: Subscription = new Subscription();

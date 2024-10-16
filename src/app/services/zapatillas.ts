@@ -8,4 +8,5 @@ export class Zapatillas {
     id_categoria!:number;
     nombre_marca!: string;
     nombre_categoria!:string;
+    stock!:number;
 }

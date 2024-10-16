@@ -1,7 +1,6 @@
 .add-product-form {
   display: flex;
   flex-direction: column;
-  padding-bottom: 100px; /* Asegura espacio para los botones al final */
 }
 
 ion-item {
@@ -9,17 +8,23 @@ ion-item {
 }
 
 .button-container {
-  padding: 10px; /* Espacio alrededor de los botones */
-  background-color: white; /* Color de fondo para que sea visible */
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
 ion-button {
   --border-radius: 8px;
+  margin-top: 10px;
 }
 
-/* Estilo para permitir el desplazamiento */
+/* Asegura que el contenido de la tarjeta sea desplazable */
+.scrollable-content {
+  max-height: 60vh; /* Ajusta la altura de la tarjeta */
+  overflow-y: auto; /* Permite el desplazamiento dentro de la tarjeta */
+}
+
 ion-content {
-  overflow-y: auto; /* Permite el desplazamiento vertical */
-  --padding-bottom: 100px; /* Asegura que el contenido no esté cubierto por los botones */
+  --padding-bottom: 20px;
 }
