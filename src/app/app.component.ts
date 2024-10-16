@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router,private storage: NativeStorage) {}
+
+
 
   shouldShowToolbar(): boolean {
     const rolId = localStorage.getItem('rolId');
@@ -26,4 +29,13 @@ export class AppComponent {
     const rolId = localStorage.getItem('rolId');
     return rolId === '2';
   }
+
+  cerrar() {
+    this.storage.remove('productos_carrito')
+ 
+  
+    // Redirigir a la página de inicio o de login, si es necesario
+    this.router.navigate(['/login']); // Cambia la ruta según tu lógica
+  }
+  
 }

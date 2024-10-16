@@ -56,7 +56,7 @@
             <ion-icon slot="end" name="document-text-outline"></ion-icon>
             <ion-label>Condiciones</ion-label>
           </ion-item>
-          <ion-item [routerDirection]="'root'" [routerLink]="'/login'" *ngIf="shouldShowUserMenu() || shouldShowAdminMenu()">
+          <ion-item [routerDirection]="'root'" [routerLink]="'/login'" (click)="cerrar()" *ngIf="shouldShowUserMenu() || shouldShowAdminMenu()">
             <ion-icon slot="end" name="log-out-outline"></ion-icon>
             <ion-label>Cerrar sesión</ion-label>
           </ion-item>
