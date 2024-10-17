@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 import { Usuarios } from 'src/app/services/usuarios';
+import { Router } from '@angular/router';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 
 @Component({
   selector: 'app-pagar',
@@ -15,6 +17,7 @@ export class PagarPage {
   totalPagar: number = 0;
 
   constructor(
+    private router: Router,private storage: NativeStorage,
     private alertController: AlertController,
     private navController: NavController,
     private serviceBD: ServicebdService
@@ -76,7 +79,7 @@ export class PagarPage {
         total: this.totalPagar,
       };
 
-      await this.guardarVenta(ventaData, this.productosCarrito); // Llamar al método para guardar la venta
+      await this.guardarVenta(ventaData, this.productosCarrito); 
 
       const alert = await this.alertController.create({
         header: 'Pago exitoso',
