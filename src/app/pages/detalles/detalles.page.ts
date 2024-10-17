@@ -26,6 +26,7 @@ export class DetallesPage implements OnInit, OnDestroy {
   };
 
   private dbStateSubscription: Subscription = new Subscription();
+  isButtonDisabled: boolean = false; // Propiedad para controlar el estado del botón
 
   constructor(private router: Router, private bd: ServicebdService, private route: ActivatedRoute,
               private alertController: AlertController, private storage: NativeStorage) {}
@@ -42,6 +43,7 @@ export class DetallesPage implements OnInit, OnDestroy {
           this.bd.fetchZapatilla().subscribe(res => {
             if (res.length > 0) {
               this.zapatilla = res[0]; // Suponiendo que solo habrá una zapatilla con ese ID
+              this.isButtonDisabled = this.zapatilla.stock === 0; // Actualizar estado del botón según el stock
             }
           });
         }

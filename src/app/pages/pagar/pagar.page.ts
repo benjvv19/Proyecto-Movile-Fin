@@ -53,9 +53,11 @@ export class PagarPage {
     const cardNumber = form.value.cardNumber;
     const expiryDate = form.value.expiryDate;
     const cardType = form.value.cardType;
+    const cvv = form.value.cvv;
 
     const cardNumberPattern = /^\d{4} \d{4} \d{4} \d{4}$/;
     const expiryDatePattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    const cvvPattern = /^\d{3}$/; // Expresión regular para 3 dígitos
 
     let isExpiryDateValid = false;
     if (expiryDatePattern.test(expiryDate)) {
@@ -75,11 +77,13 @@ export class PagarPage {
       ? this.nombreTitular.trim().toLowerCase() === `${this.usuario.nombre} ${this.usuario.apellido}`.toLowerCase() 
       : false;
 
-    if (form.valid && cardNumberPattern.test(cardNumber) && isExpiryDateValid && isCardTypeSelected && isNameValid) {
+    const isCvvValid = cvvPattern.test(cvv); // Verifica que el CVV sea válido
+
+    if (form.valid && cardNumberPattern.test(cardNumber) && isExpiryDateValid && isCardTypeSelected && isNameValid && isCvvValid) {
       // Guardar la venta en la base de datos
       const ventaData = {
         id_usuario: localStorage.getItem('userId'),
-        fecha: new Date().toISOString().slice(0, 19).replace('T', ' '), // Formato YYYY-MM-DD HH:MM:SS
+        fecha: new Date().toISOString().slice(0, 19).replace('T', ' '),
         total: this.totalPagar,
       };
 
@@ -103,6 +107,8 @@ export class PagarPage {
         errorMessage = 'Debe seleccionar un tipo de tarjeta.';
       } else if (!isNameValid) {
         errorMessage = 'El nombre del titular no coincide con el nombre del usuario.';
+      } else if (!isCvvValid) {
+        errorMessage = 'El CVV debe ser de 3 dígitos.'; 
       }
 
       const alert = await this.alertController.create({
@@ -139,9 +145,23 @@ export class PagarPage {
         queries.push(detalleQuery);
       }
 
-      return Promise.all(queries);  // Ejecutar todas las inserciones en detalle_ventas
+      await Promise.all(queries);  // Ejecutar todas las inserciones en detalle_ventas
+      
+      // Actualizar el stock de las zapatillas
+      await this.actualizarStock(productosCarrito);
     }).catch((error) => {
       console.error('Error al guardar la venta:', error);
     });
+  }
+
+  async actualizarStock(productosCarrito: any[]) {
+    const queries = [];
+    for (const producto of productosCarrito) {
+      const nuevoStock = producto.stock - producto.cantidad; // Calcular el nuevo stock
+      const queryStock = `UPDATE zapatillas SET stock = ? WHERE id_zapatilla = ?`;
+      const stockQuery = this.serviceBD.database.executeSql(queryStock, [nuevoStock, producto.id_zapatilla]);
+      queries.push(stockQuery);
+    }
+    return Promise.all(queries); // Ejecutar todas las actualizaciones de stock
   }
 }

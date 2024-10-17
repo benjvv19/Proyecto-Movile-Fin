@@ -29,10 +29,11 @@
             message="{{ zapatilla.descripcion }}"
             [buttons]="alertButtons"
           ></ion-alert>
-          <ion-button shape="round" color="dark" (click)="cargarProducto()" aria-label="Añadir al carrito">Añadir al carrito</ion-button>
+          <ion-button shape="round" color="dark" [disabled]="isButtonDisabled" [class.disabled]="isButtonDisabled" (click)="cargarProducto()" aria-label="Añadir al carrito">Añadir al carrito</ion-button>
           <ion-button shape="round" color="dark" [routerLink]="['/adminproductos']">Volver</ion-button>
         </div>
       </ion-card-content>
     </ion-card>
   </div>
 </ion-content>
+

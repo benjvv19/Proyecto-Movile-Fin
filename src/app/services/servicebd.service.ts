@@ -53,7 +53,7 @@ export class ServicebdService {
   INSERT or IGNORE INTO zapatillas 
   (id_zapatilla, nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria, stock) 
   VALUES 
-  (1, 'ZAPATILLAS ADIDAS BREAKNET JUNIOR HOMBRE', '¡Domina la cancha con estilo con las zapatillas adidas Breaknet Junior para niños!', 'https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 41999, 'Adidas', 1, 50),
+  (1, 'ZAPATILLAS ADIDAS BREAKNET JUNIOR HOMBRE', '¡Domina la cancha con estilo con las zapatillas adidas Breaknet Junior para niños!', 'https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 41999, 'Adidas', 1, 29),
   (2, 'ZAPATILLAS ADIDAS HOOPS 3.0', '¡Prepárate para marcar la diferencia en el juego con las zapatillas adidas Hoops 3.0 para niños!', 'https://i.postimg.cc/m2FCC9v8/adidas-hoops-nino.webp', 54999, 'Adidas', 1, 30),
   (3, 'ZAPATILLAS ADIDAS HOOPS 2.0', '¡Prepárate para marcar la diferencia en el juego con las zapatillas adidas Hoops 2.0 para niños!', 'https://i.postimg.cc/m2FCC9v8/adidas-hoops-nino2.webp', 66999, 'Adidas', 1, 20),
   (4, 'ZAPATILLAS ADIDAS HOOPS 3.0 BLANCA', '¡Prepárate para brillar en la cancha con las zapatillas adidas Hoops 3.0 blancas para niños!', 'https://i.postimg.cc/13h6HtPP/adidas-hoops-nino3.webp', 32999, 'Adidas', 1, 65),
@@ -88,11 +88,9 @@ export class ServicebdService {
 
   listadoZapatillas = new BehaviorSubject([]);
   listadoUsuarios = new BehaviorSubject([]);
-  listadoInventario = new BehaviorSubject([]);
   BuscarZapatilla = new BehaviorSubject([]);
   listadoCategoriaZapatillas = new BehaviorSubject([]);
   listadoMarcaZapatillas = new BehaviorSubject([]);
-  listadoMetodosPago = new BehaviorSubject([]);
   listadoVentas = new BehaviorSubject([]);
   listadoDetalleVentas = new BehaviorSubject([]);
 
@@ -182,7 +180,7 @@ export class ServicebdService {
       //await this.eliminarBaseDatos('KikSport.db');
       await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS detalleventas', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
 
       // Luego, creamos las tablas
       await this.database.executeSql(this.tablaRoles, []);
@@ -466,7 +464,7 @@ export class ServicebdService {
       // Insertar los detalles de los productos
       const queries = [];
       for (const producto of productosCarrito) {
-        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad,imagen_url) VALUES (?, ?, ?, ?,?)`;
+        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad, imagen_url) VALUES (?, ?, ?, ?, ?)`;
         const detalleQuery = this.database.executeSql(queryDetalle, [
           id_venta, // Usar el mismo id_venta para todos los productos
           producto.id_zapatilla,
@@ -477,12 +475,37 @@ export class ServicebdService {
         queries.push(detalleQuery);
       }
   
-      return Promise.all(queries);  // Ejecutar todas las inserciones en detalleventas
+      // Ejecutar todas las inserciones en detalle_ventas
+      return Promise.all(queries).then(() => {
+        // Actualizar el stock de las zapatillas
+        return this.actualizarStock(productosCarrito);
+      });
+      
     }).catch((error) => {
       console.error('Error al guardar la venta:', error);
     });
   }
 
+
+  actualizarStock(productosCarrito: any[]) {
+    const queries = [];
+  
+    for (const producto of productosCarrito) {
+      const queryActualizarStock = `
+        UPDATE zapatillas 
+        SET stock = stock - ? 
+        WHERE id_zapatilla = ? AND stock >= ?`;
+  
+      const detalleQuery = this.database.executeSql(queryActualizarStock, [
+        producto.cantidad,
+        producto.id_zapatilla,
+        producto.cantidad
+      ]);
+      queries.push(detalleQuery);
+    }
+  
+    return Promise.all(queries);  
+  }
 
 }
 

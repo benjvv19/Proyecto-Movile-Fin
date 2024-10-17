@@ -43,3 +43,8 @@ ion-card {
     justify-content: center; 
     align-items: center; 
   }
+
+  .disabled {
+    opacity: 0.5; // Cambia la opacidad para difuminar
+    pointer-events: none; // Evitar que se pueda hacer clic
+  }
