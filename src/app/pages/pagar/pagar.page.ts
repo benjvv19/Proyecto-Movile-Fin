@@ -89,6 +89,9 @@ export class PagarPage {
 
       await this.guardarVenta(ventaData, this.productosCarrito); 
 
+      this.productosCarrito = [];
+      await this.storage.setItem('productos_carrito', this.productosCarrito);
+
       const alert = await this.alertController.create({
         header: 'Pago exitoso',
         message: 'Su pago ha sido procesado con éxito.',
@@ -96,8 +99,9 @@ export class PagarPage {
       });
       await alert.present();
 
+
       form.reset();
-      this.navController.navigateBack('/carrito'); 
+      this.navController.navigateBack('/boletas');
     } else {
       let errorMessage = 'Por favor, complete todos los campos correctamente.';
 
@@ -164,4 +168,6 @@ export class PagarPage {
     }
     return Promise.all(queries); // Ejecutar todas las actualizaciones de stock
   }
+
+
 }

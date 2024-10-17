@@ -92,9 +92,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/admindetalles/admindetalles.module').then( m => m.AdmindetallesPageModule)
   },
   {
+    path: 'boletas',
+    loadChildren: () => import('./pages/boletas/boletas.module').then( m => m.BoletasPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'notfound'
   },
+
 ];
 
 @NgModule({
