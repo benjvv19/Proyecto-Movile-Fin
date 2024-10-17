@@ -7,6 +7,7 @@ import { Usuarios } from './usuarios';
 import { Roles } from './roles';
 import { Categoriazapatillas } from './categoriazapatillas';
 import { Venta } from './venta';
+import { DetalleVentas } from './detalleventas';
 
 @Injectable({
   providedIn: 'root'
@@ -141,7 +142,7 @@ export class ServicebdService {
     return this.listadoVentas.asObservable();
   }
 
-  fetchDetalleVenta(): Observable<Venta[]> {
+  fetchDetalleVenta(): Observable<DetalleVentas[]> {
     return this.listadoDetalleVentas.asObservable();
   }
 
@@ -507,6 +508,36 @@ export class ServicebdService {
     return Promise.all(queries);  
   }
 
+
+
+  seleccionarBoletas(id_usuario: number) {
+    return this.database.executeSql('SELECT * FROM ventas WHERE id_usuario = ?', [id_usuario]).then(res => {
+      // Variable para almacenar el resultado de la consulta
+      let items: Venta[] = [];
+  
+      // Valido si trae al menos un registro
+      if (res.rows.length > 0) {
+        // Recorro mi resultado
+        for (let i = 0; i < res.rows.length; i++) {
+          // Agrego los registros a mi lista
+          items.push({
+            id_venta: res.rows.item(i).id_venta,
+            id_usuario: res.rows.item(i).id_usuario,
+            fecha: res.rows.item(i).fecha,
+            total: res.rows.item(i).total
+          });
+        }
+      }
+  
+      // Actualizar el observable
+      this.listadoVentas.next(items as any);
+    })
+    .catch(error => {
+      console.error('Error al seleccionar boletas:', error);
+      // Aquí puedes manejar el error, por ejemplo, mostrando una alerta
+    });
+  }
+  
 }
 
 
