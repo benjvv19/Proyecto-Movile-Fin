@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrito',
@@ -11,7 +12,7 @@ export class CarritoPage {
   productosCarrito: any[] = [];
   precioTotal: number = 0;
 
-  constructor(private storage: NativeStorage,private alertController: AlertController) { }
+  constructor(private storage: NativeStorage, private alertController: AlertController, private router: Router) { }
 
   ngOnInit() {
     this.storage.getItem('productos_carrito')
@@ -87,6 +88,15 @@ export class CarritoPage {
     });
 
     await alert.present();
+  }
+  
+
+  pagar() {
+    if (this.productosCarrito.length > 0) {
+      this.router.navigate(['/pagar'], { state: { productos: this.productosCarrito } });
+    } else {
+      this.presentAlert('Carrito vacío', 'No tienes productos en el carrito para pagar.');
+    }
   }
   
 }

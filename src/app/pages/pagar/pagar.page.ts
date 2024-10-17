@@ -9,13 +9,15 @@ import { Usuarios } from 'src/app/services/usuarios';
   styleUrls: ['./pagar.page.scss'],
 })
 export class PagarPage {
-  nombreTitular: string = ''; 
+  nombreTitular: string = '';
   usuario: Usuarios | null = null;
+  productosCarrito: any[] = [];
+  totalPagar: number = 0;
 
   constructor(
     private alertController: AlertController,
     private navController: NavController,
-    private serviceBD: ServicebdService 
+    private serviceBD: ServicebdService
   ) {}
 
   ngOnInit() {
@@ -25,6 +27,19 @@ export class PagarPage {
         this.usuario = usuario;
       });
     }
+
+    // Obtener los productos del carrito
+    const carrito = history.state.productos; // Recibe los productos del carrito
+    if (carrito) {
+      this.productosCarrito = carrito;
+      this.calcularTotal(); // Calcular el total a pagar
+    }
+  }
+
+  calcularTotal() {
+    this.totalPagar = this.productosCarrito.reduce((total, producto) => {
+      return total + (producto.precio * producto.cantidad);
+    }, 0);
   }
 
   async onSubmit(form: any) {
@@ -54,6 +69,15 @@ export class PagarPage {
       : false;
 
     if (form.valid && cardNumberPattern.test(cardNumber) && isExpiryDateValid && isCardTypeSelected && isNameValid) {
+      // Guardar la venta en la base de datos
+      const ventaData = {
+        id_usuario: localStorage.getItem('userId'),
+        fecha: new Date().toISOString().slice(0, 19).replace('T', ' '), // Formato YYYY-MM-DD HH:MM:SS
+        total: this.totalPagar,
+      };
+
+      await this.guardarVenta(ventaData, this.productosCarrito); // Llamar al método para guardar la venta
+
       const alert = await this.alertController.create({
         header: 'Pago exitoso',
         message: 'Su pago ha sido procesado con éxito.',
@@ -81,5 +105,35 @@ export class PagarPage {
       });
       await alert.present();
     }
+  }
+
+  async guardarVenta(ventaData: any, productosCarrito: any[]) {
+    const queryVenta = `INSERT INTO ventas (id_usuario, fecha, total) VALUES (?, ?, ?)`;
+
+    // Primero insertar la venta
+    return this.serviceBD.database.executeSql(queryVenta, [
+      ventaData.id_usuario,
+      ventaData.fecha,
+      ventaData.total
+    ]).then(async (ventaResult) => {
+      const id_venta = ventaResult.insertId; // Obtener el ID de la venta insertada
+
+      // Insertar los detalles de los productos
+      const queries = [];
+      for (const producto of productosCarrito) {
+        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad) VALUES (?, ?, ?, ?)`;
+        const detalleQuery = this.serviceBD.database.executeSql(queryDetalle, [
+          id_venta, // Usar el mismo id_venta para todos los productos
+          producto.id_zapatilla,
+          producto.precio,
+          producto.cantidad
+        ]);
+        queries.push(detalleQuery);
+      }
+
+      return Promise.all(queries);  // Ejecutar todas las inserciones en detalle_ventas
+    }).catch((error) => {
+      console.error('Error al guardar la venta:', error);
+    });
   }
 }

@@ -6,6 +6,7 @@ import { Zapatillas } from './zapatillas';
 import { Usuarios } from './usuarios';
 import { Roles } from './roles';
 import { Categoriazapatillas } from './categoriazapatillas';
+import { Venta } from './venta';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,25 @@ export class ServicebdService {
   
   tablaCategoriaZapatillas: string = "CREATE TABLE IF NOT EXISTS categoria_zapatillas (id_categoria INTEGER PRIMARY KEY autoincrement,nombre_categoria TEXT NOT NULL);";
   tablaMarcaZapatillas: string = "CREATE TABLE IF NOT EXISTS marca_zapatillas (id_marca INTEGER PRIMARY KEY autoincrement,nombre_marca TEXT NOT NULL);";
-  
-  tablaHistorialPedidos: string = "CREATE TABLE IF NOT EXISTS historial_pedidos (id_historial INTEGER PRIMARY KEY autoincrement,id_pedido INTEGER NOT NULL,estado_anterior TEXT NOT NULL,estado_nuevo TEXT NOT NULL,fecha_cambio TEXT NOT NULL,FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido));";
+
+  tablaVentas:string=`CREATE TABLE IF NOT EXISTS ventas (
+  id_venta INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_usuario INTEGER NOT NULL,
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  total DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario));
+  `; 
+
+  tablaDetallesVenta:string=`CREATE TABLE IF NOT EXISTS detalle_ventas (
+  id_detalle INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_venta INTEGER NOT NULL,
+  id_zapatilla INTEGER NOT NULL,
+  precio DECIMAL(10, 2) NOT NULL,
+  cantidad INTEGER NOT NULL,
+  FOREIGN KEY (id_venta) REFERENCES ventas(id_venta),
+  FOREIGN KEY (id_zapatilla) REFERENCES zapatillas(id_zapatilla));
+  `; 
+
   //
 
 
@@ -60,7 +78,6 @@ export class ServicebdService {
   registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario')";
   registroRoles: string ="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
   registroInventario: string ="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
-  registroHistorialPedidos: string ="INSERT or IGNORE INTO historial_pedidos (id_historial, id_pedido, estado_anterior, estado_nuevo, fecha_cambio) VALUES (1, 1, 'Pendiente', 'Recibido', '2023-10-01')";
   registroMarcaZapatillas: string ="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'Adidas'),(2,'Nike'),(3,'Puma'),(4,'Vans')";
   registroCategoriaZapatillas: string ="INSERT or IGNORE INTO categoria_zapatillas (id_categoria, nombre_categoria) VALUES (1,'Niño'),(2,'Niña'),(3,'Hombre'),(4,'Mujer')";
 
@@ -75,7 +92,8 @@ export class ServicebdService {
   listadoCategoriaZapatillas = new BehaviorSubject([]);
   listadoMarcaZapatillas = new BehaviorSubject([]);
   listadoMetodosPago = new BehaviorSubject([]);
-  listadoHistorialPedidos = new BehaviorSubject([]);
+  listadoVentas = new BehaviorSubject([]);
+  listadoDetalleVentas = new BehaviorSubject([]);
 
   //variable para el status de la Base de datos
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -120,7 +138,13 @@ export class ServicebdService {
     return this.listadoCategoriaZapatillas.asObservable();
   }
   
+  fetchVenta(): Observable<Venta[]> {
+    return this.listadoVentas.asObservable();
+  }
 
+  fetchDetalleVenta(): Observable<Venta[]> {
+    return this.listadoDetalleVentas.asObservable();
+  }
 
   dbState(){
     return this.isDBReady.asObservable();
@@ -155,15 +179,18 @@ export class ServicebdService {
       //despues de borrarla se tiene que borrar estas lineas y ejecutar nuevamente
       //await this.eliminarBaseDatos('zapatillas.db');
       //await this.eliminarBaseDatos('KikSport.db');
-  
+      await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS detalleventas', []);
+
       // Luego, creamos las tablas
       await this.database.executeSql(this.tablaRoles, []);
       await this.database.executeSql(this.tablaCategoriaZapatillas, []);
       await this.database.executeSql(this.tablaMarcaZapatillas, []);
       await this.database.executeSql(this.tablaUsuarios, []);
       await this.database.executeSql(this.tablaZapatillas, []);
-      await this.database.executeSql(this.tablaHistorialPedidos, []);
-      
+      await this.database.executeSql(this.tablaVentas, []);
+      await this.database.executeSql(this.tablaDetallesVenta, []);
       // Registros
       await this.database.executeSql(this.registroRoles, []);
       await this.database.executeSql(this.registroCategoriaZapatillas, []);
@@ -419,6 +446,41 @@ export class ServicebdService {
         return null; 
       });
   }
+
+
+
+
+
+  guardarVenta(ventaData: any, productosCarrito: any[]) {
+    const queryVenta = `INSERT INTO ventas (id_usuario, fecha, total) VALUES (?, ?, ?)`;
+  
+    // Primero insertar la venta
+    return this.database.executeSql(queryVenta, [
+      ventaData.id_usuario,
+      ventaData.fecha,
+      ventaData.total
+    ]).then((ventaResult) => {
+      const id_venta = ventaResult.insertId; // Obtener el ID de la venta insertada
+  
+      // Insertar los detalles de los productos
+      const queries = [];
+      for (const producto of productosCarrito) {
+        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad) VALUES (?, ?, ?, ?)`;
+        const detalleQuery = this.database.executeSql(queryDetalle, [
+          id_venta, // Usar el mismo id_venta para todos los productos
+          producto.id_zapatilla,
+          producto.precio,
+          producto.cantidad
+        ]);
+        queries.push(detalleQuery);
+      }
+  
+      return Promise.all(queries);  // Ejecutar todas las inserciones en detalleventas
+    }).catch((error) => {
+      console.error('Error al guardar la venta:', error);
+    });
+  }
+
 
 }
 
