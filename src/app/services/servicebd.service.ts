@@ -134,7 +134,7 @@ export class ServicebdService {
     this.platform.ready().then(()=>{
       //crear la Base de Datos
       this.sqlite.create({
-        name: 'zapatillas.db',
+        name: 'KickSport.db',
         location: 'default'
       }).then((db: SQLiteObject)=>{
         //capturar la conexion a la BD
@@ -151,8 +151,12 @@ export class ServicebdService {
   async crearTablas() {
     try {
 
-
-
+      //Eliminar un base de datos mal creada
+      //despues de borrarla se tiene que borrar estas lineas y ejecutar nuevamente
+      //await this.eliminarBaseDatos('zapatillas.db');
+      //await this.eliminarBaseDatos('KikSport.db');
+  
+      // Luego, creamos las tablas
       await this.database.executeSql(this.tablaRoles, []);
       await this.database.executeSql(this.tablaCategoriaZapatillas, []);
       await this.database.executeSql(this.tablaMarcaZapatillas, []);
@@ -160,16 +164,27 @@ export class ServicebdService {
       await this.database.executeSql(this.tablaZapatillas, []);
       await this.database.executeSql(this.tablaHistorialPedidos, []);
       
+      // Registros
       await this.database.executeSql(this.registroRoles, []);
       await this.database.executeSql(this.registroCategoriaZapatillas, []);
       await this.database.executeSql(this.registroMarcaZapatillas, []);
       await this.database.executeSql(this.registroUsuario, []);
       await this.database.executeSql(this.registroZapatillas, []);
-  
+    
       this.seleccionarZapatillas();
       this.isDBReady.next(true);
-    } catch(e) {
+    } catch (e) {
       this.presentAlert('Creación de Tablas', 'Error en crear las tablas: ' + JSON.stringify(e));
+    }
+  }
+  
+  // Método para eliminar la base de datos
+  private async eliminarBaseDatos(dbName: string) {
+    try {
+      await this.sqlite.deleteDatabase({ name: dbName, location: 'default' });
+      console.log(`Base de datos ${dbName} eliminada con éxito`);
+    } catch (e) {
+      console.error(`Error al eliminar la base de datos ${dbName}:`, e);
     }
   }
 
