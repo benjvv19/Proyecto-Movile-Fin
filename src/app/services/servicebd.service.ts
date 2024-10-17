@@ -22,23 +22,47 @@ export class ServicebdService {
   tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, apellido TEXT NOT NULL, id_rol INTEGER NOT NULL, correo TEXT NOT NULL, telefono TEXT NOT NULL, contrasena TEXT NOT NULL, FOREIGN KEY (id_rol) REFERENCES roles(id_rol));`; registroUsuarios: string = `INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Adminn', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario');";
 
   
-  tablaInventario: string = "CREATE TABLE IF NOT EXISTS inventario (id_inventario INTEGER PRIMARY KEY autoincrement,id_zapatilla INTEGER NOT NULL,cantidad_disponible INTEGER NOT NULL,ultima_actualizacion TEXT NOT NULL,FOREIGN KEY (id_zapatilla) REFERENCES zapatillas(id_zapatilla));";
   tablaCategoriaZapatillas: string = "CREATE TABLE IF NOT EXISTS categoria_zapatillas (id_categoria INTEGER PRIMARY KEY autoincrement,nombre_categoria TEXT NOT NULL);";
   tablaMarcaZapatillas: string = "CREATE TABLE IF NOT EXISTS marca_zapatillas (id_marca INTEGER PRIMARY KEY autoincrement,nombre_marca TEXT NOT NULL);";
   
-  tablaMetodosPago: string = "CREATE TABLE IF NOT EXISTS metodos_pago (id_metodo_pago INTEGER PRIMARY KEY autoincrement,nombre_metodo TEXT NOT NULL,descripcion TEXT);";
   tablaHistorialPedidos: string = "CREATE TABLE IF NOT EXISTS historial_pedidos (id_historial INTEGER PRIMARY KEY autoincrement,id_pedido INTEGER NOT NULL,estado_anterior TEXT NOT NULL,estado_nuevo TEXT NOT NULL,fecha_cambio TEXT NOT NULL,FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido));";
   //
 
 
   //varibles de insert por defecto de nuestras tablas
-  registroZapatillas: string = "INSERT or IGNORE INTO zapatillas (id_zapatilla, nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria,stock)VALUES(1,'soy un nombre','soy una descripcion','https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 100, 'jordan', 1,100),(2,'soy un nombre','soy una descripcion','https://i.postimg.cc/Wpy0d8Hd/adidas-hoops-nino.webp',200, 'adidas', 2,200)";
+  registroZapatillas: string = `
+  INSERT or IGNORE INTO zapatillas 
+  (id_zapatilla, nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria, stock) 
+  VALUES 
+  (1, 'ZAPATILLAS ADIDAS BREAKNET JUNIOR HOMBRE', '¡Domina la cancha con estilo con las zapatillas adidas Breaknet Junior para niños!', 'https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 41999, 'Adidas', 1, 50),
+  (2, 'ZAPATILLAS ADIDAS HOOPS 3.0', '¡Prepárate para marcar la diferencia en el juego con las zapatillas adidas Hoops 3.0 para niños!', 'https://i.postimg.cc/m2FCC9v8/adidas-hoops-nino.webp', 54999, 'Adidas', 1, 30),
+  (3, 'ZAPATILLAS ADIDAS HOOPS 2.0', '¡Prepárate para marcar la diferencia en el juego con las zapatillas adidas Hoops 2.0 para niños!', 'https://i.postimg.cc/m2FCC9v8/adidas-hoops-nino2.webp', 66999, 'Adidas', 1, 20),
+  (4, 'ZAPATILLAS ADIDAS HOOPS 3.0 BLANCA', '¡Prepárate para brillar en la cancha con las zapatillas adidas Hoops 3.0 blancas para niños!', 'https://i.postimg.cc/13h6HtPP/adidas-hoops-nino3.webp', 32999, 'Adidas', 1, 65),
+
+  (5, 'ZAPATILLAS PUMA KARMEN REBELLE', '¡Haz que tus pequeños destaquen con actitud con las zapatillas Puma Karmen Rebelle!', 'https://i.postimg.cc/JhKkM5X4/puma-karmen-nino.webp', 31999, 'Puma', 1, 71),
+  (6, 'ZAPATILLAS PUMA PAW PATROL INFANTIL AZUL', '¡Prepárate para la aventura con las zapatillas Puma Paw Patrol infantiles en azul!', 'https://i.postimg.cc/k4pRtMw0/puma-paw-nino.webp', 70999, 'Puma', 1, 41),
+  (7, 'ZAPATILLAS PUMA REBOUND V6 MID', '¡Eleva su estilo y juego con las zapatillas Puma Rebound V6 Mid para niños!', 'https://i.postimg.cc/zD4psq52/puma-rebound-nino.webp', 50999, 'Puma', 1, 22),
+  (8, 'ZAPATILLAS PUMA REBOUND V6', '¡Prepárate para elevar su estilo y juego con las zapatillas Puma Rebound V6 para niños!', 'https://i.postimg.cc/sfMwHMFZ/puma-reboud-nino.webp', 44999, 'Puma', 1, 12),
+
+
+  (9, 'ZAPATILLA ADIDAS RACER TR21 HOMBRE', '¡Domina tu carrera con las zapatillas Adidas Racer TR21 para hombre!', 'https://i.postimg.cc/d0F2q0Sn/adidad-3.webp', 60999, 'Adidas', 3, 43),
+  (10, 'ZAPATILLAS ADIDAS HOOPS 3.0  BLANCO', '¡Eleva tu estilo urbano con las Zapatillas Adidas Hoops 3.0 para Hombre en Blanco!', 'https://i.postimg.cc/1XbFbRqG/ADIDAS-BLANCA.webp', 63999, 'Adidas', 3, 4),
+  (11, 'ZAPATILLAS ADIDAS HOOPS 3.0 HOMBRE', '¡Eleva tu estilo urbano con las Zapatillas Adidas Hoops 3.0 para Hombre en Negras!', 'https://i.postimg.cc/KY5n4y6b/adidas-1.webp', 78999, 'Adidas', 3, 53),
+  (12, 'ZAPATILLAS ADIDAS TERREX EASTRAIL HOMBRE', '¡Explora la naturaleza con confianza con las zapatillas Adidas Terrex!', 'https://i.postimg.cc/mDXCNyZ6/ADIDAS-TTR.webp', 45990, 'Adidas', 3, 13),
+  
+  (13, 'ZAPATILLAS VANS KNU MID HOMBRE', '¡Dale a tus pasos un toque de estilo con las Zapatillas Vans!', 'https://i.postimg.cc/VkWR0Mt2/vans-baja.webp', 69999, 'Vans', 3, 43),
+  (14, 'ZAPATILLAS PUMA CALI CANVAS MUJER', '¡Deslumbra con estilo en cada paso con las zapatillas Puma Cali Canvas para mujeres!', 'https://i.postimg.cc/qvsKZTMK/puma-cali-rosada.webp', 61999, 'Puma', 4, 53),
+  (15, 'ZAPATILLAS PUMA CAVEN 2.0 MUJER', '¡Haz que tus pasos sean una declaración de estilo con las zapatillas Puma Caven 2.0 para mujeres!', 'https://i.postimg.cc/1zyqkjfj/puma-caven-blanca.webp', 86999, 'Puma', 4, 83),
+  (16, 'ZAPATILLAS KARMEN REBELLE MUJER', '¡Desata tu rebeldía con las zapatillas Karmen Rebelle para mujeres!', 'https://i.postimg.cc/855r5fdd/puma-karmen-rosada.webp', 47999, 'Puma', 4, 19),
+  (17, 'ZAPATILLAS PUMA RBD MUJER', '¡Destaca con estilo con las zapatillas Puma RBD para mujeres!', 'https://i.postimg.cc/hhFJpCkM/PUMA-RBD.webp', 77999, 'Puma', 4, 69);
+  `;  
+
   registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario')";
   registroRoles: string ="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
   registroInventario: string ="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
   registroHistorialPedidos: string ="INSERT or IGNORE INTO historial_pedidos (id_historial, id_pedido, estado_anterior, estado_nuevo, fecha_cambio) VALUES (1, 1, 'Pendiente', 'Recibido', '2023-10-01')";
-  registroMarcaZapatillas: string ="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'adidas'),(2,'nike')";
-  registroCategoriaZapatillas: string ="INSERT or IGNORE INTO categoria_zapatillas (id_categoria, nombre_categoria) VALUES (1,'niño'),(2,'niña'),(3,'hombre'),(4,'mujer')";
+  registroMarcaZapatillas: string ="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'Adidas'),(2,'Nike'),(3,'Puma'),(4,'Vans')";
+  registroCategoriaZapatillas: string ="INSERT or IGNORE INTO categoria_zapatillas (id_categoria, nombre_categoria) VALUES (1,'Niño'),(2,'Niña'),(3,'Hombre'),(4,'Mujer')";
 
 
 
@@ -126,14 +150,14 @@ export class ServicebdService {
   
   async crearTablas() {
     try {
-      await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
+
+
+
       await this.database.executeSql(this.tablaRoles, []);
       await this.database.executeSql(this.tablaCategoriaZapatillas, []);
       await this.database.executeSql(this.tablaMarcaZapatillas, []);
       await this.database.executeSql(this.tablaUsuarios, []);
       await this.database.executeSql(this.tablaZapatillas, []);
-      await this.database.executeSql(this.tablaInventario, []);
-      await this.database.executeSql(this.tablaMetodosPago, []);
       await this.database.executeSql(this.tablaHistorialPedidos, []);
       
       await this.database.executeSql(this.registroRoles, []);

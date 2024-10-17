@@ -1,11 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .cart-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start; /* Asegura que los elementos se alineen al inicio */
   align-items: center;
-  height: 100vh;
-  text-align: center;
   padding: 20px;
+  overflow: hidden; /* Oculta cualquier desbordamiento */
+  flex: 1; /* Permite que el contenedor ocupe el espacio restante */
 }
 
 .empty-cart-message {
@@ -27,12 +33,18 @@
 
 .productos-list {
   width: 100%;
-  max-width: 450px;
-  margin-bottom: 20px;
+  max-width: 500px; /* Aumenta el ancho de la lista para no cortar las imágenes */
+  margin-top: 3rem;
+  margin-bottom: 14rem;
+  flex: 1; /* Permite que la lista ocupe el espacio disponible */
+  overflow-y: auto; /* Permite scroll para los productos */
+  border: 1px solid black; /* Añadir borde negro */
+  border-radius: 5px; /* Añadir un borde redondeado, opcional */
+  padding: 10px; /* Espacio interno para que el contenido no esté pegado al borde */
 }
 
 .producto-item {
-  display: flex; /* Cambiado para mostrar los productos horizontalmente */
+  display: flex; /* Mostrar los productos horizontalmente */
   justify-content: space-between; /* Espacio entre la info del producto y la cantidad */
   border: 1px solid #d9d9d9;
   border-radius: 5px;
@@ -54,12 +66,25 @@
   margin: 0 5px; /* Espacio entre los botones y el contador */
 }
 
+.total-price {
+  font-size: 22px;
+  margin: 10px 0; /* Separación del precio total */
+  font-weight: bold;
+  position: absolute; /* Fija la posición en la parte inferior */
+  bottom: 150px; /* Ajusta la distancia desde la parte inferior para que esté arriba de los botones */
+  left: 50%;
+  transform: translateX(-50%); /* Centra el precio total */
+}
+
 .button-container {
-  width: 100%;
-  max-width: 450px;
+  position: absolute; /* Asegura que los botones se superpongan */
+  bottom: 70px; /* Ajusta este valor si es necesario */
+  left: 0;
+  right: 0;
+  max-width: 480px; /* Asegura el tamaño de los botones */
   display: flex;
   justify-content: space-between;
-  margin-bottom: 50px;
+  margin: 0 20px; /* Margen lateral */
 }
 
 .vaciar-carrito-btn {
@@ -98,22 +123,6 @@
 
 button:focus {
   outline: none;
-}
-
-.total-price {
-  font-size: 22px;
-  margin-top: 20px;
-  font-weight: bold;
-}
-
-.producto-item {
-  display: flex; /* Cambiado para mostrar los productos horizontalmente */
-  justify-content: space-between; /* Espacio entre la info del producto y la cantidad */
-  border: 1px solid #d9d9d9;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-  text-align: left;
 }
 
 .producto-imagen {
