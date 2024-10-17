@@ -40,6 +40,7 @@ export class ServicebdService {
   id_zapatilla INTEGER NOT NULL,
   precio DECIMAL(10, 2) NOT NULL,
   cantidad INTEGER NOT NULL,
+  imagen_url TEXT NOT NULL,
   FOREIGN KEY (id_venta) REFERENCES ventas(id_venta),
   FOREIGN KEY (id_zapatilla) REFERENCES zapatillas(id_zapatilla));
   `; 
@@ -465,12 +466,13 @@ export class ServicebdService {
       // Insertar los detalles de los productos
       const queries = [];
       for (const producto of productosCarrito) {
-        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad) VALUES (?, ?, ?, ?)`;
+        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad,imagen_url) VALUES (?, ?, ?, ?,?)`;
         const detalleQuery = this.database.executeSql(queryDetalle, [
           id_venta, // Usar el mismo id_venta para todos los productos
           producto.id_zapatilla,
           producto.precio,
-          producto.cantidad
+          producto.cantidad,
+          producto.imagen_url
         ]);
         queries.push(detalleQuery);
       }

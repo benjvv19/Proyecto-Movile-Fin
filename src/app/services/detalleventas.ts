@@ -3,7 +3,8 @@ export class DetalleVentas {
     id_venta!: number;       
     id_zapatilla!: number;    
     precio!: number;         
-    cantidad!: number;         
+    cantidad!: number;   
+    imagen_url!: string;      
   
 
   }

@@ -17,7 +17,8 @@ export class PagarPage {
   totalPagar: number = 0;
 
   constructor(
-    private router: Router,private storage: NativeStorage,
+    private router: Router,
+    private storage: NativeStorage,
     private alertController: AlertController,
     private navController: NavController,
     private serviceBD: ServicebdService
@@ -34,7 +35,10 @@ export class PagarPage {
     // Obtener los productos del carrito
     const carrito = history.state.productos; // Recibe los productos del carrito
     if (carrito) {
-      this.productosCarrito = carrito;
+      this.productosCarrito = carrito.map((item: any) => ({
+        ...item,
+        imagen_url: item.imagen_url // Asegúrate de que cada producto tenga esta propiedad
+      }));
       this.calcularTotal(); // Calcular el total a pagar
     }
   }
@@ -124,12 +128,13 @@ export class PagarPage {
       // Insertar los detalles de los productos
       const queries = [];
       for (const producto of productosCarrito) {
-        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad) VALUES (?, ?, ?, ?)`;
+        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad, imagen_url) VALUES (?, ?, ?, ?, ?)`;
         const detalleQuery = this.serviceBD.database.executeSql(queryDetalle, [
           id_venta, // Usar el mismo id_venta para todos los productos
           producto.id_zapatilla,
           producto.precio,
-          producto.cantidad
+          producto.cantidad,
+          producto.imagen_url // Ahora incluye la URL de la imagen
         ]);
         queries.push(detalleQuery);
       }
