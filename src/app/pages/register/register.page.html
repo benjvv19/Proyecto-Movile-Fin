@@ -50,7 +50,15 @@
             </ion-input>
           </ion-item>
 
-          <ion-button expand="block" (click)="irLogin()" class="submit-button">Aceptar</ion-button>
+          <div class="photo-button-container">
+            <ion-button class="take-photo-button" (click)="takePicture()">Tomar Foto</ion-button>
+          </div>
+
+          <div class="profile-picture">
+            <img *ngIf="imagen" [src]="imagen" alt="Sin foto" />
+          </div>
+
+          <ion-button expand="block" color="dark" (click)="irLogin()" class="submit-button">Aceptar</ion-button>
 
           <br>
 

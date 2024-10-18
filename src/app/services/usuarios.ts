@@ -6,4 +6,5 @@ export class Usuarios {
     telefono!: string;
     id_rol!: number;
     contrasena!: string;
+    imagen!:string;
   }

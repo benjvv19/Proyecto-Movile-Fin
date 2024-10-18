@@ -2,7 +2,10 @@
   <div class="container">
     <div class="profile-container">
       <div class="profile-picture">
-        <img src="../assets/icon/perfil.jpg" alt="Perfil" />
+        <img *ngIf="usuario?.imagen; else noImage" [src]="usuario?.imagen" alt="Perfil" />
+        <ng-template #noImage>
+          <span>No hay imagen de perfil disponible</span>
+        </ng-template>
       </div>
       <div class="profile-info">
         <div class="info-item">

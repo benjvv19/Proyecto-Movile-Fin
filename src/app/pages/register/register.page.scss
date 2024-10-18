@@ -46,17 +46,19 @@ ion-card {
 
 ion-button {
   margin-bottom: 10px;
-  --background: #000000;
   border-radius: 25px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 7px 20px;
   font-weight: bold;
 }
 
-.aceptar {
-  background-color: #000000;
-  color: white;
-  --box-shadow: none;
+.take-photo-button {
+  width: 100%; /* Asegura que el botón tenga un ancho completo */
+  max-width: 250px; /* Ajusta el max-width según tus necesidades */
+  --background: #000000; /* Fondo negro para el botón */
+  color: white; /* Texto blanco */
+  border-radius: 25px; /* Borde redondeado */
+  padding: 10px; /* Aumenta el padding para mejor clicabilidad */
 }
 
 ion-card-title {
@@ -113,4 +115,18 @@ ion-input {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 20px auto; /* Centrar la imagen en el contenedor */
+}
+
+.profile-picture img {
+  width: 100%; /* Ajustar la imagen al 100% del contenedor */
+  height: 100%; /* Ajustar la imagen al 100% del contenedor */
+  object-fit: cover; /* Mantener la relación de aspecto */
 }

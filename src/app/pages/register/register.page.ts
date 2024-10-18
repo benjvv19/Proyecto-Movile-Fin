@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
+import { Camera, CameraResultType } from '@capacitor/camera';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,9 @@ export class RegisterPage implements OnInit {
   correo: string = "";
   telefono: string = "";
   contrasena: string = "";
+  imagen: any = ""; // Cambiar a tipo string
+
+  private readonly defaultImageUrl: string = '../assets/icon/perfil.jpg'; // URL de la imagen por defecto
 
   constructor(
     private bd: ServicebdService,
@@ -88,18 +92,15 @@ export class RegisterPage implements OnInit {
     await this.onSubmit();
   }
 
- 
   async verificarUsuarioExistente(): Promise<boolean> {
     const usuarioExistente = await this.bd.verificarUsuario(this.correo, this.telefono);
     return usuarioExistente; 
   }
 
- 
   async onSubmit() {
     try {
       await this.insertarUsuario();
 
-    
       const toast = await this.toastController.create({
         message: 'Usuario registrado con éxito',
         color: 'success',
@@ -107,7 +108,6 @@ export class RegisterPage implements OnInit {
       });
       toast.present();
 
-  
       this.router.navigate(['/login']);
     } catch (error) {
       console.error('Error al registrar el usuario:', error);
@@ -115,12 +115,13 @@ export class RegisterPage implements OnInit {
     }
   }
 
- 
+  // Modificar este método para incluir la imagen
   insertarUsuario() {
-    return this.bd.insertarUsuarios(this.nombre, this.apellido,this.correo, this.telefono,this.id_rol, this.contrasena);
+    // Usar la imagen por defecto si no se ha tomado una foto
+    const imagenFinal = this.imagen || this.defaultImageUrl; // Asigna la imagen por defecto si no hay imagen
+    return this.bd.insertarUsuarios(this.nombre, this.apellido, this.correo, this.telefono, this.id_rol, this.contrasena, imagenFinal); // Usar imagenFinal
   }
 
-  
   async presentAlert(titulo: string, msj: string) {
     const alert = await this.alertController.create({
       header: titulo,
@@ -129,4 +130,14 @@ export class RegisterPage implements OnInit {
     });
     await alert.present();
   }
+
+  takePicture = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri
+    });
+  
+    this.imagen = image.webPath; // Asignar la URL de la imagen al campo imagen
+  };
 }

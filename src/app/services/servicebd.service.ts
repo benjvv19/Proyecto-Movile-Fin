@@ -21,7 +21,7 @@ export class ServicebdService {
   //
   tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, imagen_url TEXT NOT NULL, precio INTEGER NOT NULL, nombre_marca TEXT NOT NULL, id_categoria INTEGER NOT NULL,stock INTEGER NOT NULL, FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
   tablaRoles: string = "CREATE TABLE IF NOT EXISTS roles (id_rol INTEGER PRIMARY KEY autoincrement,nombre_rol TEXT NOT NULL);";
-  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, apellido TEXT NOT NULL, id_rol INTEGER NOT NULL, correo TEXT NOT NULL, telefono TEXT NOT NULL, contrasena TEXT NOT NULL, FOREIGN KEY (id_rol) REFERENCES roles(id_rol));`; registroUsuarios: string = `INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Adminn', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario');";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, apellido TEXT NOT NULL, id_rol INTEGER NOT NULL, correo TEXT NOT NULL, telefono TEXT NOT NULL, contrasena TEXT NOT NULL,imagen TEXT NOT NULL, FOREIGN KEY (id_rol) REFERENCES roles(id_rol));`; registroUsuarios: string = `INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Adminn', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario');";
 
   
   tablaCategoriaZapatillas: string = "CREATE TABLE IF NOT EXISTS categoria_zapatillas (id_categoria INTEGER PRIMARY KEY autoincrement,nombre_categoria TEXT NOT NULL);";
@@ -77,7 +77,7 @@ export class ServicebdService {
   (17, 'ZAPATILLAS PUMA RBD MUJER', '¡Destaca con estilo con las zapatillas Puma RBD para mujeres!', 'https://i.postimg.cc/hhFJpCkM/PUMA-RBD.webp', 77999, 'Puma', 4, 69);
   `;  
 
-  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129681', 'admin'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario')";
+  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena,imagen) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129681', 'admin','https://i.postimg.cc/1zyqkjfj/puma-caven-blanca.webp'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129681', 'usuario','https://i.postimg.cc/zD4psq52/puma-rebound-nino.webp')";
   registroRoles: string ="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
   registroInventario: string ="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
   registroMarcaZapatillas: string ="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'Adidas'),(2,'Nike'),(3,'Puma'),(4,'Vans')";
@@ -182,6 +182,7 @@ export class ServicebdService {
       await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
 
       // Luego, creamos las tablas
       await this.database.executeSql(this.tablaRoles, []);
@@ -361,7 +362,8 @@ export class ServicebdService {
             correo: res.rows.item(i).correo,
             telefono: res.rows.item(i).telefono,
             id_rol: res.rows.item(i).id_rol,
-            contrasena: res.rows.item(i).contrasena
+            contrasena: res.rows.item(i).contrasena,
+            imagen: res.rows.item(i).imagen
           });
         }
       }
@@ -371,8 +373,8 @@ export class ServicebdService {
 
 
 
-  insertarUsuarios(nombre: string, apellido: string, correo: string, telefono: string, id_rol: number, contrasena: string) {
-    return this.database.executeSql('INSERT INTO usuario(nombre, apellido, correo, telefono, id_rol, contrasena) VALUES (?, ?, ?, ?, ?, ?)', [nombre, apellido, correo, telefono, id_rol, contrasena]).then(res => {
+  insertarUsuarios(nombre: string, apellido: string, correo: string, telefono: string, id_rol: number, contrasena: string,imagen:string) {
+    return this.database.executeSql('INSERT INTO usuario(nombre, apellido, correo, telefono, id_rol, contrasena,imagen) VALUES (?, ?, ?, ?, ?, ?,?)', [nombre, apellido, correo, telefono, id_rol, contrasena,imagen]).then(res => {
       this.seleccionarUsuarios();
     }).catch(e => {
       this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
@@ -393,7 +395,10 @@ export class ServicebdService {
             correo: res.rows.item(0).correo,
             telefono: res.rows.item(0).telefono,
             id_rol: res.rows.item(0).id_rol,
-            contrasena: res.rows.item(0).contrasena
+            contrasena: res.rows.item(0).contrasena,
+            imagen: res.rows.item(0).imagen
+
+
           };
           return usuario; // Devolver el usuario encontrado
         }
@@ -435,7 +440,9 @@ export class ServicebdService {
             correo: res.rows.item(0).correo,
             telefono: res.rows.item(0).telefono,
             id_rol: res.rows.item(0).id_rol,
-            contrasena: res.rows.item(0).contrasena
+            contrasena: res.rows.item(0).contrasena,
+            imagen: res.rows.item(0).imagen
+
           };
           return usuario;
         }
