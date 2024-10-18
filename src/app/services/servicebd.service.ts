@@ -179,10 +179,12 @@ export class ServicebdService {
       //despues de borrarla se tiene que borrar estas lineas y ejecutar nuevamente
       //await this.eliminarBaseDatos('zapatillas.db');
       //await this.eliminarBaseDatos('KikSport.db');
-      await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+
+      //Eliminar tablas para cambiar informacion de estas
+      //await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
 
       // Luego, creamos las tablas
       await this.database.executeSql(this.tablaRoles, []);

@@ -53,10 +53,8 @@
           <div class="photo-button-container">
             <ion-button class="take-photo-button" (click)="takePicture()">Tomar Foto</ion-button>
           </div>
-
-          <div class="profile-picture">
-            <img *ngIf="imagen" [src]="imagen" alt="Sin foto" />
-          </div>
+          
+          <img *ngIf="imagen" [src]="imagen" alt="Sin foto" style="width: 120px;height: 120px;border-radius: 50%;overflow: hidden;margin: 20px auto; display: block;"/>
 
           <ion-button expand="block" color="dark" (click)="irLogin()" class="submit-button">Aceptar</ion-button>
 
