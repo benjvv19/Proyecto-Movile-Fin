@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; // Importar Router
+import { Router, NavigationEnd } from '@angular/router'; // Importar Router y NavigationEnd
 import { ServicebdService } from 'src/app/services/servicebd.service';
 import { Usuarios } from 'src/app/services/usuarios';
+import { filter } from 'rxjs/operators'; // Importar filter
 
 @Component({
   selector: 'app-perfil',
@@ -11,10 +12,17 @@ import { Usuarios } from 'src/app/services/usuarios';
 export class PerfilPage implements OnInit {
   usuario: Usuarios | null = null;
 
-  constructor(private serviceBD: ServicebdService, private router: Router) {} 
+  constructor(private serviceBD: ServicebdService, private router: Router) {}
 
   ngOnInit() {
     this.cargarPerfil();
+
+    // Suscribirse a los eventos de navegación
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd)) // Filtrar eventos NavigationEnd
+      .subscribe(() => {
+        this.cargarPerfil(); // Cargar perfil cada vez que se termina una navegación
+      });
   }
 
   async cargarPerfil() {
