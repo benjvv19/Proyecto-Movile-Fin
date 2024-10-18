@@ -32,7 +32,7 @@ export class AppComponent {
 
   cerrar() {
     this.storage.remove('productos_carrito')
- 
+
   
     // Redirigir a la página de inicio o de login, si es necesario
     this.router.navigate(['/login']); // Cambia la ruta según tu lógica
