@@ -96,9 +96,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/boletas/boletas.module').then( m => m.BoletasPageModule)
   },
   {
+    path: 'detalleboletas/:id_venta',
+    loadChildren: () => import('./pages/detalleboletas/detalleboletas.module').then( m => m.DetalleboletasPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'notfound'
   },
+
 
 ];
 

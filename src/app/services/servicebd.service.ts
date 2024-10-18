@@ -538,6 +538,55 @@ export class ServicebdService {
     });
   }
   
+
+BuscarBoleta(id_venta: number) {
+  return this.database.executeSql(`
+    SELECT 
+      dv.*, 
+      z.nombre, 
+      z.imagen_url, 
+      m.nombre_marca, 
+      c.nombre_categoria
+    FROM 
+      detalle_ventas dv
+    JOIN 
+      zapatillas z ON dv.id_zapatilla = z.id_zapatilla
+    JOIN 
+      marca_zapatillas m ON z.nombre_marca = m.nombre_marca 
+    JOIN 
+      categoria_zapatillas c ON z.id_categoria = c.id_categoria 
+    WHERE 
+      dv.id_venta = ?`, [id_venta]).then(res => {
+    
+    // Variable para almacenar el resultado de la consulta
+    let items: DetalleVentas[] = [];
+    
+    // Valido si trae al menos un registro
+    if (res.rows.length > 0) {
+      // Recorro mi resultado
+      for (var i = 0; i < res.rows.length; i++) {
+        // Agrego los registros a mi lista, incluyendo los nombres de marca y categoría
+        items.push({
+          id_detalle: res.rows.item(i).id_detalle,
+          id_venta: res.rows.item(i).id_venta,
+          id_zapatilla: res.rows.item(i).id_zapatilla,
+          precio: res.rows.item(i).precio,
+          cantidad: res.rows.item(i).cantidad,
+          imagen_url: res.rows.item(i).imagen_url,
+          nombre_zapatilla: res.rows.item(i).nombre, // Nombre de la zapatilla
+          nombre_marca: res.rows.item(i).nombre_marca, // Nombre de la marca
+          nombre_categoria: res.rows.item(i).nombre_categoria // Nombre de la categoría
+        });
+      }
+    }
+    // Actualizar el observable
+    this.listadoDetalleVentas.next(items as any);
+  }).catch(error => {
+    console.error('Error al buscar la boleta:', error);
+    // Manejar el error según sea necesario
+  });
+}
+
 }
 
 

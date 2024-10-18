@@ -26,7 +26,7 @@ export class BoletasPage implements OnInit {
     });
   }
 
-  verDetalles(id: number) {
-    this.router.navigate(['/boletadetalles', id]); // Navegar a los detalles de la boleta
+  verDetalles(id_venta: number) {
+    this.router.navigate(['/detalleboletas', id_venta]);
   }
 }
