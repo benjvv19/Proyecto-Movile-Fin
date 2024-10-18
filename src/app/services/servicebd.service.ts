@@ -100,7 +100,7 @@ export class ServicebdService {
 
   constructor(private sqlite: SQLite, private platform: Platform, private alertController: AlertController) {
     this.createBD();
-   }
+  }
 
   async presentAlert(titulo: string, msj:string) {
     const alert = await this.alertController.create({
@@ -223,9 +223,9 @@ export class ServicebdService {
   seleccionarZapatillas(){
     return this.database.executeSql('SELECT * FROM zapatillas', []).then(res=>{
        //variable para almacenar el resultado de la consulta
-       let items: Zapatillas[] = [];
+      let items: Zapatillas[] = [];
        //valido si trae al menos un registro
-       if(res.rows.length > 0){
+      if(res.rows.length > 0){
         //recorro mi resultado
         for(var i=0; i < res.rows.length; i++){
           //agrego los registros a mi lista
@@ -243,9 +243,9 @@ export class ServicebdService {
           })
         }
         
-       }
+      }
        //actualizar el observable
-       this.listadoZapatillas.next(items as any);
+      this.listadoZapatillas.next(items as any);
 
     })
   }
@@ -351,7 +351,7 @@ export class ServicebdService {
  ////////////////////////////////////////////////Usuarios////////////////////////////////////////////////////////////////////
 
 
- 
+
 
   seleccionarUsuarios() {
     return this.database.executeSql('SELECT * FROM usuarios', []).then(res => {
