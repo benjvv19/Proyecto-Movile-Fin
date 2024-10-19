@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DetalleVentas } from 'src/app/services/detalleventas';
 import { ServicebdService } from 'src/app/services/servicebd.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -15,7 +16,8 @@ export class DetalleboletasPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private bd: ServicebdService
+    private bd: ServicebdService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -53,5 +55,7 @@ export class DetalleboletasPage implements OnInit {
     return this.detallesVenta.reduce((total, detalle) => total + (detalle.precio * detalle.cantidad), 0);
   }
 
-
+  volver() {
+    this.router.navigate(['/boletas']);
+  }
 }

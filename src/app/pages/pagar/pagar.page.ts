@@ -54,31 +54,31 @@ export class PagarPage {
     const expiryDate = form.value.expiryDate;
     const cardType = form.value.cardType;
     const cvv = form.value.cvv;
-
+  
     const cardNumberPattern = /^\d{4} \d{4} \d{4} \d{4}$/;
     const expiryDatePattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
-    const cvvPattern = /^\d{3}$/; // Expresión regular para 3 dígitos
-
+    const cvvPattern = /^\d{3}$/; 
+  
     let isExpiryDateValid = false;
     if (expiryDatePattern.test(expiryDate)) {
       const [month, year] = expiryDate.split('/');
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear() % 100;
       const currentMonth = currentDate.getMonth() + 1;
-
+  
       if (parseInt(year) > currentYear || (parseInt(year) === currentYear && parseInt(month) >= currentMonth)) {
         isExpiryDateValid = true;
       }
     }
-
+  
     const isCardTypeSelected = !!cardType;
-
+  
     const isNameValid = this.usuario 
       ? this.nombreTitular.trim().toLowerCase() === `${this.usuario.nombre} ${this.usuario.apellido}`.toLowerCase() 
       : false;
-
+  
     const isCvvValid = cvvPattern.test(cvv); // Verifica que el CVV sea válido
-
+  
     if (form.valid && cardNumberPattern.test(cardNumber) && isExpiryDateValid && isCardTypeSelected && isNameValid && isCvvValid) {
       // Guardar la venta en la base de datos
       const ventaData = {
@@ -86,26 +86,27 @@ export class PagarPage {
         fecha: new Date().toISOString().slice(0, 19).replace('T', ' '),
         total: this.totalPagar,
       };
-
+  
       await this.guardarVenta(ventaData, this.productosCarrito); 
-
+  
       this.productosCarrito = [];
       await this.storage.setItem('productos_carrito', this.productosCarrito);
-
+  
       const alert = await this.alertController.create({
         header: 'Pago exitoso',
         message: 'Su pago ha sido procesado con éxito.',
         buttons: ['OK'],
       });
       await alert.present();
-
-
+  
       form.reset();
       this.navController.navigateBack('/boletas');
     } else {
       let errorMessage = 'Por favor, complete todos los campos correctamente.';
-
-      if (!isExpiryDateValid) {
+  
+      if (!cvv) {
+        errorMessage = 'El CVV no puede estar vacío.'; // Verifica si el CVV está vacío
+      } else if (!isExpiryDateValid) {
         errorMessage = 'La fecha de expiración no es válida o está vencida.';
       } else if (!isCardTypeSelected) {
         errorMessage = 'Debe seleccionar un tipo de tarjeta.';
@@ -114,7 +115,7 @@ export class PagarPage {
       } else if (!isCvvValid) {
         errorMessage = 'El CVV debe ser de 3 dígitos.'; 
       }
-
+  
       const alert = await this.alertController.create({
         header: 'Error',
         message: errorMessage,

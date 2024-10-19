@@ -29,4 +29,6 @@ export class BoletasPage implements OnInit {
   verDetalles(id_venta: number) {
     this.router.navigate(['/detalleboletas', id_venta]);
   }
+
+  
 }

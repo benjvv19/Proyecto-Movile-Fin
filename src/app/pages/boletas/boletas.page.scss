@@ -1,5 +1,25 @@
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 16px; /* Espacio entre las tarjetas */
+    padding: 16px;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+    }
+}
+
 .card {
-    width: 190px;
+    width: auto; /* Cambiar a auto para que se ajuste al ancho de la columna */
     height: auto;
     border-radius: 20px;
     background: #e0e0e0;
@@ -9,6 +29,11 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    transition: transform 0.2s; /* Transición suave para el hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
 }
 
 ion-card-title {
@@ -36,30 +61,13 @@ ion-card-content {
     gap: 10px; 
 }
 
-.cards-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 16px;
-    justify-content: center;
-}
-
-@media (max-width: 768px) {
-    .cards-container {
-        grid-template-columns: repeat(1, 1fr);
-    }
-}
-
 ion-toolbar {
     --background-color: black !important;
 }
+
 .no-boletas-message {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%; /* Ajusta esto si necesitas un tamaño específico */
     text-align: center;
+    margin-top: 20px;
     font-size: 18px;
-    color: #666;
-    padding: 16px;
+    color: #666; /* Color de texto */
 }

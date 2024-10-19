@@ -34,3 +34,16 @@
     font-size: 16px; /* Tamaño del texto para el número y correo */
     color: #555; /* Color del texto, más tenue */
   }
+
+
+
+.volver-container {
+    margin-top: 3rem; /* Espaciado de 10 rem arriba */
+    padding: 16px; /* Espaciado interno opcional */
+}
+
+.volver-container ion-button {
+    --border-radius: 20px; /* Ajustar el radio de borde para bordes redondeados */
+    --background: #3880ff; /* Color de fondo del botón */
+    --color: white; /* Color del texto del botón */
+}
