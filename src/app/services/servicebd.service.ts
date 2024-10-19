@@ -470,6 +470,15 @@ export class ServicebdService {
   }
 
 
+  actualizarContrasena(correo: string, nuevaContrasena: string): Promise<boolean> {
+    return this.database.executeSql(
+      'UPDATE usuario SET contrasena = ? WHERE correo = ?',
+      [nuevaContrasena, correo]
+    ).then(result => {
+      return result.rowsAffected > 0; // Retorna true si se actualizó la contraseña
+    });
+}
+
   verificarCorreo(correo: string, id_usuario: number): Promise<boolean> {
     return this.database.executeSql(
       'SELECT * FROM usuario WHERE correo = ? AND id_usuario <> ?',

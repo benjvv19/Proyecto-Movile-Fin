@@ -53,3 +53,13 @@ ion-card-content {
 ion-toolbar {
     --background-color: black !important;
 }
+.no-boletas-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ajusta esto si necesitas un tamaño específico */
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    padding: 16px;
+}

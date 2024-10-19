@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <div class="cards-container">
+  <div class="cards-container" *ngIf="arregloBoletas.length > 0; else noBoletas">
     <ion-card *ngFor="let boleta of arregloBoletas" class="card">
       <ion-card-header>
         <ion-card-subtitle>{{ boleta.fecha | date:'dd/MM/yyyy' }}</ion-card-subtitle>
@@ -20,4 +20,9 @@
       </div>
     </ion-card>
   </div>
+  <ng-template #noBoletas>
+    <div class="no-boletas-message">
+      <p>No existe ninguna compra realizada.</p>
+    </div>
+  </ng-template>
 </ion-content>
