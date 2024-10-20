@@ -181,10 +181,10 @@ export class ServicebdService {
       //await this.eliminarBaseDatos('KikSport.db');
 
       //Eliminar tablas para cambiar informacion de estas
-      await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
 
       // Luego, creamos las tablas
       await this.database.executeSql(this.tablaRoles, []);
@@ -252,7 +252,7 @@ export class ServicebdService {
 
   eliminarZapatillas(id:number){
     return this.database.executeSql('DELETE FROM zapatillas WHERE id_zapatilla = ?',[id]).then(res=>{
-      this.presentAlert("Buscar","Zapatilla Encontrada");
+      this.presentAlert("Eliminar","Zapatilla Eliminada");
       this.seleccionarZapatillas();
     }).catch(e=>{
       this.presentAlert('Buscar', 'Error: ' + JSON.stringify(e));

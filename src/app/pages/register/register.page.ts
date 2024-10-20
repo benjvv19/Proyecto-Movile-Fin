@@ -15,7 +15,8 @@ export class RegisterPage implements OnInit {
   id_rol: number = 2;
   correo: string = "";
   telefono: string = "";
-  contrasena: string = "";
+  contrasena1: string = ""; // Contraseña 1
+  contrasena2: string = ""; // Contraseña 2
   imagen: any = ""; // Cambiar a tipo string
 
   private readonly defaultImageUrl: string = '../assets/icon/perfil.jpg'; // URL de la imagen por defecto
@@ -38,7 +39,7 @@ export class RegisterPage implements OnInit {
   // Validar formulario y mostrar alertas si es necesario
   async irLogin() {
     // Verificar que todos los campos estén completos
-    if (!this.nombre || !this.apellido || !this.telefono || !this.correo || !this.contrasena) {
+    if (!this.nombre || !this.apellido || !this.telefono || !this.correo || !this.contrasena1 || !this.contrasena2) {
       this.presentAlert('Campos incompletos', 'Por favor, complete todos los campos.');
       return;
     }
@@ -68,33 +69,40 @@ export class RegisterPage implements OnInit {
       return;
     }
 
-    // Validar contraseña
-    if (this.contrasena.length < 8) {
+    // Validar contraseñas
+    if (this.contrasena1.length < 8) {
       this.presentAlert('Contraseña corta', 'La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+
+    // Validar que las contraseñas coincidan
+    if (this.contrasena1 !== this.contrasena2) {
+      this.presentAlert('Contraseñas no coinciden', 'Las contraseñas ingresadas no coinciden.');
       return;
     }
 
     // Validar que la contraseña contenga al menos un número, una letra mayúscula, una letra minúscula y un carácter especial
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(this.contrasena)) {
+    if (!passwordRegex.test(this.contrasena1)) {
       this.presentAlert('Contraseña débil', 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.');
       return;
     }
 
-    // Verificar si el usuario ya existe
-    const existeUsuario = await this.verificarUsuarioExistente();
-    if (existeUsuario) {
-      this.presentAlert('Usuario existente', 'El usuario ya está registrado con ese correo o teléfono.');
+    // Verificar si el correo o teléfono ya existen
+    const existeCorreo = await this.bd.verificarCorreo(this.correo, 0); // Usamos 0 ya que es un nuevo registro
+    if (existeCorreo) {
+      this.presentAlert('Correo existente', 'Ya existe un usuario registrado con ese correo.');
       return;
     }
 
-    // Si pasa todas las validaciones y no existe, proceder con el registro
-    await this.onSubmit();
-  }
+    const existeTelefono = await this.bd.verificarTelefono(this.telefono, 0); // Usamos 0 ya que es un nuevo registro
+    if (existeTelefono) {
+      this.presentAlert('Teléfono existente', 'Ya existe un usuario registrado con ese número de teléfono.');
+      return;
+    }
 
-  async verificarUsuarioExistente(): Promise<boolean> {
-    const usuarioExistente = await this.bd.verificarUsuario(this.correo, this.telefono);
-    return usuarioExistente; 
+    // Si pasa todas las validaciones, proceder con el registro
+    await this.onSubmit();
   }
 
   async onSubmit() {
@@ -119,7 +127,7 @@ export class RegisterPage implements OnInit {
   insertarUsuario() {
     // Usar la imagen por defecto si no se ha tomado una foto
     const imagenFinal = this.imagen || this.defaultImageUrl; // Asigna la imagen por defecto si no hay imagen
-    return this.bd.insertarUsuarios(this.nombre, this.apellido, this.correo, this.telefono, this.id_rol, this.contrasena, imagenFinal); // Usar imagenFinal
+    return this.bd.insertarUsuarios(this.nombre, this.apellido, this.correo, this.telefono, this.id_rol, this.contrasena1, imagenFinal); // Usar contrasena1
   }
 
   async presentAlert(titulo: string, msj: string) {

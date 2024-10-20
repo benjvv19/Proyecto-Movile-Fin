@@ -71,8 +71,8 @@
         <button class="button" [routerDirection]="'root'" [routerLink]="shouldShowAdminMenu() ? '/adminproductos' : '/inicio'">
           <ion-icon class="icon" name="home-outline"></ion-icon>
         </button>
-        <button class="button">
-          <ion-icon class="icon" name="search-outline"></ion-icon>
+        <button class="button" [routerDirection]="'root'" [routerLink]="'/boletas'" *ngIf="shouldShowUserMenu() || shouldShowAdminMenu()">
+          <ion-icon class="icon" name="clipboard-outline"></ion-icon>
         </button>
         <button class="button" [routerDirection]="'root'" [routerLink]="'/perfil'" *ngIf="shouldShowUserMenu() || shouldShowAdminMenu()">
           <ion-icon class="icon" name="person-circle-outline"></ion-icon>
@@ -86,3 +86,5 @@
 
   <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>
+
+
