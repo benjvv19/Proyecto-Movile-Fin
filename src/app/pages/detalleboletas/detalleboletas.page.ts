@@ -4,15 +4,14 @@ import { DetalleVentas } from 'src/app/services/detalleventas';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-detalleboletas',
   templateUrl: './detalleboletas.page.html',
   styleUrls: ['./detalleboletas.page.scss'],
 })
 export class DetalleboletasPage implements OnInit {
-  id_venta!: number;  // Variable para almacenar el ID de la venta
-  detallesVenta: DetalleVentas[] = []; // Array para almacenar los detalles de la venta
+  id_venta!: number;
+  detallesVenta: DetalleVentas[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -21,34 +20,29 @@ export class DetalleboletasPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtener el id_venta de los parámetros de la ruta
     this.route.params.subscribe(params => {
-      this.id_venta = +params['id_venta']; // Convertir a número
-      this.BuscarBoleta(this.id_venta); // Llamar al método para obtener detalles
+      this.id_venta = +params['id_venta'];
+      this.BuscarBoleta(this.id_venta);
     });
-    
   }
 
-  // Método para buscar los detalles de la venta
   BuscarBoleta(id_venta: number) {
     this.bd.BuscarBoleta(id_venta).then(() => {
       this.bd.listadoDetalleVentas.subscribe((detalles: DetalleVentas[]) => {
-        this.detallesVenta = detalles; // Asignar los detalles obtenidos a la propiedad
+        this.detallesVenta = detalles;
       });
     }).catch(error => {
       console.error('Error al buscar boleta:', error);
-      // Manejar el error, por ejemplo, mostrando una alerta
     });
   }
 
-
   getImageUrl(url: string): string {
-    return url ? url : 'assets/icon/default-image.jpg'; // Si no hay URL, devuelve la imagen por defecto
+    return url ? url : 'assets/icon/default-image.jpg';
   }
 
   setDefaultImage(event: Event) {
     const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'assets/icon/default-image.jpg'; // Cambia la imagen a la por defecto
+    imgElement.src = 'assets/icon/default-image.jpg';
   }
 
   calcularTotal(): number {
@@ -56,6 +50,11 @@ export class DetalleboletasPage implements OnInit {
   }
 
   volver() {
-    this.router.navigate(['/boletas']);
+    const rolId = parseInt(localStorage.getItem('rolId') || '0', 10);
+    if (rolId === 1) {
+      this.router.navigate(['/boletasadmin']);
+    } else if (rolId === 2) {
+      this.router.navigate(['/boletas']);
+    }
   }
 }

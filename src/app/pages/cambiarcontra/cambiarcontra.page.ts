@@ -79,4 +79,9 @@ export class CambiarcontraPage implements OnInit {
     });
     await toast.present();
   }
+
+  Volver() {
+    this.router.navigate(['/recuperarcontrasena']);
+  }
+
 }

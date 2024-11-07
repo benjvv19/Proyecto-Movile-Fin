@@ -15,7 +15,7 @@ export class RecuperarcontrasenaPage implements OnInit {
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private bd: ServicebdService // Inyectar el servicio
+    private bd: ServicebdService 
   ) {}
 
   ngOnInit() {}
@@ -31,18 +31,17 @@ export class RecuperarcontrasenaPage implements OnInit {
       return;
     }
 
-    // Verificar si el correo existe en la base de datos
-    const existeCorreo = await this.bd.verificarCorreo(this.correo, 0); // Se pasa 0 ya que no se necesita id_usuario aquí
+    const existeCorreo = await this.bd.verificarCorreo(this.correo, 0); 
     if (!existeCorreo) {
       this.presentAlert('Correo no encontrado', 'No se encontró ningún usuario asociado a este correo.');
       return;
     }
 
-    // Mostrar mensaje de verificación de correo
     this.presentAlert('Verificación de correo', 'Por favor, verifique su correo para recuperar su contraseña.');
 
-    // Redirigir a otra página si es necesario
     this.router.navigate(['/cambiarcontra']);
+    this.correo = "";
+    this.codigo = "";
   }
 
   async presentAlert(titulo: string, msj: string) {

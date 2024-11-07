@@ -17,7 +17,7 @@ export class AppComponent {
     const currentRoute = this.router.url; // Obtener la ruta actual
 
     // Verificar si el rol es válido y que no esté en las rutas de login, registro o recuperar contraseña
-    return rolId !== null && rolId !== '0' && !['/login', '/register', '/recuperarcontrasena'].includes(currentRoute);
+    return rolId !== null && rolId !== '0' && !['/login', '/register', '/recuperarcontrasena','/cambiarcontra'].includes(currentRoute);
   }
 
   shouldShowAdminMenu(): boolean {

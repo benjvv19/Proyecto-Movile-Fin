@@ -1,11 +1,10 @@
 <ion-content class="ion-padding">
   <ion-card>
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">Modificar Producto</ion-card-title>
-    </ion-card-header>
     <ion-card-content class="scrollable-content">
       <form class="add-product-form" (ngSubmit)="onSubmit(productForm)" #productForm="ngForm">
 
+        <br>
+        <br>
         <!-- Descripción -->
         <ion-item>
           <ion-label position="floating">Descripción</ion-label>
@@ -14,13 +13,13 @@
         </ion-item>
         <ion-note *ngIf="productForm.submitted && !descripcion" color="danger">La descripción es obligatoria.</ion-note>
 
-        <!-- Tipo -->
+        <!-- Nombre de la categoría -->
         <ion-item>
-          <ion-label position="floating">Tipo</ion-label>
+          <ion-label position="floating">Nombre de Categoría</ion-label>
           <br>
-          <ion-input placeholder="Ej: (1='niño'/2='niña'/3='hombre'/4='mujer')" [(ngModel)]="id_categoria" name="id_categoria" required></ion-input>
+          <ion-input placeholder="Ingrese el nombre de la categoría" [(ngModel)]="nombre_categoria" name="nombre_categoria" required></ion-input>
         </ion-item>
-        <ion-note *ngIf="productForm.submitted && !id_categoria" color="danger">El tipo es obligatorio.</ion-note>
+        <ion-note *ngIf="productForm.submitted && !nombre_categoria" color="danger">El nombre de la categoría es obligatorio.</ion-note>
 
         <!-- Marca -->
         <ion-item>

@@ -16,7 +16,7 @@ export class AgregarPage {
   imagen_url: string = "";
   precio: any = "";
   nombre_marca: string = "";  // Cambiado de id_marca a nombre_marca
-  id_categoria: any = "";
+  nombre_categoria: string = ""; // Cambiado de id_categoria a nombre_categoria
   stock: any = "";
 
   showError = false;
@@ -37,8 +37,8 @@ export class AgregarPage {
       return;
     }
 
-    if (this.id_categoria < 1 || this.id_categoria > 4) {
-      await this.presentToast('La categoría debe estar entre 1 y 4', 'danger');
+    if (!this.nombre_categoria) {
+      await this.presentToast('Debe ingresar un nombre de categoría', 'danger');
       return;
     }
 
@@ -77,13 +77,14 @@ export class AgregarPage {
 
   // Método de inserción de datos en la base de datos
   insertar() {
+    // Llamamos al servicio para insertar la zapatilla
     this.bd.insertarZapatillas(
       this.nombre, 
       this.descripcion, 
       this.imagen_url, 
       this.precio, 
       this.nombre_marca, 
-      this.id_categoria,
+      this.nombre_categoria,  // Se pasa el nombre de la categoría en lugar del id
       this.stock
     );
   }

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Boletas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="cards-container">
+    <ng-container *ngIf="arregloBoletas.length > 0; else noBoletas">
+      <ion-card *ngFor="let boleta of arregloBoletas" class="card">
+        <ion-card-header>
+          <ion-card-subtitle>{{ boleta.fecha | date:'dd/MM/yyyy' }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Total: {{ boleta.total | currency }}</p>
+        </ion-card-content>
+        <div class="button-group">
+          <ion-button expand="full" color="dark" (click)="verDetalles(boleta.id_venta)">
+            Detalles Boleta
+          </ion-button>
+        </div>
+      </ion-card>
+    </ng-container>
+
+    <ng-template #noBoletas>
+      <div class="no-boletas-message">
+        <p>No existe ninguna boleta.</p>
+      </div>
+    </ng-template>
+  </div>
+</ion-content>

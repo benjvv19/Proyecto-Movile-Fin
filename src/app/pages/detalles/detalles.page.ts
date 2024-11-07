@@ -72,7 +72,6 @@ export class DetallesPage implements OnInit, OnDestroy {
       descripcion: this.zapatilla.descripcion,
       imagen_url: this.zapatilla.imagen_url,
       precio: this.zapatilla.precio,
-      id_categoria: this.zapatilla.id_categoria,
       nombre_marca: this.zapatilla.nombre_marca,
       nombre_categoria: this.zapatilla.nombre_categoria,
       stock: this.zapatilla.stock,

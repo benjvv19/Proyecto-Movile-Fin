@@ -1,0 +1,73 @@
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 16px; /* Espacio entre las tarjetas */
+    padding: 16px;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+    }
+}
+
+.card {
+    width: auto; /* Cambiar a auto para que se ajuste al ancho de la columna */
+    height: auto;
+    border-radius: 20px;
+    background: #e0e0e0;
+    box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s; /* Transición suave para el hover */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
+}
+
+ion-card-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+ion-card-subtitle {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+ion-card-content {
+    padding: 10px 0;
+    width: 100%;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 10px; 
+}
+
+ion-toolbar {
+    --background-color: black !important;
+}
+
+.no-boletas-message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #666; /* Color de texto */
+}

@@ -19,7 +19,7 @@ export class ServicebdService {
   //variables de creacion de tablas
   
   //
-  tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, imagen_url TEXT NOT NULL, precio INTEGER NOT NULL, nombre_marca TEXT NOT NULL, id_categoria INTEGER NOT NULL,stock INTEGER NOT NULL, FOREIGN KEY (id_categoria) REFERENCES categoria_zapatillas(id_categoria));";
+  tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, imagen_url TEXT NOT NULL, precio INTEGER NOT NULL, nombre_marca TEXT NOT NULL, nombre_categoria INTEGER NOT NULL,stock INTEGER NOT NULL);";
   tablaRoles: string = "CREATE TABLE IF NOT EXISTS roles (id_rol INTEGER PRIMARY KEY autoincrement,nombre_rol TEXT NOT NULL);";
   tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, apellido TEXT NOT NULL, id_rol INTEGER NOT NULL, correo TEXT NOT NULL, telefono TEXT NOT NULL, contrasena TEXT NOT NULL,imagen TEXT NOT NULL, FOREIGN KEY (id_rol) REFERENCES roles(id_rol));";
 
@@ -50,32 +50,32 @@ export class ServicebdService {
 
 
   //varibles de insert por defecto de nuestras tablas
-  registroZapatillas: string = `
+registroZapatillas: string = `
   INSERT or IGNORE INTO zapatillas 
-  (id_zapatilla, nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria, stock) 
+  (id_zapatilla, nombre, descripcion, imagen_url, precio, nombre_marca, nombre_categoria, stock) 
   VALUES 
-  (1, 'ZAPATILLAS ADIDAS BREAKNET JUNIOR HOMBRE', '¡Domina la cancha con estilo con las zapatillas adidas Breaknet Junior para niños!', 'https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 41999, 'Adidas', 1, 29),
-  (2, 'ZAPATILLAS ADIDAS HOOPS 3.0', '¡Prepárate para marcar la diferencia en el juego con las zapatillas adidas Hoops 3.0 para niños!', 'https://i.postimg.cc/m2FCC9v8/adidas-hoops-nino.webp', 54999, 'Adidas', 1, 30),
-  (3, 'ZAPATILLAS ADIDAS HOOPS 2.0', '¡Prepárate para marcar la diferencia en el juego con las zapatillas adidas Hoops 2.0 para niños!', 'https://i.postimg.cc/m2FCC9v8/adidas-hoops-nino2.webp', 66999, 'Adidas', 1, 20),
-  (4, 'ZAPATILLAS ADIDAS HOOPS 3.0 BLANCA', '¡Prepárate para brillar en la cancha con las zapatillas adidas Hoops 3.0 blancas para niños!', 'https://i.postimg.cc/13h6HtPP/adidas-hoops-nino3.webp', 32999, 'Adidas', 1, 65),
-
-  (5, 'ZAPATILLAS PUMA KARMEN REBELLE', '¡Haz que tus pequeños destaquen con actitud con las zapatillas Puma Karmen Rebelle!', 'https://i.postimg.cc/JhKkM5X4/puma-karmen-nino.webp', 31999, 'Puma', 1, 71),
-  (6, 'ZAPATILLAS PUMA PAW PATROL INFANTIL AZUL', '¡Prepárate para la aventura con las zapatillas Puma Paw Patrol infantiles en azul!', 'https://i.postimg.cc/k4pRtMw0/puma-paw-nino.webp', 70999, 'Puma', 1, 41),
-  (7, 'ZAPATILLAS PUMA REBOUND V6 MID', '¡Eleva su estilo y juego con las zapatillas Puma Rebound V6 Mid para niños!', 'https://i.postimg.cc/zD4psq52/puma-rebound-nino.webp', 50999, 'Puma', 1, 22),
-  (8, 'ZAPATILLAS PUMA REBOUND V6', '¡Prepárate para elevar su estilo y juego con las zapatillas Puma Rebound V6 para niños!', 'https://i.postimg.cc/sfMwHMFZ/puma-reboud-nino.webp', 44999, 'Puma', 1, 12),
-
-
-  (9, 'ZAPATILLA ADIDAS RACER TR21 HOMBRE', '¡Domina tu carrera con las zapatillas Adidas Racer TR21 para hombre!', 'https://i.postimg.cc/d0F2q0Sn/adidad-3.webp', 60999, 'Adidas', 3, 43),
-  (10, 'ZAPATILLAS ADIDAS HOOPS 3.0  BLANCO', '¡Eleva tu estilo urbano con las Zapatillas Adidas Hoops 3.0 para Hombre en Blanco!', 'https://i.postimg.cc/1XbFbRqG/ADIDAS-BLANCA.webp', 63999, 'Adidas', 3, 4),
-  (11, 'ZAPATILLAS ADIDAS HOOPS 3.0 HOMBRE', '¡Eleva tu estilo urbano con las Zapatillas Adidas Hoops 3.0 para Hombre en Negras!', 'https://i.postimg.cc/KY5n4y6b/adidas-1.webp', 78999, 'Adidas', 3, 53),
-  (12, 'ZAPATILLAS ADIDAS TERREX EASTRAIL HOMBRE', '¡Explora la naturaleza con confianza con las zapatillas Adidas Terrex!', 'https://i.postimg.cc/mDXCNyZ6/ADIDAS-TTR.webp', 45990, 'Adidas', 3, 13),
+  (1, 'ZAPATILLAS ADIDAS BREAKNET JUNIOR HOMBRE', '¡Domina la cancha con estilo con las zapatillas adidas Breaknet Junior para niños!', 'https://i.postimg.cc/hjPVd5nd/adidas-breaknet-nino.webp', 41999, 'Adidas', 'Niño', 29),
+  (2, 'ZAPATILLAS ADIDAS HOOPS 3.0', '¡Prepárate para marcar la diferencia en el juego con las zapatillas adidas Hoops 3.0 para niños!', 'https://i.postimg.cc/m2FCC9v8/adidas-hoops-nino.webp', 54999, 'Adidas', 'Niño', 30),
+  (3, 'ZAPATILLAS ADIDAS HOOPS 2.0', '¡Prepárate para marcar la diferencia en el juego con las zapatillas adidas Hoops 2.0 para niños!', 'https://i.postimg.cc/m2FCC9v8/adidas-hoops-nino2.webp', 66999, 'Adidas', 'Niño', 20),
+  (4, 'ZAPATILLAS ADIDAS HOOPS 3.0 BLANCA', '¡Prepárate para brillar en la cancha con las zapatillas adidas Hoops 3.0 blancas para niños!', 'https://i.postimg.cc/13h6HtPP/adidas-hoops-nino3.webp', 32999, 'Adidas', 'Niño', 65),
   
-  (13, 'ZAPATILLAS VANS KNU MID HOMBRE', '¡Dale a tus pasos un toque de estilo con las Zapatillas Vans!', 'https://i.postimg.cc/VkWR0Mt2/vans-baja.webp', 69999, 'Vans', 3, 43),
-  (14, 'ZAPATILLAS PUMA CALI CANVAS MUJER', '¡Deslumbra con estilo en cada paso con las zapatillas Puma Cali Canvas para mujeres!', 'https://i.postimg.cc/qvsKZTMK/puma-cali-rosada.webp', 61999, 'Puma', 4, 53),
-  (15, 'ZAPATILLAS PUMA CAVEN 2.0 MUJER', '¡Haz que tus pasos sean una declaración de estilo con las zapatillas Puma Caven 2.0 para mujeres!', 'https://i.postimg.cc/1zyqkjfj/puma-caven-blanca.webp', 86999, 'Puma', 4, 83),
-  (16, 'ZAPATILLAS KARMEN REBELLE MUJER', '¡Desata tu rebeldía con las zapatillas Karmen Rebelle para mujeres!', 'https://i.postimg.cc/855r5fdd/puma-karmen-rosada.webp', 47999, 'Puma', 4, 19),
-  (17, 'ZAPATILLAS PUMA RBD MUJER', '¡Destaca con estilo con las zapatillas Puma RBD para mujeres!', 'https://i.postimg.cc/hhFJpCkM/PUMA-RBD.webp', 77999, 'Puma', 4, 69);
-  `;  
+  (5, 'ZAPATILLAS PUMA KARMEN REBELLE', '¡Haz que tus pequeños destaquen con actitud con las zapatillas Puma Karmen Rebelle!', 'https://i.postimg.cc/JhKkM5X4/puma-karmen-nino.webp', 31999, 'Puma', 'Niño', 71),
+  (6, 'ZAPATILLAS PUMA PAW PATROL INFANTIL AZUL', '¡Prepárate para la aventura con las zapatillas Puma Paw Patrol infantiles en azul!', 'https://i.postimg.cc/k4pRtMw0/puma-paw-nino.webp', 70999, 'Puma', 'Niño', 41),
+  (7, 'ZAPATILLAS PUMA REBOUND V6 MID', '¡Eleva su estilo y juego con las zapatillas Puma Rebound V6 Mid para niños!', 'https://i.postimg.cc/zD4psq52/puma-rebound-nino.webp', 50999, 'Puma', 'Niño', 22),
+  (8, 'ZAPATILLAS PUMA REBOUND V6', '¡Prepárate para elevar su estilo y juego con las zapatillas Puma Rebound V6 para niños!', 'https://i.postimg.cc/sfMwHMFZ/puma-reboud-nino.webp', 44999, 'Puma', 'Niño', 12),
+
+  (9, 'ZAPATILLA ADIDAS RACER TR21 HOMBRE', '¡Domina tu carrera con las zapatillas Adidas Racer TR21 para hombre!', 'https://i.postimg.cc/d0F2q0Sn/adidad-3.webp', 60999, 'Adidas', 'Hombre', 43),
+  (10, 'ZAPATILLAS ADIDAS HOOPS 3.0  BLANCO', '¡Eleva tu estilo urbano con las Zapatillas Adidas Hoops 3.0 para Hombre en Blanco!', 'https://i.postimg.cc/1XbFbRqG/ADIDAS-BLANCA.webp', 63999, 'Adidas', 'Hombre', 4),
+  (11, 'ZAPATILLAS ADIDAS HOOPS 3.0 HOMBRE', '¡Eleva tu estilo urbano con las Zapatillas Adidas Hoops 3.0 para Hombre en Negras!', 'https://i.postimg.cc/KY5n4y6b/adidas-1.webp', 78999, 'Adidas', 'Hombre', 53),
+  (12, 'ZAPATILLAS ADIDAS TERREX EASTRAIL HOMBRE', '¡Explora la naturaleza con confianza con las zapatillas Adidas Terrex!', 'https://i.postimg.cc/mDXCNyZ6/ADIDAS-TTR.webp', 45990, 'Adidas', 'Hombre', 13),
+
+  (13, 'ZAPATILLAS VANS KNU MID HOMBRE', '¡Dale a tus pasos un toque de estilo con las Zapatillas Vans!', 'https://i.postimg.cc/VkWR0Mt2/vans-baja.webp', 69999, 'Vans', 'Hombre', 43),
+  (14, 'ZAPATILLAS PUMA CALI CANVAS MUJER', '¡Deslumbra con estilo en cada paso con las zapatillas Puma Cali Canvas para mujeres!', 'https://i.postimg.cc/qvsKZTMK/puma-cali-rosada.webp', 61999, 'Puma', 'Mujer', 53),
+  (15, 'ZAPATILLAS PUMA CAVEN 2.0 MUJER', '¡Haz que tus pasos sean una declaración de estilo con las zapatillas Puma Caven 2.0 para mujeres!', 'https://i.postimg.cc/1zyqkjfj/puma-caven-blanca.webp', 86999, 'Puma', 'Mujer', 83),
+  (16, 'ZAPATILLAS KARMEN REBELLE MUJER', '¡Desata tu rebeldía con las zapatillas Karmen Rebelle para mujeres!', 'https://i.postimg.cc/855r5fdd/puma-karmen-rosada.webp', 47999, 'Puma', 'Mujer', 19),
+  (17, 'ZAPATILLAS PUMA RBD MUJER', '¡Destaca con estilo con las zapatillas Puma RBD para mujeres!', 'https://i.postimg.cc/hhFJpCkM/PUMA-RBD.webp', 77999, 'Puma', 'Mujer', 69);
+`;
+
 
   registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena,imagen) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129682', 'admin','https://i.postimg.cc/1zyqkjfj/puma-caven-blanca.webp'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129683', 'usuario','https://i.postimg.cc/zD4psq52/puma-rebound-nino.webp')";
   registroRoles: string ="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
@@ -183,7 +183,7 @@ export class ServicebdService {
       //Eliminar tablas para cambiar informacion de estas
       //await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
-      //await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
 
       // Luego, creamos las tablas
@@ -288,10 +288,15 @@ export class ServicebdService {
     });
 }
 
-  insertarZapatillas(nombre: string, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, id_categoria: number,stock:number) {
+
+
+  insertarZapatillas(nombre: string, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, nombre_categoria: string,stock:number) {
     this.database.executeSql('INSERT OR IGNORE INTO marca_zapatillas (nombre_marca) VALUES (?)', [nombre_marca])
       .then(() => {
-        return this.database.executeSql('INSERT INTO zapatillas (nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria,stock) VALUES (?, ?, ?, ?, ?, ?,?)', [nombre, descripcion, imagen_url, precio, nombre_marca, id_categoria,stock]);
+        return this.database.executeSql('INSERT INTO categoria_zapatillas (nombre_categoria) VALUES (?)', [nombre_categoria]);
+      })
+      .then(() => {
+        return this.database.executeSql('INSERT INTO zapatillas (nombre, descripcion, imagen_url, precio, nombre_marca, nombre_categoria,stock) VALUES (?, ?, ?, ?, ?, ?,?)', [nombre, descripcion, imagen_url, precio, nombre_marca, nombre_categoria,stock]);
       })
       .then(res => {
         this.presentAlert("Insertar", "Zapatilla Registrada");
@@ -314,7 +319,7 @@ export class ServicebdService {
       JOIN 
         marca_zapatillas m ON z.nombre_marca = m.nombre_marca 
       JOIN 
-        categoria_zapatillas c ON z.id_categoria = c.id_categoria 
+        categoria_zapatillas c ON z.nombre_categoria = c.nombre_categoria 
       WHERE 
         z.id_zapatilla = ?`, [id]).then(res => {
         
@@ -586,55 +591,82 @@ export class ServicebdService {
   }
   
 
-BuscarBoleta(id_venta: number) {
-  return this.database.executeSql(`
-    SELECT 
-      dv.*, 
-      z.nombre, 
-      z.imagen_url, 
-      m.nombre_marca, 
-      c.nombre_categoria
-    FROM 
-      detalle_ventas dv
-    JOIN 
-      zapatillas z ON dv.id_zapatilla = z.id_zapatilla
-    JOIN 
-      marca_zapatillas m ON z.nombre_marca = m.nombre_marca 
-    JOIN 
-      categoria_zapatillas c ON z.id_categoria = c.id_categoria 
-    WHERE 
-      dv.id_venta = ?`, [id_venta]).then(res => {
-    
-    // Variable para almacenar el resultado de la consulta
-    let items: DetalleVentas[] = [];
-    
-    // Valido si trae al menos un registro
-    if (res.rows.length > 0) {
-      // Recorro mi resultado
-      for (var i = 0; i < res.rows.length; i++) {
-        // Agrego los registros a mi lista, incluyendo los nombres de marca y categoría
-        items.push({
-          id_detalle: res.rows.item(i).id_detalle,
-          id_venta: res.rows.item(i).id_venta,
-          id_zapatilla: res.rows.item(i).id_zapatilla,
-          precio: res.rows.item(i).precio,
-          cantidad: res.rows.item(i).cantidad,
-          imagen_url: res.rows.item(i).imagen_url,
-          nombre_zapatilla: res.rows.item(i).nombre, // Nombre de la zapatilla
-          nombre_marca: res.rows.item(i).nombre_marca, // Nombre de la marca
-          nombre_categoria: res.rows.item(i).nombre_categoria // Nombre de la categoría
-        });
+  BuscarBoleta(id_venta: number) {
+    return this.database.executeSql(`
+      SELECT 
+        dv.*, 
+        z.nombre, 
+        z.imagen_url, 
+        m.nombre_marca, 
+        c.nombre_categoria
+      FROM 
+        detalle_ventas dv
+      JOIN 
+        zapatillas z ON dv.id_zapatilla = z.id_zapatilla
+      JOIN 
+        marca_zapatillas m ON z.nombre_marca = m.nombre_marca 
+      JOIN 
+        categoria_zapatillas c ON z.id_categoria = c.id_categoria 
+      WHERE 
+        dv.id_venta = ?`, [id_venta]).then(res => {
+      
+      // Variable para almacenar el resultado de la consulta
+      let items: DetalleVentas[] = [];
+      
+      // Valido si trae al menos un registro
+      if (res.rows.length > 0) {
+        // Recorro mi resultado
+        for (var i = 0; i < res.rows.length; i++) {
+          // Agrego los registros a mi lista, incluyendo los nombres de marca y categoría
+          items.push({
+            id_detalle: res.rows.item(i).id_detalle,
+            id_venta: res.rows.item(i).id_venta,
+            id_zapatilla: res.rows.item(i).id_zapatilla,
+            precio: res.rows.item(i).precio,
+            cantidad: res.rows.item(i).cantidad,
+            imagen_url: res.rows.item(i).imagen_url,
+            nombre_zapatilla: res.rows.item(i).nombre, // Nombre de la zapatilla
+            nombre_marca: res.rows.item(i).nombre_marca, // Nombre de la marca
+            nombre_categoria: res.rows.item(i).nombre_categoria // Nombre de la categoría
+          });
+        }
       }
-    }
-    // Actualizar el observable
-    this.listadoDetalleVentas.next(items as any);
-  }).catch(error => {
-    console.error('Error al buscar la boleta:', error);
-    // Manejar el error según sea necesario
-  });
+      // Actualizar el observable
+      this.listadoDetalleVentas.next(items as any);
+    }).catch(error => {
+      console.error('Error al buscar la boleta:', error);
+      // Manejar el error según sea necesario
+    });
+  }
+
+  seleccionarTodasBoletas() {
+    return this.database.executeSql('SELECT * FROM ventas', []).then(res => {
+      const items: Venta[] = [];
+
+      if (res.rows.length > 0) {
+        for (let i = 0; i < res.rows.length; i++) {
+          items.push({
+            id_venta: res.rows.item(i).id_venta,
+            id_usuario: res.rows.item(i).id_usuario,
+            fecha: res.rows.item(i).fecha,
+            total: res.rows.item(i).total
+          });
+        }
+      }
+
+      this.listadoVentas.next(items as any);
+    })
+    .catch(error => {
+      console.error('Error al seleccionar boletas:', error);
+    });
+  }
+
+
+  
 }
 
-}
+
+
 
 
 

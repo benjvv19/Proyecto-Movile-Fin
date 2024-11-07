@@ -1,8 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar style="--background: black;">
-    <ion-buttons slot="start">
-      <!-- Puedes añadir botones de navegación aquí si es necesario -->
-    </ion-buttons>
+    <ion-buttons slot="start"></ion-buttons>
     <div class="container-input-logo">
       <div class="container-logo">
         <img src="../assets/icon/logo2.jpeg" alt="KickSport Logo" class="logo-app"> 
@@ -54,6 +52,13 @@
           class="aceptar" 
           expand="block">
           Confirmar
+        </ion-button>
+
+        <ion-button 
+          (click)="Volver()" 
+          class="aceptar" 
+          expand="block">
+          Volver
         </ion-button>
       </ion-card-content>
     </ion-card>
