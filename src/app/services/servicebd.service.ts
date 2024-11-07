@@ -260,25 +260,71 @@ registroZapatillas: string = `
   }
 
 
-  modificarZapatillas(id: number, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, id_categoria: number,stock:number) {  
+  modificarZapatillas(id: number, descripcion: string, imagen_url: string, precio: number, nombre_marca: string, nombre_categoria: string, stock: number) {
+    // Verificar si la marca existe
     return this.database.executeSql('SELECT nombre_marca FROM marca_zapatillas WHERE nombre_marca = ?', [nombre_marca]).then(res => {
         if (res.rows.length > 0) {
             const nombre_marca = res.rows.item(0).nombre_marca;
 
-            return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, nombre_marca = ?, id_categoria = ? , stock = ? WHERE id_zapatilla = ?', 
-            [descripcion, imagen_url, precio, nombre_marca, id_categoria,stock, id]).then(() => {
-                this.presentAlert("Modificar", "Zapatilla Modificada");
-                this.seleccionarZapatillas();
+            // Verificar si la categoría existe
+            return this.database.executeSql('SELECT nombre_categoria FROM categoria_zapatillas WHERE nombre_categoria = ?', [nombre_categoria]).then(res => {
+                if (res.rows.length > 0) {
+                    const nombre_categoria = res.rows.item(0).nombre_categoria;
+
+                    // Si la categoría ya existe, actualizamos la zapatilla
+                    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, nombre_marca = ?, nombre_categoria = ? , stock = ? WHERE id_zapatilla = ?', 
+                    [descripcion, imagen_url, precio, nombre_marca, nombre_categoria, stock, id]).then(() => {
+                        this.presentAlert("Modificar", "Zapatilla Modificada");
+                        this.seleccionarZapatillas();
+                    });
+                } else {
+                    // Si la categoría no existe, la insertamos
+                    return this.database.executeSql('INSERT INTO categoria_zapatillas (nombre_categoria) VALUES (?)', [nombre_categoria]).then(() => {
+                        return this.database.executeSql('SELECT nombre_categoria FROM categoria_zapatillas WHERE nombre_categoria = ?', [nombre_categoria]).then(res => {
+                            const nombre_categoria_nueva = res.rows.item(0).nombre_categoria;
+
+                            // Ahora que tenemos la categoría, actualizamos la zapatilla
+                            return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, nombre_marca = ?, nombre_categoria = ? , stock = ? WHERE id_zapatilla = ?', 
+                            [descripcion, imagen_url, precio, nombre_marca, nombre_categoria_nueva, stock, id]).then(() => {
+                                this.presentAlert("Modificar", "Zapatilla Modificada");
+                                this.seleccionarZapatillas();
+                            });
+                        });
+                    });
+                }
             });
         } else {
+            // Si la marca no existe, la insertamos
             return this.database.executeSql('INSERT INTO marca_zapatillas (nombre_marca) VALUES (?)', [nombre_marca]).then(() => {
                 return this.database.executeSql('SELECT nombre_marca FROM marca_zapatillas WHERE nombre_marca = ?', [nombre_marca]).then(res => {
                     const nombre_marca_nueva = res.rows.item(0).nombre_marca;
-                    
-                    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, nombre_marca = ?, id_categoria = ? , stock = ? WHERE id_zapatilla = ?', 
-                    [descripcion, imagen_url, precio,nombre_marca_nueva, id_categoria,stock, id]).then(() => {
-                        this.presentAlert("Modificar", "Zapatilla Modificada");
-                        this.seleccionarZapatillas();
+
+                    // Verificar si la categoría existe
+                    return this.database.executeSql('SELECT nombre_categoria FROM categoria_zapatillas WHERE nombre_categoria = ?', [nombre_categoria]).then(res => {
+                        if (res.rows.length > 0) {
+                            const nombre_categoria = res.rows.item(0).nombre_categoria;
+
+                            // Si la categoría existe, actualizamos la zapatilla
+                            return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, nombre_marca = ?, nombre_categoria = ? , stock = ? WHERE id_zapatilla = ?', 
+                            [descripcion, imagen_url, precio, nombre_marca_nueva, nombre_categoria, stock, id]).then(() => {
+                                this.presentAlert("Modificar", "Zapatilla Modificada");
+                                this.seleccionarZapatillas();
+                            });
+                        } else {
+                            // Si la categoría no existe, la insertamos
+                            return this.database.executeSql('INSERT INTO categoria_zapatillas (nombre_categoria) VALUES (?)', [nombre_categoria]).then(() => {
+                                return this.database.executeSql('SELECT nombre_categoria FROM categoria_zapatillas WHERE nombre_categoria = ?', [nombre_categoria]).then(res => {
+                                    const nombre_categoria_nueva = res.rows.item(0).nombre_categoria;
+
+                                    // Ahora que tenemos tanto la marca como la categoría, actualizamos la zapatilla
+                                    return this.database.executeSql('UPDATE zapatillas SET descripcion = ?, imagen_url = ?, precio = ?, nombre_marca = ?, nombre_categoria = ? , stock = ? WHERE id_zapatilla = ?', 
+                                    [descripcion, imagen_url, precio, nombre_marca_nueva, nombre_categoria_nueva, stock, id]).then(() => {
+                                        this.presentAlert("Modificar", "Zapatilla Modificada");
+                                        this.seleccionarZapatillas();
+                                    });
+                                });
+                            });
+                        }
                     });
                 });
             });
@@ -606,7 +652,7 @@ registroZapatillas: string = `
       JOIN 
         marca_zapatillas m ON z.nombre_marca = m.nombre_marca 
       JOIN 
-        categoria_zapatillas c ON z.id_categoria = c.id_categoria 
+        categoria_zapatillas c ON z.nombre_categoria = c.nombre_categoria 
       WHERE 
         dv.id_venta = ?`, [id_venta]).then(res => {
       

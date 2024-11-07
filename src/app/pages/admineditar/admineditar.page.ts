@@ -13,6 +13,7 @@ export class AdmineditarPage {
 
   zapatilla: any; 
   nombre_marca: string = ""; 
+  nombre_categoria: string = ""; 
 
   showError = false;
 
@@ -21,6 +22,7 @@ export class AdmineditarPage {
       if (this.router.getCurrentNavigation()?.extras.state) {
         this.zapatilla = this.router.getCurrentNavigation()?.extras?.state?.['zapatilla']; 
         this.nombre_marca = this.zapatilla.nombre_marca; 
+        this.nombre_categoria = this.zapatilla.nombre_categoria;
       }
     });
   }
@@ -29,7 +31,7 @@ export class AdmineditarPage {
 
   async onSubmit(form: NgForm) {
     // Validaciones
-    if (!this.zapatilla.descripcion || !this.zapatilla.precio || !this.zapatilla.id_categoria || !this.nombre_marca || !this.zapatilla.stock) {
+    if (!this.zapatilla.descripcion || !this.zapatilla.precio || !this.nombre_categoria || !this.nombre_marca || !this.zapatilla.stock) {
       await this.presentToast('Debe completar todos los datos del producto a modificar', 'danger');
       this.showError = true;
       return;
@@ -45,10 +47,6 @@ export class AdmineditarPage {
       return;
     }
 
-    if (this.zapatilla.id_categoria < 1 || this.zapatilla.id_categoria > 4) {
-      await this.presentToast('La categoría debe estar entre 1 y 4', 'danger');
-      return;
-    }
 
     if (form.valid) {
       this.modificar();
@@ -60,7 +58,7 @@ export class AdmineditarPage {
   }
 
   modificar() {
-    this.bd.modificarZapatillas(this.zapatilla.id_zapatilla, this.zapatilla.descripcion, this.zapatilla.imagen_url, this.zapatilla.precio, this.nombre_marca, this.zapatilla.id_categoria, this.zapatilla.stock);  
+    this.bd.modificarZapatillas(this.zapatilla.id_zapatilla, this.zapatilla.descripcion, this.zapatilla.imagen_url, this.zapatilla.precio, this.nombre_marca, this.nombre_categoria, this.zapatilla.stock);  
   }
 
   // Método reutilizable para mostrar mensajes tipo "toast"
