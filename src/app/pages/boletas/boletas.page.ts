@@ -15,10 +15,11 @@ export class BoletasPage implements OnInit {
 
   ngOnInit() {
     const id_usuario = parseInt(localStorage.getItem('userId') || '0', 10);
+    this.seleccionarBoletas(id_usuario);
   }
 
   seleccionarBoletas(id_usuario: number) {
-    this.bd.seleccionarBoletas(id_usuario).then(() => {
+    this.bd.seleccionarTodasBoletasPorId(id_usuario).then(() => {
       this.bd.listadoVentas.subscribe((ventas: Venta[]) => {
         this.arregloBoletas = ventas; 
       });

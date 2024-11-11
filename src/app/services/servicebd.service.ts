@@ -175,14 +175,16 @@ registroZapatillas: string = `
 
       //Eliminar un base de datos mal creada
       //despues de borrarla se tiene que borrar estas lineas y ejecutar nuevamente
-      //await this.eliminarBaseDatos('zapatillas.db');
+      await this.eliminarBaseDatos('miBaseDeDatos.db');
+
       //await this.eliminarBaseDatos('KikSport.db');
 
       //Eliminar tablas para cambiar informacion de estas
       //await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
-      //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+
 
       // Luego, creamos las tablas
       await this.database.executeSql(this.tablaRoles, []);
@@ -606,16 +608,12 @@ registroZapatillas: string = `
 
 
 
-  seleccionarBoletas(id_usuario: number) {
-    return this.database.executeSql('SELECT * FROM ventas WHERE id_usuario = ?', [id_usuario]).then(res => {
-      // Variable para almacenar el resultado de la consulta
-      let items: Venta[] = [];
-  
-      // Valido si trae al menos un registro
+  seleccionarTodasBoletasPorId(id_usuario: number) {
+    return this.database.executeSql('SELECT * FROM ventas WHERE id_usuario=?', [id_usuario]).then(res => {
+      const items: Venta[] = [];
+
       if (res.rows.length > 0) {
-        // Recorro mi resultado
         for (let i = 0; i < res.rows.length; i++) {
-          // Agrego los registros a mi lista
           items.push({
             id_venta: res.rows.item(i).id_venta,
             id_usuario: res.rows.item(i).id_usuario,
@@ -624,15 +622,14 @@ registroZapatillas: string = `
           });
         }
       }
-  
-      // Actualizar el observable
+
       this.listadoVentas.next(items as any);
     })
     .catch(error => {
       console.error('Error al seleccionar boletas:', error);
-      // Aquí puedes manejar el error, por ejemplo, mostrando una alerta
     });
   }
+
   
 
   BuscarBoleta(id_venta: number) {

@@ -24,25 +24,24 @@ export class PagarPage {
   ) {}
 
   ngOnInit() {
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      this.serviceBD.obtenerUsuarioPorId(parseInt(userId)).then(usuario => {
-        this.usuario = usuario;
-      });
-    }
-  
-  
-    const carrito = history.state?.productos; 
-    if (carrito) {
-      this.productosCarrito = carrito.map((item: any) => ({
-        ...item,
-        imagen_url: item.imagen_url 
-      }));
-      this.calcularTotal();
-    } else {
-      this.productosCarrito = [];
-    }
+  const userId = localStorage.getItem('userId');
+  if (userId) {
+    this.serviceBD.obtenerUsuarioPorId(parseInt(userId)).then(usuario => {
+      this.usuario = usuario;
+    });
   }
+
+  const carrito = history.state?.productos; 
+  if (carrito) {
+    this.productosCarrito = carrito.map((item: any) => ({
+      ...item,
+      imagen_url: item.imagen_url 
+    }));
+    this.calcularTotal();
+  } else {
+    this.productosCarrito = [];
+  }
+}
 
   calcularTotal() {
     this.totalPagar = this.productosCarrito.reduce((total, producto) => {

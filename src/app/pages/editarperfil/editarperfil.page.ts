@@ -77,8 +77,9 @@ export class EditarperfilPage implements OnInit {
   }
 
   // Método para validar el correo
-  validarCorreo(correo: string): boolean {
-    return correo.endsWith('@gmail.com');
+  validarCorreo(email: string): boolean {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return re.test(String(email).toLowerCase());
   }
 
   volver() {
