@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PagarPage } from './pagar.page';
-import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 
 describe('PagarPage', () => {
   let component: PagarPage;

@@ -13,10 +13,8 @@ import { DetalleVentas } from './detalleventas';
   providedIn: 'root'
 })
 export class ServicebdService {
-  //variable de conexión a Base de Datos
   public database!: SQLiteObject;
 
-  //variables de creacion de tablas
   
   //
   tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, imagen_url TEXT NOT NULL, precio INTEGER NOT NULL, nombre_marca TEXT NOT NULL, nombre_categoria INTEGER NOT NULL,stock INTEGER NOT NULL);";

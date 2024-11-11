@@ -17,7 +17,6 @@ export class PagarPage {
   totalPagar: number = 0;
 
   constructor(
-    private router: Router,
     private storage: NativeStorage,
     private alertController: AlertController,
     private navController: NavController,
@@ -31,15 +30,17 @@ export class PagarPage {
         this.usuario = usuario;
       });
     }
-
-    // Obtener los productos del carrito
-    const carrito = history.state.productos; // Recibe los productos del carrito
+  
+  
+    const carrito = history.state?.productos; 
     if (carrito) {
       this.productosCarrito = carrito.map((item: any) => ({
         ...item,
-        imagen_url: item.imagen_url // Asegúrate de que cada producto tenga esta propiedad
+        imagen_url: item.imagen_url 
       }));
-      this.calcularTotal(); // Calcular el total a pagar
+      this.calcularTotal();
+    } else {
+      this.productosCarrito = [];
     }
   }
 
@@ -134,25 +135,24 @@ export class PagarPage {
       ventaData.fecha,
       ventaData.total
     ]).then(async (ventaResult) => {
-      const id_venta = ventaResult.insertId; // Obtener el ID de la venta insertada
+      const id_venta = ventaResult.insertId;
 
-      // Insertar los detalles de los productos
+
       const queries = [];
       for (const producto of productosCarrito) {
         const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad, imagen_url) VALUES (?, ?, ?, ?, ?)`;
         const detalleQuery = this.serviceBD.database.executeSql(queryDetalle, [
-          id_venta, // Usar el mismo id_venta para todos los productos
+          id_venta, 
           producto.id_zapatilla,
           producto.precio,
           producto.cantidad,
-          producto.imagen_url // Ahora incluye la URL de la imagen
+          producto.imagen_url 
         ]);
         queries.push(detalleQuery);
       }
 
-      await Promise.all(queries);  // Ejecutar todas las inserciones en detalle_ventas
-      
-      // Actualizar el stock de las zapatillas
+      await Promise.all(queries);  
+
       await this.actualizarStock(productosCarrito);
     }).catch((error) => {
       console.error('Error al guardar la venta:', error);

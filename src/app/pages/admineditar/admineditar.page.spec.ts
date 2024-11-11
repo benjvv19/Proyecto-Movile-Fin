@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 
 describe('AdmineditarPage', () => {
   let component: AdmineditarPage;
@@ -18,7 +18,19 @@ describe('AdmineditarPage', () => {
       imports: [IonicModule, FormsModule, CommonModule],
       providers: [
         ServicebdService,
-        { provide: SQLite},
+        { provide: SQLite} ,
+        NativeStorage,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '1',
+              }
+            }
+          }
+        },
+        
       ]
     }).compileComponents();
 

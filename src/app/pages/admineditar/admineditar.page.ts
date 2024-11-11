@@ -11,20 +11,29 @@ import { ServicebdService } from 'src/app/services/servicebd.service';
 })
 export class AdmineditarPage {
 
-  zapatilla: any; 
+  zapatilla: any={}; 
   nombre_marca: string = ""; 
   nombre_categoria: string = ""; 
 
   showError = false;
 
-  constructor(private router: Router, private activedrouter: ActivatedRoute, private bd: ServicebdService, private toastController: ToastController) {
-    this.activedrouter.queryParams.subscribe(res => {
-      if (this.router.getCurrentNavigation()?.extras.state) {
-        this.zapatilla = this.router.getCurrentNavigation()?.extras?.state?.['zapatilla']; 
-        this.nombre_marca = this.zapatilla.nombre_marca; 
-        this.nombre_categoria = this.zapatilla.nombre_categoria;
-      }
-    });
+  constructor(
+    private router: Router, 
+    private activedrouter: ActivatedRoute, 
+    private bd: ServicebdService, 
+    private toastController: ToastController
+  ) {
+    // Acceder a los datos pasados a través de state
+    const navigationState = this.router.getCurrentNavigation()?.extras.state;
+    
+    if (navigationState && navigationState['zapatilla']) {
+      this.zapatilla = navigationState['zapatilla'];
+      this.nombre_marca = this.zapatilla.nombre_marca;
+      this.nombre_categoria = this.zapatilla.nombre_categoria;
+    } else {
+      // Aquí podrías manejar el caso en que no haya 'zapatilla' en el state
+      console.error('Zapatilla no encontrada en el state.');
+    }
   }
 
   ngOnInit() {}
