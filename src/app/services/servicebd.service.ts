@@ -607,11 +607,10 @@ registroZapatillas: string = `
   }
 
 
-
-  seleccionarTodasBoletasPorId(id_usuario: number) {
+  seleccionarTodasBoletasPorId(id_usuario: number): Promise<Venta[]> {
     return this.database.executeSql('SELECT * FROM ventas WHERE id_usuario=?', [id_usuario]).then(res => {
       const items: Venta[] = [];
-
+  
       if (res.rows.length > 0) {
         for (let i = 0; i < res.rows.length; i++) {
           items.push({
@@ -622,13 +621,17 @@ registroZapatillas: string = `
           });
         }
       }
-
+  
+      // Emitir los datos y también devolverlos como una promesa
       this.listadoVentas.next(items as any);
+      return items; // Devolver el arreglo de ventas como una promesa
     })
     .catch(error => {
       console.error('Error al seleccionar boletas:', error);
+      return [];
     });
   }
+  
 
   
 

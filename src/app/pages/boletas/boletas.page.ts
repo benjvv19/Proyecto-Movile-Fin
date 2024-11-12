@@ -14,20 +14,18 @@ export class BoletasPage implements OnInit {
   constructor(private bd: ServicebdService, private router: Router) {}
 
   ngOnInit() {
-    const id_usuario = parseInt(localStorage.getItem('userId') || '0', 10);
-    this.seleccionarBoletas(id_usuario);
-  }
+    const userId = parseInt(localStorage.getItem('userId') || '0', 10);
 
-  seleccionarBoletas(id_usuario: number) {
-    this.bd.seleccionarTodasBoletasPorId(id_usuario).then(() => {
-      this.bd.listadoVentas.subscribe((ventas: Venta[]) => {
-        this.arregloBoletas = ventas; 
+    if (userId) {
+      this.bd.seleccionarTodasBoletasPorId(userId).then(ventas => {
+        this.arregloBoletas = ventas;
+      }).catch(error => {
+        console.error('Error al cargar las boletas:', error);
       });
-    });
+    }
   }
 
   verDetalles(id_venta: number) {
     this.router.navigate(['/detalleboletas', id_venta]);
   }
-
 }
