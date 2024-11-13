@@ -3,7 +3,7 @@
     <ion-buttons slot="start"></ion-buttons>
     <div class="container-input-logo">
       <div class="container-logo">
-        <img src="../assets/icon/logo2.jpeg" alt="KickSport Logo" class="logo-app"> 
+        <img src="../assets/icon/logo2.jpeg" alt="KickSport Logo" class="logo-app">
       </div>
     </div>
   </ion-toolbar>
@@ -17,19 +17,44 @@
       </ion-card-header>
 
       <ion-card-content>
-        <ion-item class="custom-item" lines="none">
+        <!-- Campo de correo electrónico -->
+        <ion-item class="custom-item" lines="none" [class.invalid]="!validarEmail(correo)">
+          <ion-label position="floating">Correo electrónico</ion-label>
           <ion-input 
-            label="Correo electrónico" 
-            labelPlacement="floating" 
             placeholder="Ingrese su correo electrónico"
             [(ngModel)]="correo" 
             type="email" 
             class="custom-input">
           </ion-input>
         </ion-item>
-        <ion-button (click)="Ircontra()" expand="block" class="aceptar">
+
+        <!-- Campo de selección de pregunta de seguridad -->
+        <ion-item class="custom-item" lines="none" [class.invalid]="!pregunta">
+          <ion-label>Pregunta de seguridad</ion-label>
+          <ion-select placeholder="Seleccione una pregunta" [(ngModel)]="pregunta">
+            <ion-select-option value="¿Cuál es el color favorito?">¿Cuál es tu color favorito?</ion-select-option>
+            <ion-select-option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</ion-select-option>
+            <ion-select-option value="¿Cuál es tu ciudad natal?">¿En qué ciudad naciste?</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Campo de respuesta a la pregunta de seguridad -->
+        <ion-item class="custom-item" lines="none" [class.invalid]="!respuesta">
+          <ion-label position="floating">Respuesta</ion-label>
+          <ion-input 
+            placeholder="Ingrese su respuesta"
+            [(ngModel)]="respuesta" 
+            type="text" 
+            class="custom-input">
+          </ion-input>
+        </ion-item>
+
+        <!-- Botón para enviar -->
+        <ion-button (click)="Ircontra()" expand="block" class="aceptar" 
+                    [disabled]="!correo || !pregunta || !respuesta || !validarEmail(correo)">
           Enviar Email
         </ion-button>
+
         <p>
           <a [routerLink]="['/login']" class="yatengocuenta">¿Ya tienes cuenta?</a>
         </p>

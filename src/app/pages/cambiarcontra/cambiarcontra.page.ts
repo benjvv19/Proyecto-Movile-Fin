@@ -17,7 +17,7 @@ export class CambiarcontraPage implements OnInit {
     private router: Router,
     private toastController: ToastController,
     private alertController: AlertController,
-    private bd: ServicebdService // Inyección del servicio
+    private bd: ServicebdService
   ) { }
 
   ngOnInit() { }

@@ -7,4 +7,6 @@ export class Usuarios {
     id_rol!: number;
     contrasena!: string;
     imagen!:string;
+    pregunta!:string;
+    respuesta!:string;
   }

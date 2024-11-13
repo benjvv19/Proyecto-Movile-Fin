@@ -19,7 +19,7 @@ export class ServicebdService {
   //
   tablaZapatillas: string = "CREATE TABLE IF NOT EXISTS zapatillas (id_zapatilla INTEGER PRIMARY KEY autoincrement, nombre TEXT NOT NULL, descripcion TEXT NOT NULL, imagen_url TEXT NOT NULL, precio INTEGER NOT NULL, nombre_marca TEXT NOT NULL, nombre_categoria INTEGER NOT NULL,stock INTEGER NOT NULL);";
   tablaRoles: string = "CREATE TABLE IF NOT EXISTS roles (id_rol INTEGER PRIMARY KEY autoincrement,nombre_rol TEXT NOT NULL);";
-  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, apellido TEXT NOT NULL, id_rol INTEGER NOT NULL, correo TEXT NOT NULL, telefono TEXT NOT NULL, contrasena TEXT NOT NULL,imagen TEXT NOT NULL, FOREIGN KEY (id_rol) REFERENCES roles(id_rol));";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuario (id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL, apellido TEXT NOT NULL, id_rol INTEGER NOT NULL, correo TEXT NOT NULL, telefono TEXT NOT NULL, contrasena TEXT NOT NULL,imagen TEXT NOT NULL , pregunta TEXT NOT NULL , respuesta TEXT NOT NULL, FOREIGN KEY (id_rol) REFERENCES roles(id_rol));";
 
   
   tablaCategoriaZapatillas: string = "CREATE TABLE IF NOT EXISTS categoria_zapatillas (id_categoria INTEGER PRIMARY KEY autoincrement,nombre_categoria TEXT NOT NULL);";
@@ -75,7 +75,7 @@ registroZapatillas: string = `
 `;
 
 
-  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena,imagen) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129682', 'admin','https://i.postimg.cc/1zyqkjfj/puma-caven-blanca.webp'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129683', 'usuario','https://i.postimg.cc/zD4psq52/puma-rebound-nino.webp')";
+  registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena,imagen,pregunta,respuesta) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129682', 'admin','https://i.postimg.cc/1zyqkjfj/puma-caven-blanca.webp','¿Cuál es el color favorito?','Rojo'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129683', 'usuario','https://i.postimg.cc/zD4psq52/puma-rebound-nino.webp','¿Cuál es el color favorito?','Rojo')";
   registroRoles: string ="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
   registroInventario: string ="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
   registroMarcaZapatillas: string ="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'Adidas'),(2,'Nike'),(3,'Puma'),(4,'Vans')";
@@ -175,7 +175,7 @@ registroZapatillas: string = `
 
       //Eliminar un base de datos mal creada
       //despues de borrarla se tiene que borrar estas lineas y ejecutar nuevamente
-      await this.eliminarBaseDatos('miBaseDeDatos.db');
+      //await this.eliminarBaseDatos('miBaseDeDatos.db');
 
       //await this.eliminarBaseDatos('KikSport.db');
 
@@ -186,20 +186,33 @@ registroZapatillas: string = `
       await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
 
 
-      // Luego, creamos las tablas
+      // Crear la tabla de roles primero, ya que otras tablas dependen de ella
       await this.database.executeSql(this.tablaRoles, []);
+      
+      // Crear la tabla de categorías de zapatillas
       await this.database.executeSql(this.tablaCategoriaZapatillas, []);
+
+      // Crear la tabla de marcas de zapatillas
       await this.database.executeSql(this.tablaMarcaZapatillas, []);
+
+      // Crear la tabla de usuarios después de roles
       await this.database.executeSql(this.tablaUsuarios, []);
+
+      // Crear la tabla de zapatillas, asegurando que las tablas de categorías y marcas ya existan
       await this.database.executeSql(this.tablaZapatillas, []);
+
+      // Crear la tabla de ventas, asegurando que la tabla usuario ya exista
       await this.database.executeSql(this.tablaVentas, []);
+
+      // Crear la tabla de detalles de ventas, que depende de ventas y zapatillas
       await this.database.executeSql(this.tablaDetallesVenta, []);
+
       // Registros
       await this.database.executeSql(this.registroRoles, []);
-      await this.database.executeSql(this.registroCategoriaZapatillas, []);
-      await this.database.executeSql(this.registroMarcaZapatillas, []);
       await this.database.executeSql(this.registroUsuario, []);
       await this.database.executeSql(this.registroZapatillas, []);
+      await this.database.executeSql(this.registroCategoriaZapatillas, []);
+      await this.database.executeSql(this.registroMarcaZapatillas, []);
     
       this.seleccionarZapatillas();
       this.seleccionarUsuarios();
@@ -417,7 +430,10 @@ registroZapatillas: string = `
             telefono: res.rows.item(i).telefono,
             id_rol: res.rows.item(i).id_rol,
             contrasena: res.rows.item(i).contrasena,
-            imagen: res.rows.item(i).imagen
+            imagen: res.rows.item(i).imagen,
+            pregunta: res.rows.item(i).pregunta,
+            respuesta: res.rows.item(i).respuesta
+
           });
         }
       }
@@ -427,8 +443,8 @@ registroZapatillas: string = `
 
 
 
-  insertarUsuarios(nombre: string, apellido: string, correo: string, telefono: string, id_rol: number, contrasena: string,imagen:string) {
-    return this.database.executeSql('INSERT INTO usuario(nombre, apellido, correo, telefono, id_rol, contrasena,imagen) VALUES (?, ?, ?, ?, ?, ?,?)', [nombre, apellido, correo, telefono, id_rol, contrasena,imagen]).then(res => {
+  insertarUsuarios(nombre: string, apellido: string, correo: string, telefono: string, id_rol: number, contrasena: string,imagen:string,pregunta:string,respuesta:string) {
+    return this.database.executeSql('INSERT INTO usuario(nombre, apellido, correo, telefono, id_rol, contrasena,imagen,pregunta,respuesta) VALUES (?, ?, ?, ?, ?, ?,?,?,?)', [nombre, apellido, correo, telefono, id_rol, contrasena,imagen,pregunta,respuesta]).then(res => {
       this.seleccionarUsuarios();
     }).catch(e => {
       this.presentAlert('Insertar', 'Error: ' + JSON.stringify(e));
@@ -438,7 +454,7 @@ registroZapatillas: string = `
 
   
 
-  validarUsuario(correo: string, contrasena: string): Promise<Usuarios | null> {
+  validarUsuario(correo: string, contrasena: string ): Promise<Usuarios | null> {
     return this.database.executeSql('SELECT * FROM usuario WHERE correo = ? AND contrasena = ?', [correo, contrasena])
       .then(res => {
         if (res.rows.length > 0) {
@@ -450,8 +466,9 @@ registroZapatillas: string = `
             telefono: res.rows.item(0).telefono,
             id_rol: res.rows.item(0).id_rol,
             contrasena: res.rows.item(0).contrasena,
-            imagen: res.rows.item(0).imagen
-
+            imagen: res.rows.item(0).imagen,
+            pregunta: res.rows.item(0).pregunta,
+            respuesta: res.rows.item(0).respuesta
 
           };
           return usuario; // Devolver el usuario encontrado
@@ -495,8 +512,9 @@ registroZapatillas: string = `
             telefono: res.rows.item(0).telefono,
             id_rol: res.rows.item(0).id_rol,
             contrasena: res.rows.item(0).contrasena,
-            imagen: res.rows.item(0).imagen
-
+            imagen: res.rows.item(0).imagen,
+            pregunta: res.rows.item(0).pregunta,
+            respuesta: res.rows.item(0).respuesta
           };
           return usuario;
         }
@@ -538,7 +556,26 @@ registroZapatillas: string = `
       return result.rows.length > 0; // Retorna true si el correo ya existe
     });
   }
+
+  verificarPregunta(correo: string, pregunta:string,id_usuario: number): Promise<boolean> {
+    return this.database.executeSql(
+      'SELECT * FROM usuario WHERE correo = ? AND pregunta = ? AND id_usuario <> ?',
+      [correo, pregunta, id_usuario]
+    ).then(result => {
+      return result.rows.length > 0;
+    });
+  }
   
+  verificarRespuesta(correo: string,respuesta:string ,id_usuario: number): Promise<boolean> {
+    return this.database.executeSql(
+      'SELECT * FROM usuario WHERE correo = ? AND respuesta = ? AND id_usuario <> ?',
+      [correo, respuesta , id_usuario]
+    ).then(result => {
+      return result.rows.length > 0;
+    });
+  }
+
+
   verificarTelefono(telefono: string, id_usuario: number): Promise<boolean> {
     return this.database.executeSql(
       'SELECT * FROM usuario WHERE telefono = ? AND id_usuario <> ?',

@@ -15,11 +15,15 @@ export class RegisterPage implements OnInit {
   id_rol: number = 2;
   correo: string = "";
   telefono: string = "";
-  contrasena1: string = ""; // Contraseña 1
-  contrasena2: string = ""; // Contraseña 2
-  imagen: any = ""; // Cambiar a tipo string
+  contrasena1: string = ""; 
+  contrasena2: string = ""; 
+  imagen: any = ""; 
+  pregunta: string ="";
+  respuesta: string ="";
+  
 
-  private readonly defaultImageUrl: string = '../assets/icon/perfil.jpg'; // URL de la imagen por defecto
+
+  private readonly defaultImageUrl: string = '../assets/icon/perfil.jpg'; 
 
   constructor(
     private bd: ServicebdService,
@@ -30,16 +34,14 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() { }
 
-  // Validar correo electrónico
   validarEmail(email: string): boolean {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return re.test(String(email).toLowerCase());
   }
 
-  // Validar formulario y mostrar alertas si es necesario
   async irLogin() {
-    // Verificar que todos los campos estén completos
-    if (!this.nombre || !this.apellido || !this.telefono || !this.correo || !this.contrasena1 || !this.contrasena2) {
+
+    if (!this.nombre || !this.apellido || !this.telefono || !this.correo || !this.contrasena1 || !this.contrasena2 || !this.pregunta || !this.respuesta) {
       this.presentAlert('Campos incompletos', 'Por favor, complete todos los campos.');
       return;
     }
@@ -125,9 +127,8 @@ export class RegisterPage implements OnInit {
 
   // Modificar este método para incluir la imagen
   insertarUsuario() {
-    // Usar la imagen por defecto si no se ha tomado una foto
-    const imagenFinal = this.imagen || this.defaultImageUrl; // Asigna la imagen por defecto si no hay imagen
-    return this.bd.insertarUsuarios(this.nombre, this.apellido, this.correo, this.telefono, this.id_rol, this.contrasena1, imagenFinal); // Usar contrasena1
+    const imagenFinal = this.imagen || this.defaultImageUrl;
+    return this.bd.insertarUsuarios(this.nombre, this.apellido, this.correo, this.telefono, this.id_rol, this.contrasena1, imagenFinal, this.pregunta, this.respuesta);
   }
 
   async presentAlert(titulo: string, msj: string) {
@@ -146,6 +147,6 @@ export class RegisterPage implements OnInit {
       resultType: CameraResultType.Uri
     });
   
-    this.imagen = image.webPath; // Asignar la URL de la imagen al campo imagen
+    this.imagen = image.webPath;
   };
 }

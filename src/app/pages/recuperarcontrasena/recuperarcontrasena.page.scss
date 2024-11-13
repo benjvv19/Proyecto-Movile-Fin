@@ -1,134 +1,118 @@
+/* Estilos para campos inválidos */
+.invalid .custom-input {
+    border-color: red; /* Cambiar el borde a rojo */
+    --box-shadow: 0 0 5px red; /* Agregar una sombra para mayor visibilidad */
+}
 
+.invalid ion-label {
+    color: red; /* Cambiar el color de la etiqueta a rojo */
+}
 
+/* Estilo para el botón desactivado */
+ion-button[disabled] {
+    background-color: #d3d3d3; /* Gris para indicar que está desactivado */
+    color: #808080; /* Color del texto en gris */
+    cursor: not-allowed; /* Cambiar el cursor cuando el botón está desactivado */
+    opacity: 0.6; /* Reducir opacidad para el botón desactivado */
+}
+
+/* Estilo de la tarjeta y contenedores */
+ion-card {
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agregar sombra sutil a la tarjeta */
+}
+
+/* Estilo de la caja del logo */
 .container-input-logo {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    }
-    
-    .logo-app {
+    margin-top: 20px; /* Añadir un margen superior */
+}
+
+.logo-app {
     border-radius: 50%;
-    width: 60px; 
-    height: 60px; 
+    width: 60px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    }
-    
-        
-    .logo-container {
-        display: flex;
-        align-items: center;
-        position: absolute;
-        right: 8px;
-        top: 0;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-    }
-    
-    
-    ion-title {
-        margin-left: auto;
-    }
-    
-    
-    .container {
-    
+    object-fit: cover; /* Asegura que la imagen no se deforme */
+}
+
+/* Fondo de la página con efecto de gradiente animado */
+.container {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    
-    background: #121212; 
-    background: radial-gradient(
-        circle,
-        #121212 30%,
-        #1a1a1a 30%,
-        #1a1a1a 50%,
-        #121212 50%
-    );
-    background-size: 60px 60px; 
-    
-    
+    background: #121212;
+    background: radial-gradient(circle, #121212 30%, #1a1a1a 30%, #1a1a1a 50%, #121212 50%);
+    background-size: 60px 60px;
     animation: move 4s linear infinite;
-    }
-    
-    @keyframes move {
+}
+
+@keyframes move {
     0% {
         background-position: 0 0;
     }
     100% {
-        background-position: 60px 60px; 
+        background-position: 60px 60px;
     }
-    }
-    .login-container {
+}
+
+/* Estilos generales de la tarjeta */
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
     padding: 16px;
-    
-    }
-    
-    ion-card {
-    width: 100%;
-    max-width: 500px ;
-    padding: 20px;
-    width: 90%;
-    background-color: #ffffff; 
-    color: #000000; 
-    border-radius: 15px;
-    }
-    
-    ion-card-title {
-    
+}
+
+ion-card-title {
     text-align: center;
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-            "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-    margin: 10px 0 10px 0;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    margin: 10px 0;
     font-size: 28px;
     font-weight: 800;
     color: black;
-    
-    }
-    
-    ion-item {
-    --background: transparent !important; /* Fuerza fondo transparente */
-    --border-color: #114B5F; /* Color secundario */
+}
+
+ion-item {
+    --background: transparent !important;
+    --border-color: #114B5F;
     border-radius: 25px;
     margin-bottom: 1rem;
     border: 1px solid #c0c0c0;
-    }
-    
-    ion-input {
-    
-    --background: white !important; 
-    color: #4b4b4b; 
+}
+
+ion-input {
+    --background: white !important;
+    color: #4b4b4b;
     padding-left: 8px;
-    }
-    
-    ion-button {
-    
+}
+
+ion-button {
     margin-bottom: 10px;
     --background: #000000;
     border-radius: 25px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 7px 20px; 
-    font-weight: bold; 
-    }
-    
-    .aceptar {
-    background-color: #000000; 
+    padding: 7px 20px;
+    font-weight: bold;
+}
+
+.aceptar {
+    background-color: #000000;
     color: white;
     --box-shadow: none;
-    }
-    
-    .yatengocuenta{
-    
+}
+
+.yatengocuenta {
     margin-left: 1px;
     font-size: 12px;
     text-decoration: underline;
@@ -136,21 +120,28 @@
     color: #212121;
     cursor: pointer;
     font-weight: 800;
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-            "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-    }
-    
-    .custom-list {
-    background-color: #ffffff; 
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+/* Mejoras en la visibilidad y el estilo de los campos */
+ion-card-content {
+    background-color: #ffffff;
     border-radius: 15px;
     padding: 20px;
-    
+}
+
+ion-label {
+    color: #4b4b4b; /* Aseguramos que las etiquetas tengan un color neutral */
+}
+
+/* Ajustes para asegurar una buena visualización en dispositivos pequeños */
+@media (max-width: 600px) {
+    .login-container {
+        padding: 10px;
     }
-    
-    ion-card-content{
-    
-          background-color: #ffffff; 
-      border-radius: 15px;
-      padding: 20px;
-    
+
+    .logo-app {
+        width: 50px;
+        height: 50px;
     }
+}

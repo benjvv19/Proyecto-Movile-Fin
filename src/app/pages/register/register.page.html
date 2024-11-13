@@ -52,9 +52,25 @@
 
           <ion-item lines="none">
             <ion-input 
-              placeholder="repetir la contraseña" 
+              placeholder="Repetir la contraseña" 
               [(ngModel)]="contrasena2" 
               type="password" 
+              required>
+            </ion-input>
+          </ion-item>
+          
+          <ion-item lines="none">
+            <ion-select placeholder="Selecciona una pregunta de seguridad" [(ngModel)]="pregunta" required>
+              <ion-select-option value="¿Cuál es el color favorito?">¿Cuál es tu color favorito?</ion-select-option>
+              <ion-select-option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</ion-select-option>
+              <ion-select-option value="¿Cuál es tu ciudad natal?">¿En qué ciudad naciste?</ion-select-option>
+            </ion-select>
+          </ion-item>
+          
+          <ion-item lines="none">
+            <ion-input 
+              placeholder="Ingresa tu respuesta" 
+              [(ngModel)]="respuesta" 
               required>
             </ion-input>
           </ion-item>
