@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular'; 
 import { ServicebdService } from 'src/app/services/servicebd.service';
 import { Usuarios } from 'src/app/services/usuarios';
+import { Camera, CameraResultType } from '@capacitor/camera';
 
 @Component({
   selector: 'app-editarperfil',
@@ -11,6 +12,8 @@ import { Usuarios } from 'src/app/services/usuarios';
 })
 export class EditarperfilPage implements OnInit {
   usuario: Usuarios | null = null;
+  imagen: string | null = null;  // Inicialización de la imagen
+  private readonly defaultImageUrl: string = '../assets/icon/perfil.jpg';  // URL predeterminada de imagen
 
   constructor(
     private serviceBD: ServicebdService,
@@ -29,11 +32,34 @@ export class EditarperfilPage implements OnInit {
       this.usuario = await this.serviceBD.obtenerUsuarioPorId(Number(userId));
       if (!this.usuario) {
         console.error('Usuario no encontrado.');
+      } else {
+        // Asigna la imagen del usuario o la imagen predeterminada si no tiene
+        this.imagen = this.usuario.imagen || this.defaultImageUrl;
       }
     } else {
       console.error('No hay ID de usuario en el localStorage.');
     }
   }
+
+  // Método para tomar una foto con la cámara
+  takePicture = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri
+      });
+  
+      this.imagen = image.webPath || this.defaultImageUrl;
+      
+      if (this.usuario) {
+        this.usuario.imagen = this.imagen;
+      }
+    } catch (error) {
+      console.error('Error al tomar la foto:', error);
+      this.presentAlert("Error", "Hubo un problema al tomar la foto.");
+    }
+  };
 
   // Método para manejar el botón "Guardar Cambios"
   async guardarCambios() {
@@ -45,7 +71,7 @@ export class EditarperfilPage implements OnInit {
       }
 
       if (!this.validarCorreo(this.usuario.correo)) {
-        this.presentAlert("Error", "El correo debe ser un correo de Gmail que termine en @gmail.com.");
+        this.presentAlert("Error", "El correo debe contener un @ y un .");
         return;
       }
 
@@ -62,7 +88,11 @@ export class EditarperfilPage implements OnInit {
           return; 
         }
 
-        await this.serviceBD.modificarUsuario(this.usuario.id_usuario, this.usuario.correo, this.usuario.telefono);
+        // Asigna la imagen final (si no hay imagen seleccionada, usa la predeterminada)
+        const imagenFinal = this.imagen || this.defaultImageUrl;
+
+        // Actualiza el usuario con la imagen seleccionada
+        await this.serviceBD.modificarUsuario(this.usuario.id_usuario, this.usuario.correo, this.usuario.telefono, imagenFinal);
         this.router.navigate(['/perfil']);
       } catch (error) {
         console.error('Error al modificar el usuario:', error);
@@ -72,13 +102,13 @@ export class EditarperfilPage implements OnInit {
 
   // Método para validar el teléfono
   validarTelefono(telefono: string): boolean {
-    const telefonoRegex = /^[0-9]{9}$/; // Solo números y exactamente 9 dígitos
+    const telefonoRegex = /^[0-9]{9}$/;
     return telefonoRegex.test(telefono);
   }
 
   // Método para validar el correo
   validarCorreo(email: string): boolean {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const re = /@.*\./;
     return re.test(String(email).toLowerCase());
   }
 

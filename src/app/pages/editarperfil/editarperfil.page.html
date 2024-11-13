@@ -7,6 +7,12 @@
           <span>No hay imagen de perfil disponible</span>
         </ng-template>
       </div>
+
+      <!-- Botón para cambiar la foto de perfil -->
+      <div class="change-photo-container">
+        <ion-button color="dark" expand="full" (click)="takePicture()">Cambiar Foto</ion-button>
+      </div>
+
       <div class="profile-info">
         <div class="info-item">
           <strong>Nombre:</strong>
@@ -27,6 +33,7 @@
           </div>
         </div>
       </div>
+
       <div class="button-container">
         <button type="button" class="button" (click)="guardarCambios()">
           Guardar Cambios

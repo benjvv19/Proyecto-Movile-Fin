@@ -77,7 +77,6 @@ registroZapatillas: string = `
 
   registroUsuario: string = "INSERT OR IGNORE INTO usuario (id_usuario, nombre, apellido, id_rol, correo, telefono, contrasena,imagen,pregunta,respuesta) VALUES (1, 'Admin', 'Admin', 1, 'admin@gmail.com', '966129682', 'admin','https://i.postimg.cc/1zyqkjfj/puma-caven-blanca.webp','¿Cuál es el color favorito?','Rojo'), (2, 'Usuario', 'Usuarioo', 2, 'usuario@gmail.com', '966129683', 'usuario','https://i.postimg.cc/zD4psq52/puma-rebound-nino.webp','¿Cuál es el color favorito?','Rojo')";
   registroRoles: string ="INSERT OR IGNORE INTO roles (id_rol, nombre_rol) VALUES (1, 'admin'), (2, 'usuario');";
-  registroInventario: string ="INSERT or IGNORE INTO inventario (id_inventario, id_zapatilla, cantidad_disponible, ultima_actualizacion) VALUES (1, 1, 50, '2023-10-01')";
   registroMarcaZapatillas: string ="INSERT or IGNORE INTO marca_zapatillas (id_marca, nombre_marca) VALUES (1,'Adidas'),(2,'Nike'),(3,'Puma'),(4,'Vans')";
   registroCategoriaZapatillas: string ="INSERT or IGNORE INTO categoria_zapatillas (id_categoria, nombre_categoria) VALUES (1,'Niño'),(2,'Niña'),(3,'Hombre'),(4,'Mujer')";
 
@@ -184,7 +183,7 @@ registroZapatillas: string = `
       //await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
-
+      await this.database.executeSql('DROP TABLE IF EXISTS categoria_zapatillas', []);
 
       // Crear la tabla de roles primero, ya que otras tablas dependen de ella
       await this.database.executeSql(this.tablaRoles, []);
@@ -528,10 +527,10 @@ registroZapatillas: string = `
 
 
 
-  modificarUsuario(id_usuario: number, correo: string, telefono: string) {  
+  modificarUsuario(id_usuario: number, correo: string, telefono: string,imagen:string) {  
     return this.database.executeSql(
-      'UPDATE usuario SET correo = ?, telefono = ? WHERE id_usuario = ?', 
-      [correo, telefono,id_usuario]
+      'UPDATE usuario SET correo = ?, telefono = ?, imagen = ? WHERE id_usuario = ?', 
+      [correo, telefono,imagen,id_usuario]
     ).then(() => {
       this.presentAlert("Modificar", "Usuario Modificado");
       this.seleccionarUsuarios();
