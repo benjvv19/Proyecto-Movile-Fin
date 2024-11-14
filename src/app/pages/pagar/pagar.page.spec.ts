@@ -30,4 +30,14 @@ describe('PagarPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+
+  it('Calcula el total como 0 cuando el carrito esta vacio', () => {
+    
+    component.productosCarrito = [];
+
+    component.calcularTotal();
+
+    expect(component.totalPagar).toBe(0);
+  });
 });

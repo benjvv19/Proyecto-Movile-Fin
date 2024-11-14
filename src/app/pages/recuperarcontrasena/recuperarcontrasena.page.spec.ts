@@ -4,17 +4,7 @@ import { ServicebdService } from 'src/app/services/servicebd.service';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 
 // Crear mocks para las dependencias
-class MockSQLite {
-  executeSql() {
-    return Promise.resolve();
-  }
-}
 
-class MockServicebdService {
-  someMethod() {
-    return Promise.resolve([]);
-  }
-}
 
 describe('RecuperarcontrasenaPage', () => {
   let component: RecuperarcontrasenaPage;
@@ -24,8 +14,8 @@ describe('RecuperarcontrasenaPage', () => {
     TestBed.configureTestingModule({
       declarations: [RecuperarcontrasenaPage],
       providers: [
-        { provide: ServicebdService, useClass: MockServicebdService },
-        { provide: SQLite, useClass: MockSQLite }, // Proveer el mock de SQLite
+        { provide: ServicebdService},
+        { provide: SQLite},
       ],
     }).compileComponents();
 
@@ -37,4 +27,15 @@ describe('RecuperarcontrasenaPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Valida y muestra una alerta si la pregunta esta vacia', async () => {
+    component.pregunta = '';
+    spyOn(component, 'presentAlert'); 
+
+    const result = await component.verificarPregunta();
+
+    expect(result).toBe(false); 
+    expect(component.presentAlert).toHaveBeenCalledWith('Pregunta vacía', 'Por favor, seleccione una pregunta de seguridad.');
+  });
+
 });

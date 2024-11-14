@@ -12,8 +12,8 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 })
 export class EditarperfilPage implements OnInit {
   usuario: Usuarios | null = null;
-  imagen: string | null = null;  // Inicialización de la imagen
-  private readonly defaultImageUrl: string = '../assets/icon/perfil.jpg';  // URL predeterminada de imagen
+  imagen: string | null = null;  
+  private readonly defaultImageUrl: string = '../assets/icon/perfil.jpg'; 
 
   constructor(
     private serviceBD: ServicebdService,
@@ -33,7 +33,6 @@ export class EditarperfilPage implements OnInit {
       if (!this.usuario) {
         console.error('Usuario no encontrado.');
       } else {
-        // Asigna la imagen del usuario o la imagen predeterminada si no tiene
         this.imagen = this.usuario.imagen || this.defaultImageUrl;
       }
     } else {
@@ -41,7 +40,6 @@ export class EditarperfilPage implements OnInit {
     }
   }
 
-  // Método para tomar una foto con la cámara
   takePicture = async () => {
     try {
       const image = await Camera.getPhoto({

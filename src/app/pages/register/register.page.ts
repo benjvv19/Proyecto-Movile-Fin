@@ -41,6 +41,7 @@ export class RegisterPage implements OnInit {
 
   async irLogin() {
 
+    
     if (!this.nombre || !this.apellido || !this.telefono || !this.correo || !this.contrasena1 || !this.contrasena2 || !this.pregunta || !this.respuesta) {
       this.presentAlert('Campos incompletos', 'Por favor, complete todos los campos.');
       return;

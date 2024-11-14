@@ -1,0 +1,7 @@
+Contador de pruebas:
+
+1. Validar que el campo de telefono este vacio - pagina register
+2. Validar si el precio es menor a 0 - pagina agregar
+3. Valida si el correo no contiene un @ o un punto, y si esta vacio - pagina aditarperfil
+4. Calcula el total como 0 cuando el carrito esta vacio - pagina pagar
+5. Valida y muestra una alerta si la pregunta esta vacia - pagina recuperarcontrasena

@@ -15,9 +15,10 @@ export class AgregarPage {
   foto_zapatilla: string = "";
   imagen_url: string = "";
   precio: any = "";
-  nombre_marca: string = "";  // Cambiado de id_marca a nombre_marca
-  nombre_categoria: string = ""; // Cambiado de id_categoria a nombre_categoria
+  nombre_marca: string = "";
+  nombre_categoria: string = ""; 
   stock: any = "";
+  errorMessage: string = '';
 
   showError = false;
 
@@ -28,7 +29,8 @@ export class AgregarPage {
 
     // Validaciones adicionales
     if (this.precio < 0) {
-      await this.presentToast('El precio no puede ser menor a 0', 'danger');
+      this.errorMessage = 'El precio no puede ser menor a 0'; 
+      await this.presentToast(this.errorMessage, 'danger');
       return;
     }
 

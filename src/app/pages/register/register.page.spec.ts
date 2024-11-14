@@ -25,4 +25,10 @@ describe('RegisterPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Validacion de el campo telefono cuando esta vacío', () => {
+    const emailVacio = '';
+    const resultado = component.validarEmail(emailVacio);
+    expect(resultado).toBeFalse();
+  });
 });
