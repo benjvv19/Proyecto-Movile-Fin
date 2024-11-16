@@ -12,7 +12,7 @@ describe('EliminarPage', () => {
       declarations: [EliminarPage],
       providers: [
         { provide: ServicebdService},
-        { provide: SQLite},  // Usamos el mock de SQLite
+        { provide: SQLite}, 
       ],
     }).compileComponents();
 

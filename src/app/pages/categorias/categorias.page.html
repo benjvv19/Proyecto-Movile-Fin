@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Categorías</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let categoria of categorias" (click)="seleccionarCategoria(categoria.nombre_categoria)">
+      {{ categoria.nombre_categoria }}
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="zapatillas.length > 0">
+    <ion-list-header>
+      <ion-label>Zapatillas</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let zapatilla of zapatillas" (click)="seleccionarZapatilla(zapatilla.id_zapatilla)">
+      <ion-thumbnail slot="start">
+        <img [src]="zapatilla.imagen_url" alt="Imagen de zapatilla">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ zapatilla.nombre }}</h2>
+        <p>{{ zapatilla.descripcion }}</p>
+        <p>Precio: ${{ zapatilla.precio }}</p>
+      </ion-label>
+    </ion-item>
+    <br>
+  </ion-list>
+  <ion-text *ngIf="zapatillas.length === 0 && categoriaSeleccionada">
+    <p>No hay zapatillas disponibles en esta categoría.</p>
+  </ion-text>
+</ion-content>

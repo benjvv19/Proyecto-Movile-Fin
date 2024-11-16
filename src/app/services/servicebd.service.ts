@@ -408,8 +408,34 @@ registroZapatillas: string = `
     });
   }
   
+  
+  obtenerCategorias(): Observable<any[]> {
+    return new Observable((observer) => {
+      const query = 'SELECT * FROM categoria_zapatillas';
+      this.database.executeSql(query, []).then((res) => {
+        const categorias = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          categorias.push(res.rows.item(i));
+        }
+        observer.next(categorias);
+        observer.complete();
+      });
+    });
+  }
 
-
+  obtenerZapatillasPorCategoria(nombre_categoria: string): Observable<any[]> {
+    return new Observable((observer) => {
+      const query = `SELECT * FROM zapatillas WHERE nombre_categoria = ?`;
+      this.database.executeSql(query, [nombre_categoria]).then((res) => {
+        const zapatillas = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          zapatillas.push(res.rows.item(i));
+        }
+        observer.next(zapatillas);
+        observer.complete();
+      });
+    });
+  }
 
  ////////////////////////////////////////////////Usuarios////////////////////////////////////////////////////////////////////
 

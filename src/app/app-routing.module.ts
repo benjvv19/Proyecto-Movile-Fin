@@ -104,9 +104,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/boletasadmin/boletasadmin.module').then( m => m.BoletasadminPageModule)
   },
   {
+    path: 'categorias',
+    loadChildren: () => import('./pages/categorias/categorias.module').then( m => m.CategoriasPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'notfound'
   },
+
 
 
 
