@@ -423,6 +423,20 @@ registroZapatillas: string = `
     });
   }
 
+  obtenerCategoriasPorid(id_categoria:number): Observable<any[]> {
+    return new Observable((observer) => {
+      const query = 'SELECT * FROM categoria_zapatillas WHERE id_categoria = ?';
+      this.database.executeSql(query, [id_categoria]).then((res) => {
+        const categorias = [];
+        for (let i = 0; i < res.rows.length; i++) {
+          categorias.push(res.rows.item(i));
+        }
+        observer.next(categorias);
+        observer.complete();
+      });
+    });
+  }
+
   obtenerZapatillasPorCategoria(nombre_categoria: string): Observable<any[]> {
     return new Observable((observer) => {
       const query = `SELECT * FROM zapatillas WHERE nombre_categoria = ?`;
@@ -453,6 +467,47 @@ registroZapatillas: string = `
       });
   }
   
+
+
+
+
+
+  actualizarCategoriaYZapatillas(id_categoria: number, nuevoNombreCategoria: string): Observable<any> {
+    return new Observable((observer) => {
+        this.database.executeSql('SELECT nombre_categoria FROM categoria_zapatillas WHERE id_categoria = ?', [id_categoria]).then(res => {
+            if (res.rows.length > 0) {
+                const nombreCategoriaAnterior = res.rows.item(0).nombre_categoria;
+
+                this.database.executeSql('UPDATE categoria_zapatillas SET nombre_categoria = ? WHERE id_categoria = ?', [nuevoNombreCategoria, id_categoria]).then(() => {
+                    this.database.executeSql('UPDATE zapatillas SET nombre_categoria = ? WHERE nombre_categoria = ?', [nuevoNombreCategoria, nombreCategoriaAnterior]).then(() => {
+                        observer.next('Categoría y zapatillas actualizadas');
+                        observer.complete();
+                    }).catch(e => {
+                        observer.error('Error al actualizar las zapatillas: ' + JSON.stringify(e));
+                    });
+                }).catch(e => {
+                    observer.error('Error al actualizar la categoría: ' + JSON.stringify(e));
+                });
+            } else {
+                observer.error('La categoría no existe.');
+            }
+        }).catch(e => {
+            observer.error('Error al verificar la categoría: ' + JSON.stringify(e));
+        });
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
  ////////////////////////////////////////////////Usuarios////////////////////////////////////////////////////////////////////
 
 

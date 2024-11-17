@@ -66,5 +66,9 @@ export class AdmincategoriasPage implements OnInit {
 
   editarCategoria(categoria: any) {
     this.router.navigate(['/editarcategoria', categoria.id_categoria]);
+
+    this.router.events.subscribe(() => {
+      this.cargarCategorias(); 
+    });
   }
 }

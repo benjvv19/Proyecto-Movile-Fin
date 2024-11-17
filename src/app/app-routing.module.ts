@@ -112,9 +112,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/admincategorias/admincategorias.module').then( m => m.AdmincategoriasPageModule)
   },
   {
+    path: 'editarcategoria/:id_categoria',
+    loadChildren: () => import('./pages/editarcategoria/editarcategoria.module').then( m => m.EditarcategoriaPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'notfound'
   },
+
 
 
 
