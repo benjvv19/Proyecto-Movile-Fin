@@ -3,7 +3,7 @@ import { RecuperarcontrasenaPage } from './recuperarcontrasena.page';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 
-// Crear mocks para las dependencias
+
 
 
 describe('RecuperarcontrasenaPage', () => {
