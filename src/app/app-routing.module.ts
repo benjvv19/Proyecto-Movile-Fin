@@ -108,6 +108,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/categorias/categorias.module').then( m => m.CategoriasPageModule)
   },
   {
+    path: 'admincategorias',
+    loadChildren: () => import('./pages/admincategorias/admincategorias.module').then( m => m.AdmincategoriasPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'notfound'
   },

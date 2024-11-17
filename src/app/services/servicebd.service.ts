@@ -182,7 +182,7 @@ registroZapatillas: string = `
       //await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
       //await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
       await this.database.executeSql('DROP TABLE IF EXISTS categoria_zapatillas', []);
 
       // Crear la tabla de roles primero, ya que otras tablas dependen de ella
@@ -437,6 +437,22 @@ registroZapatillas: string = `
     });
   }
 
+
+  eliminarCategoria(id: number, nombre_categoria: string): Promise<void> {
+    return this.database
+      .executeSql('DELETE FROM zapatillas WHERE nombre_categoria = ?', [nombre_categoria])
+      .then(() => {
+        return this.database.executeSql('DELETE FROM categoria_zapatillas WHERE id_categoria = ?', [id]);
+      })
+      .then(() => {
+        this.presentAlert("Eliminar", "Categoría y zapatillas asociadas eliminadas con éxito");
+        this.seleccionarZapatillas(); 
+      })
+      .catch((error) => {
+        this.presentAlert("Error", "Ocurrió un error al eliminar la categoría: " + JSON.stringify(error));
+      });
+  }
+  
  ////////////////////////////////////////////////Usuarios////////////////////////////////////////////////////////////////////
 
 
