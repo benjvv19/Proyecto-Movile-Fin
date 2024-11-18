@@ -14,9 +14,8 @@ export class AppComponent {
 
   shouldShowToolbar(): boolean {
     const rolId = localStorage.getItem('rolId');
-    const currentRoute = this.router.url; // Obtener la ruta actual
+    const currentRoute = this.router.url;
 
-    // Verificar si el rol es válido y que no esté en las rutas de login, registro o recuperar contraseña
     return rolId !== null && rolId !== '0' && !['/login', '/register', '/recuperarcontrasena','/cambiarcontra'].includes(currentRoute);
   }
 
@@ -31,11 +30,9 @@ export class AppComponent {
   }
 
   cerrar() {
-    this.storage.remove('productos_carrito')
 
   
-    // Redirigir a la página de inicio o de login, si es necesario
-    this.router.navigate(['/login']); // Cambia la ruta según tu lógica
+    this.router.navigate(['/login']);
   }
   
 }

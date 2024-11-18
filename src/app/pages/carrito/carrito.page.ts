@@ -18,13 +18,39 @@ export class CarritoPage {
     this.cargarCarrito();
   }
 
+  private getUserId(): string {
+    const userId = localStorage.getItem('userId'); 
+    if (!userId) {
+      console.error('No se encontró userId en el localStorage');
+      return '';
+    }
+    return userId;
+  }
+
   async cargarCarrito() {
+    const userId = this.getUserId();
+    if (!userId) return;
+
     try {
-      this.productosCarrito = await this.storage.getItem('productos_carrito') || [];
+      const key = `productos_carrito_${userId}`;
+      this.productosCarrito = await this.storage.getItem(key) || [];
       this.calcularTotal();
     } catch {
-      console.log('No hay productos en el carrito');
+      console.log('No hay productos en el carrito para este usuario');
       this.productosCarrito = [];
+    }
+  }
+
+  async updateCarrito() {
+    const userId = this.getUserId();
+    if (!userId) return;
+
+    try {
+      const key = `productos_carrito_${userId}`;
+      await this.storage.setItem(key, this.productosCarrito);
+      console.log('Carrito actualizado correctamente para el usuario:', userId);
+    } catch (error) {
+      console.error('Error al actualizar el carrito:', error);
     }
   }
 
@@ -40,15 +66,6 @@ export class CarritoPage {
     this.precioTotal = 0;
     await this.updateCarrito();
     this.presentAlert('Éxito', 'Carrito vaciado correctamente');
-  }
-
-  async updateCarrito() {
-    try {
-      await this.storage.setItem('productos_carrito', this.productosCarrito);
-      console.log('Carrito actualizado correctamente');
-    } catch (error) {
-      console.error('Error al actualizar el carrito:', error);
-    }
   }
 
   increaseQuantity(index: number) {

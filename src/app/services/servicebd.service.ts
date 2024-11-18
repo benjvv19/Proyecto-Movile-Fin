@@ -44,6 +44,7 @@ export class ServicebdService {
   FOREIGN KEY (id_zapatilla) REFERENCES zapatillas(id_zapatilla));
   `; 
 
+
   //
 
 
@@ -85,6 +86,7 @@ registroZapatillas: string = `
 
 
   listadoZapatillas = new BehaviorSubject([]);
+  listadoCarrito = new BehaviorSubject([]);
   listadoUsuarios = new BehaviorSubject([]);
   BuscarZapatilla = new BehaviorSubject([]);
   listadoCategoriaZapatillas = new BehaviorSubject([]);
@@ -185,26 +187,20 @@ registroZapatillas: string = `
       //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
       await this.database.executeSql('DROP TABLE IF EXISTS categoria_zapatillas', []);
 
-      // Crear la tabla de roles primero, ya que otras tablas dependen de ella
       await this.database.executeSql(this.tablaRoles, []);
       
-      // Crear la tabla de categorías de zapatillas
       await this.database.executeSql(this.tablaCategoriaZapatillas, []);
 
-      // Crear la tabla de marcas de zapatillas
       await this.database.executeSql(this.tablaMarcaZapatillas, []);
 
-      // Crear la tabla de usuarios después de roles
       await this.database.executeSql(this.tablaUsuarios, []);
 
-      // Crear la tabla de zapatillas, asegurando que las tablas de categorías y marcas ya existan
       await this.database.executeSql(this.tablaZapatillas, []);
 
-      // Crear la tabla de ventas, asegurando que la tabla usuario ya exista
       await this.database.executeSql(this.tablaVentas, []);
 
-      // Crear la tabla de detalles de ventas, que depende de ventas y zapatillas
       await this.database.executeSql(this.tablaDetallesVenta, []);
+
 
       // Registros
       await this.database.executeSql(this.registroRoles, []);
@@ -499,9 +495,7 @@ registroZapatillas: string = `
 
 
 
-
-
-
+ ////////////////////////////////////////////////Carrito////////////////////////////////////////////////////////////////////
 
 
 

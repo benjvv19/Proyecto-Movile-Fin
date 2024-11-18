@@ -71,58 +71,62 @@ export class AdmindetallesPage implements OnInit, OnDestroy {
   }
 
   cargarProducto() {
-    // Definir los datos del producto para el carrito
     const productoParaCarrito = {
       id_zapatilla: this.zapatilla.id_zapatilla,
       nombre: this.zapatilla.nombre,
       descripcion: this.zapatilla.descripcion,
       imagen_url: this.zapatilla.imagen_url,
       precio: this.zapatilla.precio,
-      id_categoria: this.zapatilla.id_categoria,
       nombre_marca: this.zapatilla.nombre_marca,
       nombre_categoria: this.zapatilla.nombre_categoria,
       stock: this.zapatilla.stock,
-      cantidad: 1 // Inicia con 1 unidad del producto
+      cantidad: 1
     };
-
-    this.storage.getItem('productos_carrito').then((productos: any[]) => {
+  
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      this.presentAlert('Error', 'No se encontró el usuario. Inicia sesión nuevamente.');
+      return;
+    }
+    const carritoKey = `productos_carrito_${userId}`;
+  
+    this.storage.getItem(carritoKey).then((productos: any[]) => {
       if (productos) {
-        // Verificar si el producto ya existe en el carrito
         const productoExistente = productos.find(p => p.id_zapatilla === productoParaCarrito.id_zapatilla);
-
+  
         if (productoExistente) {
-          this.presentAlert('Producto ya en el carrito', 'La zapatilla ya está en tu carrito.'); // Mostrar alerta
-          return; // Salir si el producto ya existe
+          this.presentAlert('Producto ya en el carrito', 'La zapatilla ya está en tu carrito.'); 
+          return;
         }
-
-        // Si el producto no existe, se agrega
+  
         productos.push(productoParaCarrito);
-        this.storage.setItem('productos_carrito', productos)
+        this.storage.setItem(carritoKey, productos)
           .then(() => {
             console.log('Producto añadido al carrito correctamente');
-            this.presentAlert('Éxito', 'Producto añadido al carrito'); // Mostrar alerta
-            this.router.navigate(['/adminproductos']); // Redirigir a inicio
+            this.presentAlert('Éxito', 'Producto añadido al carrito');
+            this.router.navigate(['/inicio']);
           })
           .catch(error => console.error('Error al actualizar el carrito', error));
       } else {
-        this.storage.setItem('productos_carrito', [productoParaCarrito])
+        this.storage.setItem(carritoKey, [productoParaCarrito])
           .then(() => {
             console.log('Carrito creado y producto añadido correctamente');
-            this.presentAlert('Éxito', 'Producto añadido al carrito'); // Mostrar alerta
-            this.router.navigate(['/adminproductos']); // Redirigir a inicio
+            this.presentAlert('Éxito', 'Producto añadido al carrito'); 
+            this.router.navigate(['/inicio']);
           })
           .catch(error => console.error('Error al crear el carrito', error));
       }
     }).catch(() => {
-      this.storage.setItem('productos_carrito', [productoParaCarrito])
+      this.storage.setItem(carritoKey, [productoParaCarrito])
         .then(() => {
           console.log('Carrito creado y producto añadido correctamente');
-          this.presentAlert('Éxito', 'Producto añadido al carrito'); // Mostrar alerta
-          this.router.navigate(['/adminproductos']); // Redirigir a inicio
+          this.presentAlert('Éxito', 'Producto añadido al carrito'); 
+          this.router.navigate(['/inicio']); 
         })
         .catch(error => console.error('Error al crear el carrito', error));
     });
   }
+  
 
   async presentAlert(titulo: string, msj: string) {
     const alert = await this.alertController.create({
