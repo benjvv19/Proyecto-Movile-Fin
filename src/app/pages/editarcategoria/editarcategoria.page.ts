@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 import { NavController, AlertController } from '@ionic/angular';
 
@@ -8,33 +9,43 @@ import { NavController, AlertController } from '@ionic/angular';
   styleUrls: ['./editarcategoria.page.scss'],
 })
 export class EditarcategoriaPage implements OnInit {
+  idCategoria: number | null = null;
   categorias: any[] = [];
   categoriaSeleccionada: any = null;
   nuevoNombre: string = '';
 
   constructor(
+    private route: ActivatedRoute,
     private servicebd: ServicebdService,
     private navCtrl: NavController,
     private alertController: AlertController  
   ) {}
 
   ngOnInit() {
-    const idCategoria = 1;
-    this.obtenerCategoriaPorId(idCategoria);
+    this.idCategoria = Number(this.route.snapshot.paramMap.get('id_categoria'));
+    
+    if (this.idCategoria) {
+      this.obtenerCategoriaPorId(this.idCategoria);
+    } else {
+      alert('No se encontró un ID de categoría válido.');
+    }
   }
 
   obtenerCategoriaPorId(id_categoria: number) {
-    this.servicebd.obtenerCategoriasPorid(id_categoria).subscribe((categoria) => {
-      if (categoria && categoria.length > 0) {
-        this.categoriaSeleccionada = categoria[0];
-        this.nuevoNombre = this.categoriaSeleccionada.nombre_categoria;
-      } else {
-        alert('Categoría no encontrada.');
+    this.servicebd.obtenerCategoriasPorid(id_categoria).subscribe(
+      (categoria) => {
+        if (categoria && categoria.length > 0) {
+          this.categoriaSeleccionada = categoria[0];
+          this.nuevoNombre = this.categoriaSeleccionada.nombre_categoria;
+        } else {
+          alert('Categoría no encontrada.');
+        }
+      },
+      (error) => {
+        console.error('Error al obtener la categoría:', error);
+        alert('Ocurrió un error al obtener la categoría.');
       }
-    }, (error) => {
-      console.error('Error al obtener la categoría:', error);
-      alert('Ocurrió un error al obtener la categoría.');
-    });
+    );
   }
 
   async mostrarConfirmacion() {
@@ -48,15 +59,15 @@ export class EditarcategoriaPage implements OnInit {
           cssClass: 'secondary',
           handler: () => {
             console.log('Operación cancelada');
-          }
+          },
         },
         {
           text: 'Confirmar',
           handler: () => {
             this.actualizarCategoria();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -68,7 +79,7 @@ export class EditarcategoriaPage implements OnInit {
         (response: any) => {
           alert('Categoría actualizada con éxito.');
           this.categoriaSeleccionada.nombre_categoria = this.nuevoNombre;
-          
+
           this.navCtrl.back();
         },
         (error: any) => {

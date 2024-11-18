@@ -5,7 +5,6 @@
 
         <br>
         <br>
-        <!-- Descripción -->
         <ion-item>
           <ion-label position="floating">Descripción</ion-label>
           <br>
@@ -13,7 +12,6 @@
         </ion-item>
         <ion-note *ngIf="productForm.submitted && !descripcion" color="danger">La descripción es obligatoria.</ion-note>
 
-        <!-- Nombre de la categoría -->
         <ion-item>
           <ion-label position="floating">Nombre de Categoría</ion-label>
           <br>
@@ -21,7 +19,6 @@
         </ion-item>
         <ion-note *ngIf="productForm.submitted && !nombre_categoria" color="danger">El nombre de la categoría es obligatorio.</ion-note>
 
-        <!-- Marca -->
         <ion-item>
           <ion-label position="floating">Marca</ion-label>
           <br>
@@ -29,7 +26,6 @@
         </ion-item>
         <ion-note *ngIf="productForm.submitted && !nombre_marca" color="danger">La marca es obligatoria.</ion-note>
 
-        <!-- Nombre -->
         <ion-item>
           <ion-label position="floating">Nombre</ion-label>
           <br>
@@ -37,7 +33,6 @@
         </ion-item>
         <ion-note *ngIf="productForm.submitted && !nombre" color="danger">El nombre es obligatorio.</ion-note>
 
-        <!-- Precio -->
         <ion-item>
           <ion-label position="floating">Precio</ion-label>
           <br>
@@ -45,7 +40,6 @@
         </ion-item>
         <ion-note *ngIf="productForm.submitted && (precio < 0 || !precio)" color="danger">El precio debe ser mayor o igual a 0.</ion-note>
 
-        <!-- Stock -->
         <ion-item>
           <ion-label position="floating">Stock</ion-label>
           <br>
@@ -53,7 +47,6 @@
         </ion-item>
         <ion-note *ngIf="productForm.submitted && (stock < 1 || !stock)" color="danger">El stock debe ser mayor o igual a 1.</ion-note>
 
-        <!-- Imagen -->
         <ion-item *ngIf="imagen_url">
           <ion-label position="floating">Imagen (URL)</ion-label>
           <ion-input placeholder="Ingrese la URL de la imagen" [(ngModel)]="imagen_url" name="imagen_url" required></ion-input>
@@ -65,7 +58,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Botones -->
   <div class="button-container">
     <ion-button expand="full" shape="round" color="dark" type="submit" (click)="onSubmit(productForm)">Guardar</ion-button>
     <ion-button expand="full" shape="round" color="dark" [routerLink]="'/adminproductos'">Volver</ion-button>

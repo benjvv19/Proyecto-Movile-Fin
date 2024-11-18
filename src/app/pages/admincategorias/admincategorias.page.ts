@@ -71,4 +71,8 @@ export class AdmincategoriasPage implements OnInit {
       this.cargarCategorias(); 
     });
   }
+
+  irAgregarCategoria() {
+    this.router.navigate(['/agregarcategoria']); 
+  }
 }

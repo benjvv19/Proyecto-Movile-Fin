@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Agregar Categoría</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin-categorias"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <form #categoriaForm="ngForm" (ngSubmit)="agregarCategoria()">
+      <ion-item>
+        <ion-label position="floating">Nombre de la Categoría</ion-label>
+        <br>
+        <ion-input 
+          name="nombre_categoria" 
+          #nombre_categoria="ngModel"
+          [(ngModel)]="nombreCategoria"
+          required 
+          minlength="3"
+          placeholder="Ingrese la categoría"
+          clearInput>
+        </ion-input>
+      </ion-item>
+      <ion-text *ngIf="categoriaForm.submitted && nombre_categoria.invalid" color="danger">
+        <small>El nombre de la categoría es obligatorio y debe tener al menos 3 caracteres.</small>
+      </ion-text>
+
+      <ion-button 
+        expand="block" 
+        color="dark" 
+        type="submit">
+        Agregar Categoría
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

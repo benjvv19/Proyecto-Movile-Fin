@@ -16,6 +16,7 @@ import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    
 
   ],
   providers: [

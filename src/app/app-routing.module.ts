@@ -116,9 +116,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/editarcategoria/editarcategoria.module').then( m => m.EditarcategoriaPageModule)
   },
   {
+    path: 'agregarcategoria',
+    loadChildren: () => import('./pages/agregarcategoria/agregarcategoria.module').then( m => m.AgregarcategoriaPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'notfound'
   },
+
 
 
 
