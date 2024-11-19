@@ -157,7 +157,7 @@ registroZapatillas: string = `
     this.platform.ready().then(()=>{
       //crear la Base de Datos
       this.sqlite.create({
-        name: 'KickSport.db',
+        name: 'KickSports.db',
         location: 'default'
       }).then((db: SQLiteObject)=>{
         //capturar la conexion a la BD
@@ -176,16 +176,16 @@ registroZapatillas: string = `
 
       //Eliminar un base de datos mal creada
       //despues de borrarla se tiene que borrar estas lineas y ejecutar nuevamente
-      //await this.eliminarBaseDatos('miBaseDeDatos.db');
+      await this.eliminarBaseDatos('zapatillas.db');
 
-      //await this.eliminarBaseDatos('KikSport.db');
+      await this.eliminarBaseDatos('KickSport.db');
 
       //Eliminar tablas para cambiar informacion de estas
-      await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
-      await this.database.executeSql('DROP TABLE IF EXISTS categoria_zapatillas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+      //await this.database.executeSql('DROP TABLE IF EXISTS categoria_zapatillas', []);
 
       await this.database.executeSql(this.tablaRoles, []);
       

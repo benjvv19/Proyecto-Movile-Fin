@@ -9,15 +9,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-
-
-
-
-
-
   <ion-card>
-    <img src="../assets/icon/logo2.jpeg" alt="KickSport Logo"> 
+    <img src="../assets/icon/logo2.jpeg" alt="KickSport Logo">
 
     <ion-card-header>
       <ion-card-title><strong>KickSport</strong></ion-card-title>
@@ -25,16 +18,25 @@
   
     <ion-card-content>
       KickSport es tu compañero perfecto para encontrar las
-       mejores zapatillas deportivas. Diseñada para atletas, 
-       entusiastas del deporte y amantes del calzado, KickSport 
-       te ofrece una experiencia de compra inigualable con una 
-       amplia gama de marcas líderes.
+      mejores zapatillas deportivas. Diseñada para atletas, 
+      entusiastas del deporte y amantes del calzado, KickSport 
+      te ofrece una experiencia de compra inigualable con una 
+      amplia gama de marcas líderes.
     </ion-card-content>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <ion-button
+        shape="round"
+        color="primary"
+        (click)="openInstagram()">
+        <ion-icon name="navigate-circle-outline" style="font-size: 24px;"></ion-icon>
+      </ion-button>
+    </div>
+
     <br>
-    <br>
-    <br>
-    <br>
+
     <ion-button expand="block" color="dark" [routerLink]="['/masdetalles']">Más detalles</ion-button>
   </ion-card>
 
 </ion-content>
+
