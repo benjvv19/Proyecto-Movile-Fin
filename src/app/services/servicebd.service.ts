@@ -184,7 +184,7 @@ registroZapatillas: string = `
       await this.database.executeSql('DROP TABLE IF EXISTS ventas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS detalle_ventas', []);
       await this.database.executeSql('DROP TABLE IF EXISTS zapatillas', []);
-      //await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
+      await this.database.executeSql('DROP TABLE IF EXISTS usuario', []);
       await this.database.executeSql('DROP TABLE IF EXISTS categoria_zapatillas', []);
 
       await this.database.executeSql(this.tablaRoles, []);
