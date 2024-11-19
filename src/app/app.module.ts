@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { ServicebdService } from './services/servicebd.service';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +17,7 @@ import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    
+    FormsModule,
 
   ],
   providers: [

@@ -21,9 +21,12 @@ export class AdmincategoriasPage implements OnInit {
 
   ngOnInit() {
     this.cargarCategorias();
-    this.router.events.subscribe(() => {
-      this.cargarCategorias();
-    });
+
+  }
+
+
+  ionViewWillEnter() {
+    this.cargarCategorias();
   }
 
   cargarCategorias() {

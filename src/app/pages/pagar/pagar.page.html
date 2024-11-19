@@ -93,30 +93,38 @@
           <ion-item>
             <ion-input
               id="cvv"
-              type="text"
+              type="password"
               name="cvv"
               placeholder="CVV"
-              ngModel
-              #cvv="ngModel"
+              [(ngModel)]="cvv"
               required
               maxlength="3"
               (input)="limitCvv($event)"
             ></ion-input>
           </ion-item>
-          <div *ngIf="!isCvvValid">
+          <div *ngIf="cvv && cvv.length !== 3">
             <small class="error-message">El CVV debe tener exactamente 3 dígitos.</small>
           </div>
         </div>
 
+
         <!-- Botón de pago -->
-        <ion-button
-          expand="block"
-          type="submit"
-          color="dark"
-          [disabled]="paymentForm.invalid || !isCardNumberValid || !isCvvValid"
-        >
-          Pagar
-        </ion-button>
+        <div>
+          <ion-button
+            expand="block"
+            type="submit"
+            color="dark"
+            [disabled]="paymentForm.invalid || !isCardNumberValid || !isCvvValid"
+          >
+            Pagar
+          </ion-button>
+          <div *ngIf="paymentForm.invalid || !isCardNumberValid || !isCvvValid" class="error-container">
+            <small *ngIf="paymentForm.invalid">Por favor, complete todos los campos obligatorios.</small>
+            <small *ngIf="!isCardNumberValid">El número de tarjeta debe contener 16 dígitos.</small>
+            <small *ngIf="!isCvvValid">El CVV debe tener exactamente 3 dígitos.</small>
+          </div>
+        </div>
+
 
         <!-- Enlace para cancelar -->
         <p class="cancelar-pago">

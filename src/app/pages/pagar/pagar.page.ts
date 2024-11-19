@@ -16,7 +16,7 @@ export class PagarPage {
   totalPagar: number = 0;
   formattedCardNumber: string = '';
   formattedExpiryDate: string = '';
-
+  cvv: string = '';
   constructor(
     private storage: NativeStorage,
     private alertController: AlertController,
@@ -45,10 +45,11 @@ export class PagarPage {
   }
 
   calcularTotal() {
-    this.totalPagar = this.productosCarrito.reduce((total, producto) => {
+    this.totalPagar = (this.productosCarrito || []).reduce((total, producto) => {
       return total + producto.precio * producto.cantidad;
     }, 0);
   }
+  
 
   get isCardNumberValid(): boolean {
     const plainCardNumber = this.formattedCardNumber.replace(/\s/g, '');
@@ -56,9 +57,9 @@ export class PagarPage {
   }
 
   get isCvvValid(): boolean {
-    const cvvInput = document.querySelector('#cvv') as HTMLInputElement;
-    const cvvValue = cvvInput ? cvvInput.value : '';
-    return cvvValue.length === 3; 
+    const cvvInput = document.querySelector('#cvv') as HTMLInputElement | null;
+    const cvvValue = cvvInput?.value || '';
+    return cvvValue.length === 3;
   }
 
   get isExpiryDateValid(): boolean {
