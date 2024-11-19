@@ -21,6 +21,9 @@ export class AdmincategoriasPage implements OnInit {
 
   ngOnInit() {
     this.cargarCategorias();
+    this.router.events.subscribe(() => {
+      this.cargarCategorias();
+    });
   }
 
   cargarCategorias() {
@@ -37,19 +40,32 @@ export class AdmincategoriasPage implements OnInit {
   }
 
   seleccionarZapatilla(id_zapatilla: number) {
-    this.nativeStorage.setItem('id_zapatilla', id_zapatilla).then(() => {
-      this.router.navigate(['/admindetalles', id_zapatilla]);
-    }).catch((error) => {
-      console.error("Error al guardar el id de la zapatilla en el almacenamiento:", error);
-    });
+    this.nativeStorage
+      .setItem('id_zapatilla', id_zapatilla)
+      .then(() => {
+        this.router.navigate(['/admindetalles', id_zapatilla]);
+      })
+      .catch((error) => {
+        console.error(
+          'Error al guardar el id de la zapatilla en el almacenamiento:',
+          error
+        );
+      });
   }
 
   eliminarCategoria(id_categoria: number, nombre_categoria: string) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta categoría y todas las zapatillas asociadas?')) {
-      this.servicebd.eliminarCategoria(id_categoria, nombre_categoria)
+    if (
+      confirm(
+        '¿Estás seguro de que deseas eliminar esta categoría y todas las zapatillas asociadas?'
+      )
+    ) {
+      this.servicebd
+        .eliminarCategoria(id_categoria, nombre_categoria)
         .then(() => {
-          this.categorias = this.categorias.filter(c => c.id_categoria !== id_categoria);
-          
+          this.categorias = this.categorias.filter(
+            (c) => c.id_categoria !== id_categoria
+          );
+
           if (this.categoriaSeleccionada === nombre_categoria) {
             this.zapatillas = [];
             this.categoriaSeleccionada = null;
@@ -66,13 +82,9 @@ export class AdmincategoriasPage implements OnInit {
 
   editarCategoria(categoria: any) {
     this.router.navigate(['/editarcategoria', categoria.id_categoria]);
-
-    this.router.events.subscribe(() => {
-      this.cargarCategorias(); 
-    });
   }
 
   irAgregarCategoria() {
-    this.router.navigate(['/agregarcategoria']); 
+    this.router.navigate(['/agregarcategoria']);
   }
 }

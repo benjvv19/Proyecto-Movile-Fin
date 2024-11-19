@@ -61,8 +61,8 @@ export class RegisterPage implements OnInit {
 
     // Validar número de teléfono
     const numeroStr = this.telefono.toString();
-    if (isNaN(Number(this.telefono)) || numeroStr.length > 12 || numeroStr.length < 8) {
-      this.presentAlert('Número inválido', 'El número de teléfono debe ser válido y tener entre 8 y 12 dígitos.');
+    if (isNaN(Number(this.telefono)) || numeroStr.length > 9 || numeroStr.length < 9) {
+      this.presentAlert('Número inválido', 'El número de teléfono debe ser válido y tener 9 digitos.');
       return;
     }
 
@@ -73,8 +73,8 @@ export class RegisterPage implements OnInit {
     }
 
     // Validar contraseñas
-    if (this.contrasena1.length < 8) {
-      this.presentAlert('Contraseña corta', 'La contraseña debe tener al menos 8 caracteres.');
+    if (this.contrasena1.length < 8 ) {
+      this.presentAlert('Contraseña corta', 'La contraseña debe tener un largo minimo de 8 caracteres.');
       return;
     }
 

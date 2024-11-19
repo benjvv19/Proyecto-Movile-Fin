@@ -31,9 +31,7 @@ describe('RecuperarcontrasenaPage', () => {
   it('Valida y muestra una alerta si la pregunta esta vacia', async () => {
     component.pregunta = '';
     spyOn(component, 'presentAlert'); 
-
     const result = await component.verificarPregunta();
-
     expect(result).toBe(false); 
     expect(component.presentAlert).toHaveBeenCalledWith('Pregunta vacía', 'Por favor, seleccione una pregunta de seguridad.');
   });

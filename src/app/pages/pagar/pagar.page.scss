@@ -187,3 +187,22 @@ ion-item {
   .cancelar-pago-link :hover {
     color: #000;
   }
+
+
+
+  .field-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  

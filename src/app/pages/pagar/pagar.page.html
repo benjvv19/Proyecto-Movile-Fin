@@ -7,99 +7,121 @@
 <ion-content>
   <div class="container">
     <div class="modal">
+      <!-- Formulario -->
       <form class="form" #paymentForm="ngForm" (ngSubmit)="onSubmit(paymentForm)">
-        <ion-item>
-          <ion-label>Tipo de Tarjeta</ion-label>
-          <ion-select name="cardType" ngModel #cardType="ngModel" required>
-            <ion-select-option value="credit">Crédito</ion-select-option>
-            <ion-select-option value="debit">Débito</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <div *ngIf="cardType.invalid && cardType.touched">
-          <small class="error-message">Debe seleccionar un tipo de tarjeta.</small>
+        <!-- Tipo de tarjeta -->
+        <div class="form-group">
+          <label class="field-label" for="cardType">Tipo de Tarjeta</label>
+          <ion-item>
+            <ion-select name="cardType" ngModel #cardType="ngModel" required>
+              <ion-select-option value="credit">Crédito</ion-select-option>
+              <ion-select-option value="debit">Débito</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="cardType.invalid && cardType.touched">
+            <small class="error-message">Debe seleccionar un tipo de tarjeta.</small>
+          </div>
         </div>
 
-        <br>
-        <div class="credit-card-info--form">
-          <div class="input_container">
-            <label for="cardHolder" class="input_label">Nombre Titular</label>
-            <input
+        <!-- Nombre del titular -->
+        <div class="form-group">
+          <label class="field-label" for="cardHolder">Nombre Titular</label>
+          <ion-item>
+            <ion-input
               id="cardHolder"
-              class="input_field"
               type="text"
               name="cardHolder"
               placeholder="Nombre Completo"
               ngModel
               #cardHolder="ngModel"
-              [(ngModel)]="nombreTitular" 
+              [(ngModel)]="nombreTitular"
               required
-            >
-            <div *ngIf="cardHolder.invalid && cardHolder.touched">
-              <small class="error-message">Debe ingresar el nombre del titular.</small>
-            </div>
-          </div>
-
-          <div class="input_container">
-            <label for="cardNumber" class="input_label">Número De Tarjeta</label>
-            <input
-              id="cardNumber"
-              class="input_field"
-              type="text"
-              name="cardNumber"
-              placeholder="0000 0000 0000 0000"
-              ngModel
-              #cardNumber="ngModel"
-              required
-              pattern="\d{4} \d{4} \d{4} \d{4}"
-              maxlength="19"
-            >
-            <div *ngIf="cardNumber.invalid && cardNumber.touched">
-              <small class="error-message">Debe ingresar un número de tarjeta válido: 0000 0000 0000 0000.</small>
-            </div>
-          </div>
-
-          <div class="input_container">
-            <label for="expiryDate" class="input_label">Fecha Expiración / CVV</label>
-            <div class="split">
-              <input
-                id="expiryDate"
-                class="input_field"
-                type="text"
-                name="expiryDate"
-                placeholder="MM/AA"
-                ngModel
-                #expiryDate="ngModel"
-                required
-                pattern="(0[1-9]|1[0-2])\/\d{2}"
-                maxlength="5"
-              >
-              <input
-                id="cvv"
-                class="input_field"
-                type="number"
-                name="cvv"
-                placeholder="CVV"
-                ngModel
-                #cvv="ngModel"
-                required
-                maxlength="3"
-              >
-            </div>
-            <div *ngIf="expiryDate.invalid && expiryDate.touched">
-              <small class="error-message">Debe ingresar una fecha válida en el formato MM/AA.</small>
-            </div>
-            <div *ngIf="cvv.invalid && cvv.touched">
-              <small class="error-message">Debe ingresar un CVV válido.</small>
-            </div>
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="cardHolder.invalid && cardHolder.touched">
+            <small class="error-message">Debe ingresar el nombre del titular.</small>
           </div>
         </div>
 
-        <button class="purchase--btn" [disabled]="paymentForm.invalid">Pagar</button>
+        <!-- Número de tarjeta -->
+        <div class="form-group">
+          <label class="field-label" for="cardNumber">Número de Tarjeta</label>
+          <ion-item>
+            <ion-input
+              id="cardNumber"
+              type="text"
+              name="cardNumber"
+              placeholder="0000 0000 0000 0000"
+              [(ngModel)]="formattedCardNumber"
+              (input)="formatCardNumber($event)"
+              maxlength="19"
+              required
+              #cardNumber="ngModel"
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="!isCardNumberValid">
+            <small class="error-message">
+              El número de tarjeta debe contener 16 dígitos.
+            </small>
+          </div>
+        </div>
 
+        <!-- Fecha de expiración -->
+        <div class="form-group">
+          <label class="field-label" for="expiryDate">Fecha Expiración</label>
+          <ion-item>
+            <ion-input
+              id="expiryDate"
+              type="text"
+              name="expiryDate"
+              placeholder="MM/AA"
+              [(ngModel)]="formattedExpiryDate"
+              (input)="formatExpiryDate($event)"
+              maxlength="5"
+              required
+              #expiryDate="ngModel"
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="!isExpiryDateValid">
+            <small class="error-message">La fecha de expiración debe tener el formato MM/AA.</small>
+          </div>
+        </div>
+
+        <!-- CVV -->
+        <div class="form-group">
+          <label class="field-label" for="cvv">CVV</label>
+          <ion-item>
+            <ion-input
+              id="cvv"
+              type="text"
+              name="cvv"
+              placeholder="CVV"
+              ngModel
+              #cvv="ngModel"
+              required
+              maxlength="3"
+              (input)="limitCvv($event)"
+            ></ion-input>
+          </ion-item>
+          <div *ngIf="!isCvvValid">
+            <small class="error-message">El CVV debe tener exactamente 3 dígitos.</small>
+          </div>
+        </div>
+
+        <!-- Botón de pago -->
+        <ion-button
+          expand="block"
+          type="submit"
+          color="dark"
+          [disabled]="paymentForm.invalid || !isCardNumberValid || !isCvvValid"
+        >
+          Pagar
+        </ion-button>
+
+        <!-- Enlace para cancelar -->
         <p class="cancelar-pago">
           <span class="cancelar-pago-link" [routerLink]="['/carrito']">Cancelar</span>
         </p>
-
       </form>
     </div>
   </div>

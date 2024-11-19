@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { ServicebdService } from 'src/app/services/servicebd.service';
 import { Usuarios } from 'src/app/services/usuarios';
-import { Router } from '@angular/router';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 
 @Component({
@@ -15,6 +14,8 @@ export class PagarPage {
   usuario: Usuarios | null = null;
   productosCarrito: any[] = [];
   totalPagar: number = 0;
+  formattedCardNumber: string = '';
+  formattedExpiryDate: string = '';
 
   constructor(
     private storage: NativeStorage,
@@ -24,98 +25,118 @@ export class PagarPage {
   ) {}
 
   ngOnInit() {
-  const userId = localStorage.getItem('userId');
-  if (userId) {
-    this.serviceBD.obtenerUsuarioPorId(parseInt(userId)).then(usuario => {
-      this.usuario = usuario;
-    });
-  }
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.serviceBD.obtenerUsuarioPorId(parseInt(userId)).then((usuario) => {
+        this.usuario = usuario;
+      });
+    }
 
-  const carrito = history.state?.productos; 
-  if (carrito) {
-    this.productosCarrito = carrito.map((item: any) => ({
-      ...item,
-      imagen_url: item.imagen_url 
-    }));
-    this.calcularTotal();
-  } else {
-    this.productosCarrito = [];
+    const carrito = history.state?.productos;
+    if (carrito) {
+      this.productosCarrito = carrito.map((item: any) => ({
+        ...item,
+        imagen_url: item.imagen_url,
+      }));
+      this.calcularTotal();
+    } else {
+      this.productosCarrito = [];
+    }
   }
-}
 
   calcularTotal() {
     this.totalPagar = this.productosCarrito.reduce((total, producto) => {
-      return total + (producto.precio * producto.cantidad);
+      return total + producto.precio * producto.cantidad;
     }, 0);
   }
 
-  async onSubmit(form: any) {
-    const cardNumber = form.value.cardNumber;
-    const expiryDate = form.value.expiryDate;
-    const cardType = form.value.cardType;
-    const cvv = form.value.cvv;
-  
-    const cardNumberPattern = /^\d{4} \d{4} \d{4} \d{4}$/;
-    const expiryDatePattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
-    const cvvPattern = /^\d{3}$/; 
-  
-    let isExpiryDateValid = false;
-    if (expiryDatePattern.test(expiryDate)) {
-      const [month, year] = expiryDate.split('/');
-      const currentDate = new Date();
-      const currentYear = currentDate.getFullYear() % 100;
-      const currentMonth = currentDate.getMonth() + 1;
-  
-      if (parseInt(year) > currentYear || (parseInt(year) === currentYear && parseInt(month) >= currentMonth)) {
-        isExpiryDateValid = true;
-      }
+  get isCardNumberValid(): boolean {
+    const plainCardNumber = this.formattedCardNumber.replace(/\s/g, '');
+    return plainCardNumber.length === 16;
+  }
+
+  get isCvvValid(): boolean {
+    const cvvInput = document.querySelector('#cvv') as HTMLInputElement;
+    const cvvValue = cvvInput ? cvvInput.value : '';
+    return cvvValue.length === 3; 
+  }
+
+  get isExpiryDateValid(): boolean {
+    const expiryPattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    return expiryPattern.test(this.formattedExpiryDate);
+  }
+
+  formatCardNumber(event: any) {
+    const input = event.target.value.replace(/\D/g, '');
+    const formatted = input.match(/.{1,4}/g)?.join(' ') || '';
+    this.formattedCardNumber = formatted;
+    event.target.value = formatted;
+  }
+
+  limitCvv(event: any) {
+    const input = event.target.value.replace(/\D/g, '');
+    event.target.value = input.slice(0, 3);
+  }
+
+  formatExpiryDate(event: any) {
+    const input = event.target.value.replace(/\D/g, '');
+    let formatted = input.slice(0, 2);
+    if (input.length > 2) {
+      formatted += '/' + input.slice(2, 4);
     }
-  
+    this.formattedExpiryDate = formatted;
+    event.target.value = formatted;
+  }
+
+  async onSubmit(form: any) {
+    const { cardNumber, expiryDate, cardType, cvv } = form.value;
+
     const isCardTypeSelected = !!cardType;
-  
-    const isNameValid = this.usuario 
-      ? this.nombreTitular.trim().toLowerCase() === `${this.usuario.nombre} ${this.usuario.apellido}`.toLowerCase() 
+    const isNameValid = this.usuario
+      ? this.nombreTitular.trim().toLowerCase() === `${this.usuario.nombre} ${this.usuario.apellido}`.toLowerCase()
       : false;
-  
-    const isCvvValid = cvvPattern.test(cvv); // Verifica que el CVV sea válido
-  
-    if (form.valid && cardNumberPattern.test(cardNumber) && isExpiryDateValid && isCardTypeSelected && isNameValid && isCvvValid) {
-      // Guardar la venta en la base de datos
+
+    if (
+      form.valid &&
+      this.isCardNumberValid &&
+      this.isCvvValid &&
+      isCardTypeSelected &&
+      isNameValid
+    ) {
       const ventaData = {
         id_usuario: localStorage.getItem('userId'),
         fecha: new Date().toISOString().slice(0, 19).replace('T', ' '),
         total: this.totalPagar,
       };
-  
-      await this.guardarVenta(ventaData, this.productosCarrito); 
-  
+
+      await this.guardarVenta(ventaData, this.productosCarrito);
+
       this.productosCarrito = [];
-      await this.storage.setItem('productos_carrito', this.productosCarrito);
-  
+      await this.storage.remove(`productos_carrito_${ventaData.id_usuario}`);
+      this.totalPagar = 0;
+
       const alert = await this.alertController.create({
         header: 'Pago exitoso',
         message: 'Su pago ha sido procesado con éxito.',
         buttons: ['OK'],
       });
       await alert.present();
-  
+
       form.reset();
       this.navController.navigateBack('/boletas');
     } else {
       let errorMessage = 'Por favor, complete todos los campos correctamente.';
-  
+
       if (!cvv) {
-        errorMessage = 'El CVV no puede estar vacío.'; // Verifica si el CVV está vacío
-      } else if (!isExpiryDateValid) {
-        errorMessage = 'La fecha de expiración no es válida o está vencida.';
-      } else if (!isCardTypeSelected) {
-        errorMessage = 'Debe seleccionar un tipo de tarjeta.';
+        errorMessage = 'El CVV no puede estar vacío.';
+      } else if (!this.isCvvValid) {
+        errorMessage = 'El CVV debe ser de 3 dígitos.';
+      } else if (!this.isCardNumberValid) {
+        errorMessage = 'El número de tarjeta debe contener 16 dígitos.';
       } else if (!isNameValid) {
         errorMessage = 'El nombre del titular no coincide con el nombre del usuario.';
-      } else if (!isCvvValid) {
-        errorMessage = 'El CVV debe ser de 3 dígitos.'; 
       }
-  
+
       const alert = await this.alertController.create({
         header: 'Error',
         message: errorMessage,
@@ -128,46 +149,45 @@ export class PagarPage {
   async guardarVenta(ventaData: any, productosCarrito: any[]) {
     const queryVenta = `INSERT INTO ventas (id_usuario, fecha, total) VALUES (?, ?, ?)`;
 
-    // Primero insertar la venta
-    return this.serviceBD.database.executeSql(queryVenta, [
-      ventaData.id_usuario,
-      ventaData.fecha,
-      ventaData.total
-    ]).then(async (ventaResult) => {
-      const id_venta = ventaResult.insertId;
+    return this.serviceBD.database
+      .executeSql(queryVenta, [
+        ventaData.id_usuario,
+        ventaData.fecha,
+        ventaData.total,
+      ])
+      .then(async (ventaResult) => {
+        const id_venta = ventaResult.insertId;
 
+        const queries = productosCarrito.map((producto) =>
+          this.serviceBD.database.executeSql(
+            `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad, imagen_url) VALUES (?, ?, ?, ?, ?)`,
+            [
+              id_venta,
+              producto.id_zapatilla,
+              producto.precio,
+              producto.cantidad,
+              producto.imagen_url,
+            ]
+          )
+        );
 
-      const queries = [];
-      for (const producto of productosCarrito) {
-        const queryDetalle = `INSERT INTO detalle_ventas (id_venta, id_zapatilla, precio, cantidad, imagen_url) VALUES (?, ?, ?, ?, ?)`;
-        const detalleQuery = this.serviceBD.database.executeSql(queryDetalle, [
-          id_venta, 
-          producto.id_zapatilla,
-          producto.precio,
-          producto.cantidad,
-          producto.imagen_url 
-        ]);
-        queries.push(detalleQuery);
-      }
-
-      await Promise.all(queries);  
-
-      await this.actualizarStock(productosCarrito);
-    }).catch((error) => {
-      console.error('Error al guardar la venta:', error);
-    });
+        await Promise.all(queries);
+        await this.actualizarStock(productosCarrito);
+      })
+      .catch((error) => {
+        console.error('Error al guardar la venta:', error);
+      });
   }
 
   async actualizarStock(productosCarrito: any[]) {
-    const queries = [];
-    for (const producto of productosCarrito) {
-      const nuevoStock = producto.stock - producto.cantidad; // Calcular el nuevo stock
-      const queryStock = `UPDATE zapatillas SET stock = ? WHERE id_zapatilla = ?`;
-      const stockQuery = this.serviceBD.database.executeSql(queryStock, [nuevoStock, producto.id_zapatilla]);
-      queries.push(stockQuery);
-    }
-    return Promise.all(queries); // Ejecutar todas las actualizaciones de stock
+    const queries = productosCarrito.map((producto) => {
+      const nuevoStock = producto.stock - producto.cantidad;
+      return this.serviceBD.database.executeSql(
+        `UPDATE zapatillas SET stock = ? WHERE id_zapatilla = ?`,
+        [nuevoStock, producto.id_zapatilla]
+      );
+    });
+
+    return Promise.all(queries);
   }
-
-
 }

@@ -1,95 +1,114 @@
-<ion-content scroll-y="false" class="no-scroll-content">
+<ion-content class="no-scroll-content">
   <div class="container">
-    <div class="login-container">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title class="ion-text-center">Registro</ion-card-title>
-        </ion-card-header>
+    <!-- Título del formulario -->
+    <h1 class="form-title">Registro</h1>
 
+    <!-- Contenedor deslizante para la tarjeta -->
+    <div class="scrollable-card-container">
+      <ion-card>
         <ion-card-content>
           <ion-item lines="none">
-            <ion-input 
-              placeholder="Ingrese su nombre" 
-              [(ngModel)]="nombre" 
+            <ion-input
+              placeholder="Ingrese su nombre"
+              [(ngModel)]="nombre"
               required>
             </ion-input>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-input 
-              placeholder="Ingrese su apellido" 
-              [(ngModel)]="apellido" 
+            <ion-input
+              placeholder="Ingrese su apellido"
+              [(ngModel)]="apellido"
               required>
             </ion-input>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-input 
-              placeholder="Ingrese correo electrónico" 
-              [(ngModel)]="correo" 
-              type="email" 
+            <ion-input
+              placeholder="Ingrese correo electrónico"
+              [(ngModel)]="correo"
+              type="email"
               required>
             </ion-input>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-input 
-              placeholder="Ingrese su teléfono" 
-              [(ngModel)]="telefono" 
-              type="tel" 
+            <ion-input
+              placeholder="Ingrese su teléfono"
+              [(ngModel)]="telefono"
+              type="tel"
               required>
             </ion-input>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-input 
-              placeholder="Ingrese su contraseña" 
-              [(ngModel)]="contrasena1" 
-              type="password" 
+            <ion-input
+              placeholder="Ingrese su contraseña"
+              [(ngModel)]="contrasena1"
+              type="password"
               required>
             </ion-input>
           </ion-item>
 
           <ion-item lines="none">
-            <ion-input 
-              placeholder="Repetir la contraseña" 
-              [(ngModel)]="contrasena2" 
-              type="password" 
+            <ion-input
+              placeholder="Repetir la contraseña"
+              [(ngModel)]="contrasena2"
+              type="password"
               required>
             </ion-input>
           </ion-item>
-          
+
           <ion-item lines="none">
-            <ion-select placeholder="Selecciona una pregunta de seguridad" [(ngModel)]="pregunta" required>
-              <ion-select-option value="¿Cuál es el color favorito?">¿Cuál es tu color favorito?</ion-select-option>
-              <ion-select-option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</ion-select-option>
-              <ion-select-option value="¿Cuál es tu ciudad natal?">¿En qué ciudad naciste?</ion-select-option>
+            <ion-select
+              placeholder="Selecciona una pregunta de seguridad"
+              [(ngModel)]="pregunta"
+              required>
+              <ion-select-option value="¿Cuál es el color favorito?">
+                ¿Cuál es tu color favorito?
+              </ion-select-option>
+              <ion-select-option value="¿Cuál es el nombre de tu primera mascota?">
+                ¿Cuál es el nombre de tu primera mascota?
+              </ion-select-option>
+              <ion-select-option value="¿Cuál es tu ciudad natal?">
+                ¿En qué ciudad naciste?
+              </ion-select-option>
             </ion-select>
           </ion-item>
-          
+
           <ion-item lines="none">
-            <ion-input 
-              placeholder="Ingresa tu respuesta" 
-              [(ngModel)]="respuesta" 
+            <ion-input
+              placeholder="Ingresa tu respuesta"
+              [(ngModel)]="respuesta"
               required>
             </ion-input>
           </ion-item>
 
           <div class="photo-button-container">
-            <ion-button class="take-photo-button" (click)="takePicture()">Tomar Foto</ion-button>
+            <ion-button
+              class="take-photo-button"
+              (click)="takePicture()">
+              Tomar Foto
+            </ion-button>
           </div>
-          
-          <img *ngIf="imagen" [src]="imagen" alt="Sin foto" style="width: 120px;height: 120px;border-radius: 50%;overflow: hidden;margin: 20px auto; display: block;"/>
 
-          <ion-button expand="block" color="dark" (click)="irLogin()" class="submit-button">Aceptar</ion-button>
+          <img
+            *ngIf="imagen"
+            [src]="imagen"
+            alt="Sin foto"
+            class="profile-picture" />
 
-          <br>
-
-          <div class="links-container ion-text-center">
-            <a [routerLink]="['/login']">¿Ya tienes una cuenta?</a>
-          </div>
         </ion-card-content>
       </ion-card>
+    </div>
+
+    <!-- Botón y enlace debajo de la tarjeta -->
+    <ion-button expand="block" color="dark" (click)="irLogin()" class="submit-button">
+      Aceptar
+    </ion-button>
+
+    <div class="links-container ion-text-center">
+      <a [routerLink]="['/login']">¿Ya tienes una cuenta?</a>
     </div>
   </div>
 </ion-content>

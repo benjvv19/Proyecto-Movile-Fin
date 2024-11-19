@@ -1,18 +1,12 @@
+/* Contenedor principal */
 .container {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   background: #121212;
-  background: radial-gradient(
-    circle,
-    #121212 30%,
-    #1a1a1a 30%,
-    #1a1a1a 50%,
-    #121212 50%
-  );
-  background-size: 60px 60px;
+  background: radial-gradient(circle, #121212 30%, #1a1a1a 50%);
   animation: move 4s linear infinite;
 }
 
@@ -25,25 +19,38 @@
   }
 }
 
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Asegúrate de que esta altura sea adecuada para tu diseño */
-  width: 85%;
-  border-radius: 20px;
+/* Título del formulario */
+.form-title {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
 }
 
+/* Contenedor deslizable */
+.scrollable-card-container {
+  flex: 1;
+  max-height: 60vh; /* Limita la altura para el scroll */
+  overflow-y: auto; /* Permite desplazamiento vertical */
+  padding: 16px;
+  width: 100%;
+}
+
+/* Estilos de la tarjeta */
 ion-card {
   width: 100%;
-  max-width: 400px; /* Limita el ancho del card para mantener la legibilidad */
-  padding: 24px; /* Aumentar el padding */
+  max-width: 400px;
   background-color: #ffffff;
-  color: #000000;
   border-radius: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para mayor profundidad */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+ion-card-content {
+  padding: 16px;
+}
+
+/* Estilos de los botones */
 ion-button {
   margin-bottom: 10px;
   border-radius: 25px;
@@ -52,30 +59,34 @@ ion-button {
   font-weight: bold;
 }
 
-.take-photo-button {
-  width: 100%; /* Asegura que el botón tenga un ancho completo */
-  max-width: 250px; /* Ajusta el max-width según tus necesidades */
-  --background: #000000; /* Fondo negro para el botón */
-  color: white; /* Texto blanco */
-  border-radius: 25px; /* Borde redondeado */
-  padding: 10px; /* Aumenta el padding para mejor clicabilidad */
-}
-
-ion-card-title {
-  color: #000000;
-  font-size: 1.6rem; /* Ajustar tamaño si es necesario */
+.submit-button {
+  margin-top: 20px;
+  border-radius: 25px;
+  width: 100%;
+  max-width: 250px;
+  --background: #000000;
+  color: white;
   font-weight: bold;
-  text-align: center; /* Centra el título */
-  margin-bottom: 16px; /* Espacio inferior para separar del contenido */
 }
 
+/* Botón de tomar foto */
+.take-photo-button {
+  width: 100%;
+  max-width: 250px;
+  --background: #000000;
+  color: white;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+/* Estilos de los elementos */
 ion-item {
   --background: transparent !important;
   --border-color: #114B5F;
   border-radius: 25px;
   margin-bottom: 1rem;
-  border: 1px solid #c0c0c0; /* Asegúrate de que el borde sea sutil */
-  min-height: 60px; /* Aumentar altura mínima */
+  border: 1px solid #c0c0c0; /* Bordes sutiles */
+  min-height: 60px; /* Altura mínima */
 }
 
 ion-input {
@@ -84,49 +95,27 @@ ion-input {
   padding-left: 8px;
 }
 
-.links-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.links-container a {
-  margin: 10px 0;
-  color: #3880ff;
-  text-decoration: none;
-}
-
-.links-container a:hover {
-  text-decoration: underline; /* Resalta al pasar el mouse */
-}
-
-.container-input-logo {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.logo-app {
-  border-radius: 50%;
-  width: 60px; 
-  height: 60px; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+/* Estilo de la foto de perfil */
 .profile-picture {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   overflow: hidden;
-  margin: 20px auto; /* Centrar la imagen en el contenedor */
+  margin: 20px auto;
+  display: block;
 }
 
-.profile-picture img {
-  width: 100%; /* Ajustar la imagen al 100% del contenedor */
-  height: 100%; /* Ajustar la imagen al 100% del contenedor */
-  object-fit: cover; /* Mantener la relación de aspecto */
+/* Contenedor de enlaces */
+.links-container {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.links-container a {
+  color: #3880ff;
+  text-decoration: none;
+}
+
+.links-container a:hover {
+  text-decoration: underline;
 }
